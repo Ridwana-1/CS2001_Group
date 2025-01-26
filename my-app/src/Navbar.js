@@ -8,8 +8,12 @@ function Navbar() {
         <div className = "navbar-container">
 
         </div>
+       < link to ="/"className="navbar-logo"> 
+       swap SAVIOUOR
+       </link>
+
        </nav>
-       
+
        
        </>
 
