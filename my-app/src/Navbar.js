@@ -1,22 +1,25 @@
 import React , {useState} from 'react'
 
+import './App.css'
+import logo from '../src/Logo.png';
 
-function Navbar() {
+const Navbar = () => {
   return (
     
-    <>
-       <nav>Nav className = "Navbar"
-        <div className = "navbar-container">
-
-        </div>
-       < link to ="/"className="navbar-logo"> 
-       swap SAVIOUR
-       </link>
+       <nav>
+        
+            <img src={logo} alt=""/>
+            <ul>
+            <li>Home</li>
+            <li>Sign Up</li>
+            <li>Explore</li>
+            <li>Contact Us</li>
+            </ul>
 
        </nav>
 
        
-       </>
+       
 
     
   )

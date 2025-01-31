@@ -1,13 +1,19 @@
 import React from 'react';
 import './App.css';
 import Home from './Home';
+import Navbar from './Navbar.js';
 
-function App() {
+const App = () => {
   return (
-    <div className="App">
-    <h1> swap savouir</h1>  
-    <home/>
+    <div>
+     
+
+      <Navbar/>
+   
+   
     </div>
+
+
   );
 }
 
