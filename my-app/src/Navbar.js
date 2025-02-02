@@ -1,47 +1,40 @@
-import React , {useState} from 'react'
-
-<<<<<<< HEAD
-
-function Navbar() {
-  return (
-    
-    <>
-       <nav>Nav className = "Navbar"
-        <div className = "navbar-container">
-
-        </div>
-       < link to ="/"className="navbar-logo"> 
-       swap SAVIOUR
-       </link>
-=======
-import './App.css'
-import logo from '../src/Logo.png';
+// Navbar.jsx
+import React from 'react';
+import logo from './Logo.jpg';
+import './Navbar.css';
+import './App.css';
 
 const Navbar = () => {
   return (
-    
-       <nav>
-        
-            <img src={logo} alt=""/>
-            <ul>
-            <li>Home</li>
-            <li>Sign Up</li>
-            <li>Explore</li>
-            <li>Contact Us</li>
-            </ul>
->>>>>>> 5c8d6bf89aadcedbe2a61c9bbe746adadb72f496
+    <nav className="navbar">
+ 
+      <div className="nav-left">
+        <img src={logo} alt="logo" className="logo"/>
+        <h1 className="brand-name">SwapSaviour</h1>
+      </div>
+      
 
-       </nav>
-
-       
-<<<<<<< HEAD
-       </>
-=======
-       
->>>>>>> 5c8d6bf89aadcedbe2a61c9bbe746adadb72f496
+      <div className="nav-center">
+        <div className="search-container">
+          <input 
+            type="text" 
+            placeholder="Search" 
+            className="search-input"
+          />
+          <span className="search-icon"></span>
+        </div>
+      </div>
 
     
-  )
-}
+      <div className="nav-right">
+        <a href="/explore" className="nav-link">Explore</a>
+        <a href="/messages" className="nav-link">Messages</a>
+        <a href="/my-items" className="nav-link">My Items</a>
+       
+        </div>
+      
+    </nav>
+  );
+};
 
-export default Navbar
+export default Navbar;

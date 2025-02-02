@@ -1,3 +1,5 @@
+
+
 .App {
   text-align: center;
 }
@@ -6,6 +8,27 @@
   height: 40vmin;
   pointer-events: none;
 }
+
+
+.background-image {
+  background-image: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)), url('./Home.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  height: 100vh;
+  width: 100%;
+  position: absolute;  /* covers screen */
+  top: 0;
+  left: 0;
+  z-index: -1;  /* behind everything else */
+  .background-image {
+    filter: brightness(0.8) blur(100%); 
+  }
+
+}
+
+
+
 
 @media (prefers-reduced-motion: no-preference) {
   .App-logo {
@@ -35,4 +58,5 @@
   to {
     transform: rotate(360deg);
   }
+  
 }
