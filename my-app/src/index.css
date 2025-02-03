@@ -16,3 +16,10 @@ a{
     cursor: pointer;
 
 }
+
+.marcellus-regular {
+    font-family: "Marcellus", serif;
+    font-weight: 400;
+    font-style: normal;
+  }
+  

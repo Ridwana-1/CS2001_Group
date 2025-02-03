@@ -1,0 +1,74 @@
+:root {
+    --primary-color: #4CAF50;
+    --text-color: #333; 
+    --background-color: #fff; 
+    --border-color: #ddd; 
+    --hover-color: #f5f5f5; 
+    --status-success: green; 
+    --status-pending: orange; 
+    --status-failed: red; 
+}
+
+.transactions {
+    max-width: 800px;
+    margin: 50px auto;
+    text-align: center;
+    font-family: Arial, sans-serif;
+}
+
+.transactions h1 {
+    margin-bottom: 20px;
+    font-size: 24px;
+    color: var(--text-color);
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    background: var(--background-color);
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+thead {
+    background-color: var(--primary-color);
+    color: white;
+}
+
+th, td {
+    padding: 12px;
+    text-align: center;
+    border-bottom: 1px solid var(--border-color);
+    color: var(--text-color);
+}
+
+tbody tr:hover {
+    background-color: var(--hover-color);
+}
+
+
+td.status {
+    font-weight: bold;
+}
+
+td.status.completed {
+    color: var(--status-success);
+}
+
+td.status.pending {
+    color: var(--status-pending);
+}
+
+td.status.failed {
+    color: var(--status-failed);
+}
+
+
+td img.transaction-image {
+    width: 50px; 
+    height: 50px; 
+    object-fit: cover; 
+    border-radius: 5px; 
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); 
+}

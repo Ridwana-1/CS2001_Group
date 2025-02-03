@@ -1,40 +1,40 @@
-/* Navbar.css */
 .navbar {
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 0.75rem 2rem;
-  background-color: white;
-  box-shadow: 0 1px 2px rgba(0,0,0,0.1);
-  height: 64px; /* Fixed height for consistency */
+  background-color: #fff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  height: 64px;
+  position: relative;
+  z-index: 1;
+  border-radius: 20px; 
 }
 
-/* Left section styling */
 .nav-left {
   display: flex;
   align-items: center;
-  min-width: 200px; /* Ensures consistent space for logo + text */
 }
 
 .logo {
-  height: 32px;
+  height: 32px; 
   width: auto;
   margin-right: 0.75rem;
 }
 
 .brand-name {
-  font-size: 1.5rem;
-  font-weight: bold;
-  color: #d46136;
+  font-size: 1.5rem; 
+  font-weight: bold; 
+  color: #d46136; 
   margin: 0;
-  white-space: nowrap;
+  white-space: nowrap; 
+  font-family: sans-serif; 
 }
 
-/* Center section styling */
 .nav-center {
   flex: 1;
   max-width: 600px;
-  margin: 0 3rem; /* Equal spacing on both sides */
+  margin: 0 3rem;
   padding: 0 1rem;
 }
 
@@ -45,13 +45,17 @@
 
 .search-input {
   width: 100%;
-  padding: 0.5rem 2.5rem 0.5rem 1rem; /* Space for icon on right */
-  border: 1px solid #e1e1e1;
-  border-radius: 4px;
+  padding: 0.5rem 2.5rem 0.5rem 1rem; 
+  border: 1px solid #e1e1e1; 
+  border-radius: 25px; 
   font-size: 0.9rem;
   outline: none;
-  transition: border-color 0.2s ease;
-  height: 36px; /* Fixed height for consistency */
+  transition: border-color 0.3s ease;
+  height: 36px; 
+}
+
+.search-input:focus {
+  border-color: #FF4500; 
 }
 
 .search-icon {
@@ -59,30 +63,73 @@
   right: 0.75rem;
   top: 50%;
   transform: translateY(-50%);
-  color: #666;
+  color: #666; 
   cursor: pointer;
 }
 
-/* Right section styling */
 .nav-right {
   display: flex;
   align-items: center;
-  gap: 2rem; 
-  min-width: 300px; 
+  gap: 2rem;
+  min-width: 300px;
   justify-content: flex-end;
 }
 
 .nav-link {
-  color: #333;
+  color: #333; 
   text-decoration: none;
-  font-size: 0.9rem;
-  font-weight: 500;
-  transition: color 0.2s ease;
-  white-space: nowrap;
+  font-size: 1rem; 
+  font-weight: 500; 
+  transition: color 0.3s ease, transform 0.3s ease, border 0.3s ease; 
+  font-family: sans-serif; 
+  padding: 0.5rem 0; 
+  position: relative; 
+}
+
+.nav-link::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background-color: #FF4500; 
+  transform: scaleX(0);
+  transform-origin: bottom right;
+  transition: transform 0.3s ease;
 }
 
 .nav-link:hover {
-  color: #FF4500;
+  color: #FF4500; 
+  transform: translateY(-2px); 
+}
+
+.nav-link:hover::after {
+  transform: scaleX(1); 
+}
+
+.nav-btn {
+  background-color: #FF4500; 
+  color: white; 
+  font-size: 0.9rem;
+  font-weight: 600;
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: 25px; 
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+  text-align: center;
+  font-family: sans-serif; 
+}
+
+.nav-btn:hover {
+  background-color: #d44117; 
+  transform: translateY(-3px); 
+}
+
+.nav-btn:focus {
+  outline: 2px solid #FF4500; 
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); 
 }
 
 .profile-icon {
@@ -91,6 +138,13 @@
   border-radius: 50%;
   overflow: hidden;
   margin-left: 1rem;
+  border: 2px solid #e1e1e1; 
+  transition: border 0.3s ease; 
+  cursor: pointer;
+}
+
+.profile-icon:hover {
+  border-color: #FF4500; 
 }
 
 .avatar {
@@ -99,7 +153,6 @@
   object-fit: cover;
 }
 
-/* Responsive adjustments */
 @media (max-width: 1024px) {
   .nav-center {
     margin: 0 1.5rem;
@@ -130,4 +183,38 @@
   .profile-icon {
     margin-left: 0;
   }
+}
+
+/* --- Added Dropdown CSS --- */
+
+/* Dropdown menu positioned under the profile icon */
+/* --- Adjusted Dropdown Menu CSS --- */
+
+/* Dropdown menu positioned below the profile icon */
+.dropdown-menu {
+  position: absolute;
+  top: 65px; /* Increased from 50px to 65px to move it further down */
+  right: 0;
+  background-color: #fff;
+  border: 1px solid #e1e1e1;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  width: 150px;
+  padding: 0.5rem 0;
+  z-index: 10;
+}
+
+
+/* Dropdown item styles */
+.dropdown-item {
+  padding: 0.5rem 1rem;
+  color: #333;
+  text-decoration: none;
+  display: block;
+  transition: background-color 0.3s ease;
+  font-family: sans-serif;
+}
+
+.dropdown-item:hover {
+  background-color: #f0f0f0;
 }
