@@ -3,7 +3,7 @@ import './App.css';
 import Home from './Home.js';
 import Navbar from './Navbar.js';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import background from './Home.jpg';
+
 import Transactions from './Transaction';
 
 const App = () => {
