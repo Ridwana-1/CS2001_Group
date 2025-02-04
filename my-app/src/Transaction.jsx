@@ -6,10 +6,10 @@ import productImage3 from './product3.jpg';
 import productImage4 from './product4.jpg';
 
 const Transactions = () => {
-  // Track active navigation item
+  
   const [activePage, setActivePage] = useState('View Receipts');
 
-  // Navigation items with their icons
+
   const navItems = [
     {
       name: 'View Receipts',
@@ -51,10 +51,10 @@ const Transactions = () => {
 
   return (
     <div className="page-container">
-      {/* Sidebar */}
+    
       <aside className="sidebar">
         <div className="sidebar-header">
-          <h2>Menu</h2>
+    
         </div>
         <nav>
           <ul className="sidebar-nav">
@@ -74,7 +74,7 @@ const Transactions = () => {
         </nav>
       </aside>
 
-      {/* Main Content */}
+   
       <main className="main-content">
         <div className="content-header">
           <h1>Transaction History</h1>

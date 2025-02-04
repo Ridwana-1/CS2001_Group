@@ -29,7 +29,7 @@ const Navbar = () => {
         <a href="/messages" className="nav-link">Messages</a>
         <a href="/transactions" className="nav-link">Transactions</a>
 
-        {/* Profile icon with dropdown */}
+     
         <div className="profile-icon" onClick={toggleDropdown}>
           <img src={profile} alt="Profile" className="avatar" /> 
         </div>

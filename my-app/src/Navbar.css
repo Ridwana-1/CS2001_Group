@@ -185,15 +185,10 @@
   }
 }
 
-/* --- Added Dropdown CSS --- */
 
-/* Dropdown menu positioned under the profile icon */
-/* --- Adjusted Dropdown Menu CSS --- */
-
-/* Dropdown menu positioned below the profile icon */
 .dropdown-menu {
   position: absolute;
-  top: 65px; /* Increased from 50px to 65px to move it further down */
+  top: 65px; 
   right: 0;
   background-color: #fff;
   border: 1px solid #e1e1e1;
@@ -205,7 +200,7 @@
 }
 
 
-/* Dropdown item styles */
+
 .dropdown-item {
   padding: 0.5rem 1rem;
   color: #333;

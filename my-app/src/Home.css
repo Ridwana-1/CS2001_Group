@@ -1,118 +1,76 @@
-
 .App {
-    text-align: center;
-  }
-  
-  .App-logo {
-    height: 40vmin;
-    pointer-events: none;
-  }
-  
-  .background-image {
-    background-image: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)), url('./Home.jpg');
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    height: 100vh;
-    width: 100%;
-    position: fixed;  
-    top: 0;
-    left: 0;
-    z-index: -1;  
-    filter: brightness(0.8); 
-    transition: filter 0.3s ease; 
-  }
-  
-  .background-image:hover {
-    filter: brightness(0.8) blur(10px); 
-  }
-  
-  .content {
-    position: relative;
-    z-index: 1;
-  }
-  
-  @media (prefers-reduced-motion: no-preference) {
-    .App-logo {
-      animation: App-logo-spin infinite 20s linear;
-    }
-  }
-  
-  .App-header {
-    background-color: #282c34;
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    font-size: calc(10px + 2vmin);
-    color: white;
-  }
-  
-  .App-link {
-    color: #61dafb;
-  }
-  
-  @keyframes App-logo-spin {
-    from {
-      transform: rotate(0deg);
-    }
-    to {
-      transform: rotate(360deg);
-    }
-  }
-  
-  
-  .buttons-container {
-    position: absolute;
-    top: 70%;  
-    left: 50%;
-    transform: translate(-50%, -50%);
-    display: flex;
-    gap: 20px; 
-  }
-  
-  .btn {
-    padding: 12px 24px;
-    font-size: 16px;
-    cursor: pointer;
-    border: 2px solid transparent; 
-    border-radius: 5px;
-    background-color: #2c3e50; 
-    color: white;
-    transition: background-color 0.3s ease, transform 0.2s ease, border-color 0.3s ease;
-  }
-  
+  text-align: center;
+}
 
-  .btn:hover {
-    background-color: #9ba1a7; 
-    transform: scale(1.1);
-    border-color: #ecf0f1; 
-  }
-  
-  .header {
-    font-weight: bold;
-    color: rgb(0, 0, 0);
-    text-align: center;
-    font-size: 4em;
-    margin: 200px 0 40px 0;  
-    padding: 0;
-    line-height: 1.2;
-    letter-spacing: 1px;
-    width: 100%;
-    display: block;
-    font-family: serif;
-  }
-  
-  .text {
-    color: rgb(4, 0, 0);
-    text-align: center;
-    font-size: 1.8em;
-    margin: 0 auto;  
-    padding: 0;
-    font-weight: 300;
-    letter-spacing: 0.5px;
-    width: 80%;  
-    display: block;
-    font-family: serif ;
-  }
+.App-logo {
+  height: 40vmin;
+  pointer-events: none;
+}
+
+.background-image {
+  background-image: url('./Home.jpg'); 
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  height: 100vh;
+  width: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: -1;
+  filter: blur(10px); 
+  opacity: 0.8; 
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh; 
+  color: white;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+  padding: 40px; 
+}
+
+.header {
+  font-weight: bold;
+  font-size: 5em;
+  font-family: 'Merriweather', serif; 
+  margin-bottom: 60px; 
+}
+
+.text {
+  font-size: 2em;
+  font-weight: 300;
+  letter-spacing: 0.5px;
+  width: 80%;
+  font-family: 'Merriweather', serif; 
+  margin-bottom: 140px;
+  text-align: center; 
+}
+
+.buttons-container {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap; 
+  justify-content: center; 
+  margin-top: 20px; 
+}
+
+.btn {
+  padding: 12px 24px;
+  font-size: 16px;
+  cursor: pointer;
+  border: 2px solid transparent;
+  border-radius: 5px;
+  background-color: #2c3e50;
+  color: white;
+  transition: background-color 0.3s ease, transform 0.2s ease, border-color 0.3s ease;
+}
+
+.btn:hover {
+  background-color: #34495e;
+  transform: scale(1.1);
+  border-color: #ecf0f1;
+}
