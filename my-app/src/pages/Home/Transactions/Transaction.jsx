@@ -1,10 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import './Transactions.css';
-import productImage1 from './product1.jpg';
-import productImage2 from './product2.jpg';
-import productImage3 from './product3.jpg';
-import productImage4 from './product4.jpg';
+
 
 const Transactions = () => {
   const [activePage, setActivePage] = useState('View Receipts');

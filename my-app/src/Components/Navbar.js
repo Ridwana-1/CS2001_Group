@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import logo from './logo.png';
+import logo from '../assets/logo.png';
 import './Navbar.css';
-import profile from './profile.jpg'; 
+import profile from '../assets/profile.jpg';
 
 const Navbar = () => {
   const [isDropdownOpen, setDropdownOpen] = useState(false);

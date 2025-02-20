@@ -1,26 +1,23 @@
 import React from 'react';
-import './App.css';
-import Home from './Home.js';
-import Navbar from './Navbar.js';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import './App.css';
 
-import Transactions from './Transaction';
+import Navbar from './Components/Navbar.js';
+import Home from './pages/Home/Home.js';
+import Transactions from './pages/Home/Transactions/Transaction.jsx';
 
-const App = () => {
+function App() {
   return (
-    <Router>  
+    <Router>
       <div>
-        <Navbar /> 
-        
-      
-            <Routes>
-              <Route path="/explore" element={<Home />} />
-              <Route path="/Transactions" element={<Transactions />} />
-          </Routes>
-        </div>
-      
+        <Navbar />
+        <Routes>
+          <Route path="/explore" element={<Home />} />
+          <Route path="/transactions" element={<Transactions />} />
+        </Routes>
+      </div>
     </Router>
   );
-};
+}
 
 export default App;

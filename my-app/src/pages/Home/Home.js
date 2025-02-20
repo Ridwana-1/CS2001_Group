@@ -1,18 +1,15 @@
-import React from 'react'
-import Navbar from './Navbar'
-import Transactions from './Transaction'
-import App from './App'
-import background from './Home.js'
-import './Home.css'
+import React from 'react';
+import Navbar from '../../Components/Navbar.js';
+import Transactions from './Transactions/Transaction.jsx';
+import background from '../../assets/Home.jpg';
 
+import './Home.css';
 
 const Home = () => {
   return (
     <>
-      
-      <div className="background-image" />
+      <div className="background-image" style={{ backgroundImage: `url(${background})` }} />
 
-   
       <div className="content">
         <h1 className="header">Welcome to SwapSaviour</h1>
         <p className="text">Explore and Manage Your Transactions</p>
