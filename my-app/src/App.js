@@ -4,7 +4,7 @@ import './App.css';
 
 import Navbar from './Components/Navbar.js';
 import Home from './pages/Home/Home.js';
-import Transactions from './pages/Home/Transactions/Transaction.jsx';
+import Transactions from './pages/Transactions/Transaction.jsx';
 
 function App() {
   return (

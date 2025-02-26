@@ -1,6 +1,6 @@
 import React from 'react';
 import Navbar from '../../Components/Navbar.js';
-import Transactions from './Transactions/Transaction.jsx';
+import Transactions from '../Transactions/Transaction.jsx';
 import background from '../../assets/Home.jpg';
 
 import './Home.css';
