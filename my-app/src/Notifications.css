@@ -1,0 +1,28 @@
+.notifications-page {
+    max-width: 600px;
+    margin: auto;
+    padding: 20px;
+  }
+  
+  .notification-card {
+    background: #f8f9fa;
+    padding: 10px;
+    border-radius: 5px;
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: space-between;
+  }
+  
+  .mark-read-btn {
+    background: green;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+    border-radius: 5px;
+  }
+  
+  .mark-read-btn:hover {
+    background: darkgreen;
+  }
+  

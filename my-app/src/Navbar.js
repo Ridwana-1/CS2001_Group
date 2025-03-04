@@ -28,13 +28,13 @@ const Navbar = () => {
         <a href="/explore" className="nav-link">Explore</a>
         <a href="/messages" className="nav-link">Messages</a>
         <a href="/transactions" className="nav-link">Transactions</a>
+        <a href="/notifications" className="nav-link">Notifications</a>
 
         {/* Profile icon with dropdown */}
         <div className="profile-icon" onClick={toggleDropdown}>
           <img src={profile} alt="Profile" className="avatar" /> 
         </div>
 
-   
         {isDropdownOpen && (
           <div className="dropdown-menu">
             <a href="/profile" className="dropdown-item">Profile</a>
