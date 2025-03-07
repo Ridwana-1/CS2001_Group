@@ -213,3 +213,71 @@
 .dropdown-item:hover {
   background-color: #f0f0f0;
 }
+
+/* Notifications Bell Icon */
+.notification-icon {
+  position: relative;
+  cursor: pointer;
+  margin-left: 20px;
+}
+
+/* Notification Badge */
+.notification-bell {
+  font-size: 1.5rem;
+}
+
+/* Notification Dropdown */
+.notifications-container {
+  position: absolute;
+  top: 50px;
+  right: 0;
+  width: 300px;
+  background-color: #fff;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  border-radius: 5px;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+}
+
+.notifications-box {
+  width: 100%;
+}
+
+.notifications-title {
+  font-size: 1.25rem;
+  margin-bottom: 10px;
+}
+
+.notification-item {
+  padding: 8px;
+  margin-bottom: 5px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+}
+
+.notification-actions {
+  margin-top: 10px;
+}
+
+.mark-read-btn, .dismiss-btn {
+  background-color: #3498db;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  margin-right: 10px;
+  cursor: pointer;
+  border-radius: 3px;
+}
+
+.mark-read-btn:hover, .dismiss-btn:hover {
+  background-color: #2980b9;
+}
+
+.dismiss-btn {
+  background-color: #e74c3c;
+}
+
+.dismiss-btn:hover {
+  background-color: #c0392b;
+}

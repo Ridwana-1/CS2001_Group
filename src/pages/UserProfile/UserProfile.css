@@ -1,0 +1,100 @@
+/* User Profile Styling */
+.user-profile-container {
+    max-width: 3xl;
+    margin: 2rem auto;
+    padding: 2rem;
+    background-color: white;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  }
+  
+  .user-profile-header {
+    text-align: center;
+    margin-bottom: 2rem;
+  }
+  
+  .user-profile-header h2 {
+    font-size: 2.5rem;
+    font-weight: bold;
+    color: #2c3e50;
+  }
+  
+  .user-profile-header p {
+    font-size: 1.1rem;
+    color: #7f8c8d;
+    margin-top: 0.5rem;
+  }
+  
+  .trust-score-container {
+    text-align: center;
+    margin-bottom: 2rem;
+  }
+  
+  .trust-score-container .trust-score-title {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: #34495e;
+  }
+  
+  .trust-score-container .trust-score-value {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: #f39c12;
+  }
+  
+  .ratings-container {
+    margin-top: 3rem;
+  }
+  
+  .ratings-container h3 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: #2c3e50;
+    margin-bottom: 1.5rem;
+  }
+  
+  .ratings-container .rating-item {
+    background-color: #f9f9f9;
+    padding: 1.5rem;
+    border-radius: 8px;
+    margin-bottom: 1rem;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+  }
+  
+  .ratings-container .rating-item .star-rating {
+    display: flex;
+    justify-content: flex-start;
+    margin-bottom: 0.75rem;
+  }
+  
+  .ratings-container .rating-item .star-rating span {
+    font-size: 1.25rem;
+    color: #f39c12;
+  }
+  
+  .ratings-container .rating-item .comment-text {
+    font-size: 1rem;
+    color: #7f8c8d;
+  }
+  
+  .no-reviews-text {
+    text-align: center;
+    color: #7f8c8d;
+    font-size: 1.1rem;
+    margin-top: 2rem;
+  }
+  
+  .submit-rating-container {
+    margin-top: 2.5rem;
+    text-align: center;
+  }
+  
+  /* Add styles for the notifications container */
+.notifications-container-wrapper {
+    position: fixed; /* Fixes the position */
+    right: 20px; /* Adjusts distance from the right side */
+    top: 20px; /* Adjusts distance from the top */
+    z-index: 1000; /* Ensures it stays on top of other elements */
+    width: 300px; /* Adjusts width of the notification box */
+  }
+  

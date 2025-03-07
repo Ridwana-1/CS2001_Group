@@ -3,6 +3,7 @@ import Navbar from '../../Components/Navbar.js';
 import Transactions from '../Transactions/Transaction.jsx';
 import background from '../../assets/Home.jpg';
 import './Home.css';
+import Footer from '../../Components/Footer.jsx';
 
 const Home = () => {
   const [notifications, setNotifications] = useState([]);
@@ -11,7 +12,7 @@ const Home = () => {
   const addNotification = (message, type = 'info') => {
     const id = Date.now();
     setNotifications((prev) => [...prev, { id, message, type }]);
-    
+
     // Auto-remove notification after 5 seconds
     setTimeout(() => {
       removeNotification(id);
@@ -39,7 +40,7 @@ const Home = () => {
           <button className="btn" onClick={() => addNotification('Learn more about our features.', 'info')}>Learn More</button>
         </div>
       </div>
-      
+
       {/* Notifications Container */}
       <div className="notifications-container">
         {notifications.map(({ id, message, type }) => (
@@ -49,6 +50,9 @@ const Home = () => {
           </div>
         ))}
       </div>
+
+      {/* Footer outside of notifications container */}
+      <Footer />  {/* Use the Footer component here */}
     </>
   );
 };

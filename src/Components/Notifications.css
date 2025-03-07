@@ -1,0 +1,85 @@
+/* Initial small notification box */
+.notifications-container {
+    position: relative;
+    width: 100%;
+    cursor: pointer;
+  }
+  
+  .notifications-box {
+    padding: 10px;
+    background-color: #2c3e50;
+    color: white;
+    border-radius: 5px;
+    text-align: center;
+    transition: all 0.3s ease;
+  }
+  
+  .notifications-box:hover {
+    background-color: #34495e;
+  }
+  
+  .notifications-title {
+    font-size: 1.5rem;
+    font-weight: bold;
+  }
+  
+  .notifications-list {
+    display: none;
+  }
+  
+  .notifications-container.expanded .notifications-list {
+    display: block;
+    padding: 10px;
+    background-color: #f9f9f9;
+    border-radius: 5px;
+    margin-top: 10px;
+  }
+  
+  .notification-item {
+    padding: 10px;
+    margin-bottom: 10px;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+  }
+  
+  .notification-item.read {
+    background-color: #f2f2f2;
+  }
+  
+  .notification-message {
+    font-size: 1rem;
+  }
+  
+  .notification-type {
+    font-weight: bold;
+    color: #3498db;
+  }
+  
+  .notification-actions {
+    margin-top: 10px;
+  }
+  
+  .mark-read-btn, .dismiss-btn {
+    background-color: #3498db;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    margin-right: 10px;
+    cursor: pointer;
+    border-radius: 3px;
+    transition: background-color 0.3s ease;
+  }
+  
+  .mark-read-btn:hover, .dismiss-btn:hover {
+    background-color: #2980b9;
+  }
+  
+  .dismiss-btn {
+    background-color: #e74c3c;
+  }
+  
+  .dismiss-btn:hover {
+    background-color: #c0392b;
+  }
+  

@@ -1,0 +1,98 @@
+/* Footer Styling */
+.footer {
+    background-color: #1e3a8a; /* Dark Blue background for a modern look */
+    color: white; /* White text for readability */
+    padding-top: 3rem; /* Space at the top of the footer */
+    padding-bottom: 3rem; /* Space at the bottom of the footer */
+    margin-top: 4rem; /* Spacing between footer and main content */
+  }
+  
+  .footer img {
+    width: 60px; /* Make the logo smaller */
+    margin-bottom: 1rem; /* Space below the logo */
+  }
+  
+  .footer p {
+    font-size: 14px; /* Make the text smaller */
+    line-height: 1.6;
+    margin-bottom: 1rem;
+    color: #e5e7eb; /* Light gray text */
+  }
+  
+  .footer .flex {
+    justify-content: center; /* Center the social media icons */
+    gap: 20px; /* Space between the icons */
+  }
+  
+  .footer a {
+    display: inline-block;
+    padding: 12px;
+    background-color: #4b5563; /* Dark background for the icons */
+    border-radius: 50%;
+    transition: all 0.3s ease;
+  }
+  
+  .footer a:hover {
+    background-color: #ffffff; /* Change to white on hover */
+    color: #1e40af; /* Blue color on hover */
+  }
+  
+  .footer a svg {
+    width: 20px;
+    height: 20px;
+    color: white; /* White icons by default */
+  }
+  
+  /* Footer Links */
+  .footer ul {
+    list-style: none;
+    padding: 0;
+  }
+  
+  .footer li {
+    margin: 8px 0; /* Space between each link */
+  }
+  
+  .footer a:hover {
+    text-decoration: underline; /* Underline links on hover */
+    color: #ffffff; /* White color on hover */
+  }
+  
+  /* Footer Title */
+  .footer h3 {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 1rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: #ffffff;
+  }
+  
+  .footer .container {
+    display: grid;
+    grid-template-columns: repeat(1, 1fr);
+    gap: 4rem;
+  }
+  
+  @media (min-width: 640px) {
+    .footer .container {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+  
+  @media (min-width: 768px) {
+    .footer .container {
+      grid-template-columns: repeat(4, 1fr);
+    }
+  }
+  
+  /* Bottom Bar */
+  .footer .text-center {
+    color: #e5e7eb; /* Light gray for footer text */
+    margin-top: 1rem;
+  }
+  
+  .footer .text-center p {
+    font-size: 12px;
+  }
+  
