@@ -2,154 +2,14 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import './Transactions.css';
 
-
-// Separate DisputeForm component
-const DisputeForm = ({ orders, onSubmit }) => {
-  const [selectedOrder, setSelectedOrder] = useState(null);
-  const [disputeReason, setDisputeReason] = useState('');
-  const [disputeSubmitted, setDisputeSubmitted] = useState(false);
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    onSubmit({
-      orderId: selectedOrder.id,
-      customerEmail: selectedOrder.customerEmail || 'customer@example.com',
-      orderDetails: {
-        item: selectedOrder.item,
-        shop: selectedOrder.shop,
-        totalPrice: selectedOrder.totalPrice,
-        quantity: selectedOrder.quantity,
-        orderDate: selectedOrder.orderDate,
-        orderStatus: selectedOrder.orderStatus
-      },
-      reason: disputeReason,
-      submittedAt: new Date().toISOString()
-    });
-    setDisputeSubmitted(true);
-    setDisputeReason('');
-    setSelectedOrder(null);
-    
-    setTimeout(() => {
-      setDisputeSubmitted(false);
-    }, 8000);
-  };
-
-  const getStatusClass = (status) => {
-    switch (status?.toLowerCase()) {
-      case 'completed':
-        return 'status completed';
-      case 'pending':
-        return 'status pending';
-      case 'failed':
-        return 'status failed';
-      default:
-        return 'status';
-    }
-  };
-
-  if (disputeSubmitted) {
-    return (
-      <div className="dispute-container">
-        <h2>File a Dispute</h2>
-        <div className="success-message">
-          <p><strong>Your dispute has been submitted successfully.</strong></p>
-          <p>A confirmation email has been sent to your registered email address with all order details.</p>
-          <p>Dispute reference: DSP-{Math.floor(Math.random() * 10000) + 1000}</p>
-          <p>Our support team will review your dispute within 24-48 business hours.</p>
-        </div>
-      </div>
-    );
-  }
-
-  return (
-    <div className="dispute-container">
-      <h2>File a Dispute</h2>
-      <div className="order-selector">
-        <label htmlFor="orderSelect">Select Order to Dispute:</label>
-        <select 
-          id="orderSelect"
-          value={selectedOrder?.id || ''}
-          onChange={(e) => {
-            const orderId = e.target.value;
-            const order = orders.find(o => o.id.toString() === orderId);
-            setSelectedOrder(order || null);
-          }}
-        >
-          <option value="">-- Select an order --</option>
-          {orders.map(order => (
-            <option key={order.id} value={order.id}>
-              #{order.id} - {order.item} (£{order.totalPrice}) - {new Date(order.orderDate).toLocaleDateString()}
-            </option>
-          ))}
-        </select>
-      </div>
-
-      {selectedOrder && (
-        <div className="order-details">
-          <h3>Order Details</h3>
-          <table className="details-table">
-            <tbody>
-              <tr>
-                <td>Order ID:</td>
-                <td>#{selectedOrder.id}</td>
-              </tr>
-              <tr>
-                <td>Item:</td>
-                <td>{selectedOrder.item}</td>
-              </tr>
-              <tr>
-                <td>Shop:</td>
-                <td>{selectedOrder.shop}</td>
-              </tr>
-              <tr>
-                <td>Amount:</td>
-                <td>£{selectedOrder.totalPrice}</td>
-              </tr>
-              <tr>
-                <td>Quantity:</td>
-                <td>{selectedOrder.quantity}</td>
-              </tr>
-              <tr>
-                <td>Order Date:</td>
-                <td>{new Date(selectedOrder.orderDate).toLocaleDateString()}</td>
-              </tr>
-              <tr>
-                <td>Status:</td>
-                <td>
-                  <span className={getStatusClass(selectedOrder.orderStatus)}>
-                    {selectedOrder.orderStatus}
-                  </span>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-
-          <form onSubmit={handleSubmit} className="dispute-form">
-            <div className="form-group">
-              <label htmlFor="disputeReason">Reason for Dispute:</label>
-              <textarea
-                id="disputeReason"
-                rows="4"
-                value={disputeReason}
-                onChange={(e) => setDisputeReason(e.target.value)}
-                required
-                placeholder="Please provide a detailed explanation of your dispute. Include any relevant order information or issues you experienced."
-              />
-            </div>
-            <button type="submit" className="submit-button">Submit Dispute</button>
-          </form>
-        </div>
-      )}
-    </div>
-  );
-};
-
-// Main Transactions component
 const Transactions = () => {
   const [activePage, setActivePage] = useState('View Receipts');
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [review, setReview] = useState('');
+  const [rating, setRating] = useState(5);
+  const [selectedOrderId, setSelectedOrderId] = useState(null);
 
   useEffect(() => {
     fetchOrders();
@@ -169,28 +29,22 @@ const Transactions = () => {
       });
   };
 
-  const handleDisputeSubmit = (disputeReport) => {
-    axios.post('http://localhost:8080/swapsaviour/disputes/submit', disputeReport)
-      .then((response) => {
-        console.log('Dispute submitted successfully', response.data);
+  const submitReview = (orderId) => {
+    if (!review.trim()) return;
+    
+    const reviewData = { orderId, rating, review };
+    axios.post('http://localhost:8080/swapsaviour/reviews/submit', reviewData)
+      .then(() => {
+        alert('Review submitted successfully!');
+        setReview('');
+        setRating(5);
+        setSelectedOrderId(null);
+        fetchOrders();
       })
       .catch((error) => {
-        console.error('Error submitting dispute:', error);
-        setError('Failed to submit dispute. Please try again later.');
+        console.error('Error submitting review:', error);
+        setError('Failed to submit review');
       });
-  };
-
-  const getStatusClass = (status) => {
-    switch (status.toLowerCase()) {
-      case 'completed':
-        return 'status completed';
-      case 'pending':
-        return 'status pending';
-      case 'failed':
-        return 'status failed';
-      default:
-        return 'status';
-    }
   };
 
   return (
@@ -199,44 +53,19 @@ const Transactions = () => {
         <nav>
           <ul className="sidebar-nav">
             <li className="nav-item">
-              <a 
-                href="#" 
-                className={`nav-link ${activePage === 'View Receipts' ? 'active' : ''}`} 
-                onClick={(e) => {
-                  e.preventDefault();
-                  setActivePage('View Receipts');
-                }}
-              >
-                <i className="fas fa-receipt"></i>
-                <span className="nav-text">View Receipts</span>
-              </a>
-            </li>
-            <li className="nav-item">
-              <a 
-                href="#" 
-                className={`nav-link ${activePage === 'Dispute Order' ? 'active' : ''}`} 
-                onClick={(e) => {
-                  e.preventDefault();
-                  setActivePage('Dispute Order');
-                }}
-              >
-                <i className="fas fa-exclamation-circle"></i>
-                <span className="nav-text">Dispute Order</span>
+              <a href="#" className={`nav-link ${activePage === 'View Receipts' ? 'active' : ''}`} 
+                onClick={(e) => { e.preventDefault(); setActivePage('View Receipts'); }}>
+                <i className="fas fa-receipt"></i> View Receipts
               </a>
             </li>
           </ul>
         </nav>
       </aside>
-
       <main className="main-content">
-        <div className="content-header">
-          <h1>{activePage === 'View Receipts' ? 'Transaction History' : 'Order Dispute'}</h1>
-        </div>
-
+        <h1>Transaction History</h1>
         {loading && <div className="loading-indicator">Loading transactions...</div>}
         {error && <div className="error-message">{error}</div>}
-
-        {!loading && !error && activePage === 'View Receipts' && (
+        {!loading && !error && (
           <table className="transactions-table">
             <thead>
               <tr>
@@ -244,9 +73,11 @@ const Transactions = () => {
                 <th>Item</th>
                 <th>Shop</th>
                 <th>Amount</th>
-                <th>Quantity</th>
                 <th>Date</th>
                 <th>Status</th>
+                <th>Rating</th>
+                <th>Review</th>
+                <th>Action</th>
               </tr>
             </thead>
             <tbody>
@@ -256,20 +87,35 @@ const Transactions = () => {
                   <td>{order.item}</td>
                   <td>{order.shop}</td>
                   <td>£{order.totalPrice}</td>
-                  <td>{order.quantity}</td>
                   <td>{new Date(order.orderDate).toLocaleDateString()}</td>
-                  <td><span className={getStatusClass(order.orderStatus)}>{order.orderStatus}</span></td>
+                  <td>{order.orderStatus}</td>
+                  <td>{order.rating || 'N/A'}</td>
+                  <td>{order.review || 'No review yet'}</td>
+                  <td>
+                    {order.orderStatus === 'Completed' && (
+                      <button onClick={() => setSelectedOrderId(order.id)}>Leave Review</button>
+                    )}
+                  </td>
                 </tr>
               ))}
             </tbody>
           </table>
         )}
 
-        {!loading && !error && activePage === 'Dispute Order' && (
-          <DisputeForm 
-            orders={orders} 
-            onSubmit={handleDisputeSubmit}
-          />
+        {selectedOrderId && (
+          <div className="review-form">
+            <h3>Leave a Review</h3>
+            <label>Rating:</label>
+            <select value={rating} onChange={(e) => setRating(Number(e.target.value))}>
+              {[1, 2, 3, 4, 5].map((num) => (
+                <option key={num} value={num}>{num} Stars</option>
+              ))}
+            </select>
+            <label>Review:</label>
+            <textarea value={review} onChange={(e) => setReview(e.target.value)}></textarea>
+            <button onClick={() => submitReview(selectedOrderId)}>Submit</button>
+            <button onClick={() => setSelectedOrderId(null)}>Cancel</button>
+          </div>
         )}
       </main>
     </div>
