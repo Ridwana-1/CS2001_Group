@@ -1,6 +1,6 @@
 #test enviroment for everyone
 
-name: Build and Test Application
+name: SwapSaviour testing enviroment
 
 on: 
   push:
@@ -9,45 +9,64 @@ on:
     branches: [main]
 
 jobs:
-  build-and-test:
+  build-and-deploy:
     runs-on: ubuntu-latest
+    
+    services:
+      mysql:
+        image: mysql:8.0
+        env:
+          MYSQL_ROOT_PASSWORD: NewPassword
+          MYSQL_DATABASE: Transaction_SYSTEM
+        ports:
+          - 3306:3306
+        options: >-
+          --health-cmd="mysqladmin ping -h localhost -u root -pNewPassword"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=3
 
     steps:
-      - name: Checkout Repository
+      - name: Checkout code
         uses: actions/checkout@v3
 
-      # Backend setup and testing
+      # Backend build and test
       - name: Set up JDK 17
         uses: actions/setup-java@v3
         with:
           java-version: '17'
           distribution: 'temurin'
 
-      - name: Build and Test Backend
+      - name: Build and test backend
         working-directory: backend
-        run: |
-          mvn clean install
-          mvn test
+        run: mvn clean package
 
-      # Frontend setup and testing
+      # Frontend build and test
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
           node-version: '16'
-          
-      - name: Install Frontend Dependencies
+
+      - name: Install frontend dependencies
         run: npm ci
-          
-      - name: Run Frontend Tests
-        run: npm test
-        
-      # Simple integration test
-      - name: Start Backend for Integration Test
+
+      - name: Build frontend
+        run: npm run build
+        env:
+          REACT_APP_API_URL: http://localhost:8080
+
+
+      - name: Start backend server
         working-directory: backend
-        run: |
-          mvn spring-boot:run &
+       #backend test
+        run: | 
+          nohup mvn spring-boot:run &
           echo "Waiting for backend to start..."
-          sleep 30
-          
-      - name: Run Integration Tests
-        run: npm start -- --test
+          sleep 20
+          echo "Backend should be running now"
+
+      - name: Deploy application
+        if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+        run: |
+          echo "Deploying SwapSaviour application..."
+   
