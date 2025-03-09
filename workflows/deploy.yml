@@ -1,6 +1,4 @@
-#test enviroment for everyone
-
-name: SwapSaviour testing enviroment
+name: SwapSaviour testing environment
 
 on: 
   push:
@@ -55,18 +53,20 @@ jobs:
         env:
           REACT_APP_API_URL: http://localhost:8080
 
+    
+      - name: Wait for MySQL service to be ready
+        run: |
+          until mysqladmin ping -h localhost -u root -pNewPassword --silent; do
+            echo "Waiting for MySQL to be ready..."
+            sleep 5
+          done
+          echo "MySQL is ready."
 
+      # Start backend server
       - name: Start backend server
         working-directory: backend
-       #backend test
-        run: | 
-          nohup mvn spring-boot:run &
-          echo "Waiting for backend to start..."
-          sleep 20
-          echo "Backend should be running now"
-
-      - name: Deploy application
-        if: github.ref == 'refs/heads/main' && github.event_name == 'push'
         run: |
-          echo "Deploying SwapSaviour application..."
-   
+          mvn spring-boot:run &
+          echo "Waiting for backend to start..."
+          sleep 30  # Allow time for the backend to start properly
+          echo "Backend should be running now"
