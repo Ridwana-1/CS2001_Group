@@ -10,16 +10,19 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @CrossOrigin(origins = "http://localhost:3000")
 @RestController
-@RequestMapping("/transactions")  
+@RequestMapping("/transactions")
 public class DisputeController {
 
     private final DisputeService disputeService;
+    
+    @Autowired
+    private OrderRepository orderRepository;
 
     @Autowired
     public DisputeController(DisputeService disputeService) {
@@ -39,23 +42,29 @@ public class DisputeController {
     }
     
     @PostMapping("/disputes")
-    public ResponseEntity<?> createDispute(@RequestParam Long orderId, @RequestParam String reason) {
-        if (reason == null || reason.isEmpty()) {
+    public ResponseEntity<?> createDispute(@RequestBody DisputeRequest request) {
+        if (request.getReason() == null || request.getReason().isEmpty()) {
             return ResponseEntity.badRequest().body("Reason is required for dispute submission.");
         }
-
-        Dispute dispute = disputeService.createDispute(orderId, reason);
+    
+        Dispute dispute = disputeService.createDispute(request.getReason(), request.getDescription());
         return ResponseEntity.status(HttpStatus.CREATED).body(dispute);
     }
-
+    
     @PutMapping("/disputes/{id}/status")
-    public ResponseEntity<?> updateDisputeStatus(@PathVariable Long id, @RequestParam String status) {
+    public ResponseEntity<?> updateDisputeStatus(@PathVariable Long id, @RequestBody UpdateStatusRequest request) {
         try {
-            DisputeStatus disputeStatus = DisputeStatus.valueOf(status.toUpperCase());
+            DisputeStatus disputeStatus = DisputeStatus.valueOf(request.getStatus().toUpperCase());
             Dispute updatedDispute = disputeService.updateDisputeStatus(id, disputeStatus);
             return ResponseEntity.ok(updatedDispute);
         } catch (IllegalArgumentException e) {
-            return ResponseEntity.badRequest().body("Invalid dispute status: " + status);
+            return ResponseEntity.badRequest().body("Invalid dispute status: " + request.getStatus());
         }
+    }
+    
+    @GetMapping("/orders")
+    public ResponseEntity<List<Orders>> getOrders() {
+        List<Orders> orders = orderRepository.findAll();
+        return ResponseEntity.ok(orders);
     }
 }
