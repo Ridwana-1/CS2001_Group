@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import DisputeForm from './DisputeForm'; // Assuming this component exists
+import DisputeForm from './DisputeForm';
+import ActiveDisputes from './ActiveDisputes';
 
 const Transactions = () => {
   const [activePage, setActivePage] = useState('View Receipts');
@@ -24,50 +25,6 @@ const Transactions = () => {
         setError('Failed to fetch orders');
         setLoading(false);
       });
-  };
-
-  const handleDisputeSubmit = (disputeReport) => {
-    axios.post('http://localhost:8080/swapsaviour/disputes/submit', disputeReport)
-      .then((response) => {
-        console.log('Dispute submitted successfully', response.data);
-      })
-      .catch((error) => {
-        console.error('Error submitting dispute:', error);
-        setError('Failed to submit dispute. Please try again later.');
-      });
-  };
-
-  const getStatusClass = (status) => {
-    switch (status.toLowerCase()) {
-      case 'completed':
-        return 'status completed';
-      case 'pending':
-        return 'status pending';
-      case 'failed':
-        return 'status failed';
-      default:
-        return 'status';
-    }
-  };
-
-  const renderStatusWithAnimation = (status, orderId) => {
-    if (status.toLowerCase() === 'pending') {
-      return (
-        <div className="pending-status-container">
-          <span className={getStatusClass(status)}>{status}</span>
-          <div className="pending-animation">
-            <div className="dot dot-1"></div>
-            <div className="dot dot-2"></div>
-            <div className="dot dot-3"></div>
-          </div>
-          <div className="pending-progress-bar">
-            <div className="progress-fill"></div>
-          </div>
-          <div className="pending-status-text">Your order is being processed</div>
-        </div>
-      );
-    }
-    return <span className={getStatusClass(status)}>{status}</span>;
   };
 
   return (
@@ -101,25 +58,29 @@ const Transactions = () => {
                 <span className="nav-text">Dispute Order</span>
               </a>
             </li>
+            <li className="nav-item">
+              <a 
+                href="#" 
+                className={`nav-link ${activePage === 'Active Disputes' ? 'active' : ''}`} 
+                onClick={(e) => {
+                  e.preventDefault();
+                  setActivePage('Active Disputes');
+                }}
+              >
+                <i className="fas fa-balance-scale"></i>
+                <span className="nav-text">Active Disputes</span>
+              </a>
+            </li>
           </ul>
         </nav>
       </aside>
 
       <main className="main-content">
         <div className="content-header">
-          <h1>{activePage === 'View Receipts' ? 'Transaction History' : 'Order Dispute'}</h1>
-          {activePage === 'View Receipts' && (
-            <button className="refresh-button" onClick={fetchOrders}>
-              <i className="fas fa-sync-alt"></i>
-              Refresh
-            </button>
-          )}
+          <h1>{activePage}</h1>
         </div>
 
-        {loading && <div className="loading-indicator">
-          <div className="loading-spinner"></div>
-          Loading transactions...
-        </div>}
+        {loading && <div className="loading-indicator">Loading transactions...</div>}
         {error && <div className="error-message">{error}</div>}
 
         {!loading && !error && activePage === 'View Receipts' && (
@@ -138,38 +99,27 @@ const Transactions = () => {
               </thead>
               <tbody>
                 {orders.map((order) => (
-                  <tr key={order.id} className={order.orderStatus.toLowerCase() === 'pending' ? 'pending-row' : ''}>
+                  <tr key={order.id}>
                     <td>#{order.id}</td>
                     <td>{order.item}</td>
                     <td>{order.shop}</td>
                     <td>£{order.totalPrice}</td>
                     <td>{order.quantity}</td>
                     <td>{new Date(order.orderDate).toLocaleDateString()}</td>
-                    <td>{renderStatusWithAnimation(order.orderStatus, order.id)}</td>
+                    <td>{order.orderStatus}</td>
                   </tr>
                 ))}
               </tbody>
             </table>
-            
-            {orders.some(order => order.orderStatus.toLowerCase() === 'pending') && (
-              <div className="pending-orders-summary">
-                <div className="pulse-icon">
-                  <i className="fas fa-clock"></i>
-                </div>
-                <div className="pending-orders-text">
-                  <h3>Orders in progress</h3>
-                  <p>We'll notify you when your pending orders are completed</p>
-                </div>
-              </div>
-            )}
           </div>
         )}
 
         {!loading && !error && activePage === 'Dispute Order' && (
-          <DisputeForm 
-            orders={orders} 
-            onSubmit={handleDisputeSubmit}
-          />
+          <DisputeForm orders={orders} />
+        )}
+
+        {!loading && !error && activePage === 'Active Disputes' && (
+          <ActiveDisputes />
         )}
       </main>
     </div>

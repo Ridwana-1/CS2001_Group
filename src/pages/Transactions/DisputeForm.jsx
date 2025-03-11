@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import './Transactions.css';
 import axios from 'axios';
 
@@ -7,23 +7,18 @@ const DisputeForm = () => {
   const [selectedOrder, setSelectedOrder] = useState(null);
   const [disputeReason, setDisputeReason] = useState('');
   const [additionalDetails, setAdditionalDetails] = useState('');
-  const [userEmail, setUserEmail] = useState('');
   const [disputeSubmitted, setDisputeSubmitted] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [errorMessage, setErrorMessage] = useState('');
   const [disputeReference, setDisputeReference] = useState('');
 
-  const API_BASE_URL = 'http://localhost:8080/transactions';
+  const BASE_URL = 'http://localhost:8080/transactions';
 
-  useEffect(() => {
-    fetchOrders();
-  }, []);
-
-  const fetchOrders = async () => {
+  const fetchOrders = useCallback(async () => {
     setIsLoading(true);
     try {
-      const response = await axios.get(`${API_BASE_URL}/orders`);
+      const response = await axios.get(`${BASE_URL}/orders`);
       setOrders(response.data);
     } catch (error) {
       console.error('Error fetching orders:', error);
@@ -31,35 +26,21 @@ const DisputeForm = () => {
     } finally {
       setIsLoading(false);
     }
-  };
+  }, [BASE_URL]);
 
-  const sendEmailNotification = async (disputeId) => {
-    try {
-      await axios.post(`${API_BASE_URL}/send-email`, {
-        email: userEmail,
-        subject: 'Dispute Submitted Successfully',
-        message: `Your dispute (ID: ${disputeId}) has been submitted. We will review it soon.`
-      });
-    } catch (error) {
-      console.error('Error sending email notification:', error);
-    }
-  };
+  useEffect(() => {
+    fetchOrders();
+  }, [fetchOrders]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     if (!selectedOrder) {
-      setErrorMessage('Please select an order to dispute');
+      setErrorMessage('Please select an order to dispute.');
       return;
     }
-
     if (!disputeReason) {
-      setErrorMessage('Please select a dispute reason');
-      return;
-    }
-
-    if (!userEmail) {
-      setErrorMessage('Please provide your email address');
+      setErrorMessage('Please select a dispute reason.');
       return;
     }
 
@@ -70,15 +51,14 @@ const DisputeForm = () => {
       const disputeData = {
         orderId: selectedOrder.id,
         reason: disputeReason,
-        description: additionalDetails,
-        email: userEmail
+        description: additionalDetails
       };
 
-      const response = await axios.post(`${API_BASE_URL}/disputes`, disputeData);
+      console.log("Sending dispute request:", disputeData);
+      const response = await axios.post(`${BASE_URL}/disputes`, disputeData);
 
       if (response.data && response.data.id) {
         setDisputeReference(`DSP-${response.data.id}`);
-        await sendEmailNotification(response.data.id);
       } else {
         setDisputeReference(`DSP-${Math.floor(Math.random() * 10000) + 1000}`);
       }
@@ -87,7 +67,6 @@ const DisputeForm = () => {
       setDisputeReason('');
       setAdditionalDetails('');
       setSelectedOrder(null);
-      setUserEmail('');
 
       setTimeout(() => {
         setDisputeSubmitted(false);
@@ -114,18 +93,6 @@ const DisputeForm = () => {
         <div className="loading-indicator"><p>Loading orders...</p></div>
       ) : (
         <>
-          <div className="form-group">
-            <label htmlFor="userEmail">Your Email:</label>
-            <input 
-              type="email" 
-              id="userEmail" 
-              value={userEmail} 
-              onChange={(e) => setUserEmail(e.target.value)} 
-              placeholder="Enter your email"
-              required
-            />
-          </div>
-
           <div className="order-selector">
             <label htmlFor="orderSelect">Select Order to Dispute:</label>
             <select 
@@ -142,7 +109,7 @@ const DisputeForm = () => {
               {orders.length > 0 ? (
                 orders.map(order => (
                   <option key={order.id} value={order.id}>
-                    #{order.id} - {order.item} (£{order.totalPrice}) - {new Date(order.orderDate).toLocaleDateString()}
+                    #{order.id} - {order.item || 'Unknown Item'} (£{order.totalPrice || '0.00'}) - {order.orderDate ? new Date(order.orderDate).toLocaleDateString() : 'Unknown Date'}
                   </option>
                 ))
               ) : (
@@ -161,11 +128,12 @@ const DisputeForm = () => {
                 required
               >
                 <option value="">-- Select a reason --</option>
-                <option value="Food didn’t arrive">Food didn’t arrive</option>
-                <option value="Order was cold">Order was cold</option>
-                <option value="Incorrect item received">Incorrect item received</option>
-                <option value="Damaged item">Damaged item</option>
-                <option value="Other">Other</option>
+                <option value="FRESH">Item not fresh</option>
+                <option value="DOUBLE_CHARGE">Double charged</option>
+                <option value="MISSING">Missing items</option>
+                <option value="SPOILED">Spoiled food</option>
+                <option value="LATE">Late delivery</option>
+                <option value="OTHER">Other</option>
               </select>
             </div>
 
@@ -185,6 +153,12 @@ const DisputeForm = () => {
             </button>
           </form>
         </>
+      )}
+
+      {disputeSubmitted && (
+        <div className="success-message">
+          <p>Dispute submitted successfully! Reference: <strong>{disputeReference}</strong></p>
+        </div>
       )}
     </div>
   );

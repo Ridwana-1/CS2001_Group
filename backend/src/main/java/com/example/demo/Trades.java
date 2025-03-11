@@ -28,12 +28,12 @@ public class Trades {
     @Column(name = "trade_price")
     private Double tradePrice;
 
-    // Foreign key to Orders table
+
     @ManyToOne
     @JoinColumn(name = "order_id", referencedColumnName = "id", nullable = false)
     private Orders order;
 
-    // Getters and Setters
+   
     public Long getId() {
         return id;
     }

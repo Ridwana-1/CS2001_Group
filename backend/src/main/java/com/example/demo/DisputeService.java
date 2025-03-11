@@ -25,19 +25,29 @@ public class DisputeService {
     }
 
     public Dispute createDispute(String reason, String description) {  
+        System.out.println("Creating Dispute...");
+        System.out.println("Reason: " + reason);
+        System.out.println("Description: " + description);
+
         Dispute dispute = new Dispute();
         dispute.setReason(reason);
-        dispute.setDescription(description); 
+        dispute.setDescription(description);
         dispute.setStatus(DisputeStatus.PENDING);
-    
-        return disputeRepository.save(dispute);
+
+        Dispute savedDispute = disputeRepository.save(dispute);
+        System.out.println("Dispute saved with ID: " + savedDispute.getId());
+
+        return savedDispute;
     }
-    
+
     public Dispute updateDisputeStatus(Long id, DisputeStatus status) {
+        System.out.println("Updating dispute status for ID: " + id);
         Dispute dispute = disputeRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Dispute not found with id: " + id));
 
         dispute.setStatus(status);
-        return disputeRepository.save(dispute);
+        Dispute updatedDispute = disputeRepository.save(dispute);
+        System.out.println("Dispute status updated to: " + status);
+        return updatedDispute;
     }
 }

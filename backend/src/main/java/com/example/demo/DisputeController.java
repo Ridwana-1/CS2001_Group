@@ -20,13 +20,12 @@ import org.springframework.web.bind.annotation.RestController;
 public class DisputeController {
 
     private final DisputeService disputeService;
-    
-    @Autowired
-    private OrderRepository orderRepository;
+    private final OrderRepository orderRepository;
 
     @Autowired
-    public DisputeController(DisputeService disputeService) {
+    public DisputeController(DisputeService disputeService, OrderRepository orderRepository) {
         this.disputeService = disputeService;
+        this.orderRepository = orderRepository;
     }
 
     @GetMapping("/disputes")
@@ -40,17 +39,19 @@ public class DisputeController {
                 .map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).body(null));
     }
-    
+
     @PostMapping("/disputes")
     public ResponseEntity<?> createDispute(@RequestBody DisputeRequest request) {
         if (request.getReason() == null || request.getReason().isEmpty()) {
             return ResponseEntity.badRequest().body("Reason is required for dispute submission.");
         }
-    
+
+        
         Dispute dispute = disputeService.createDispute(request.getReason(), request.getDescription());
+
         return ResponseEntity.status(HttpStatus.CREATED).body(dispute);
     }
-    
+
     @PutMapping("/disputes/{id}/status")
     public ResponseEntity<?> updateDisputeStatus(@PathVariable Long id, @RequestBody UpdateStatusRequest request) {
         try {
@@ -61,7 +62,7 @@ public class DisputeController {
             return ResponseEntity.badRequest().body("Invalid dispute status: " + request.getStatus());
         }
     }
-    
+
     @GetMapping("/orders")
     public ResponseEntity<List<Orders>> getOrders() {
         List<Orders> orders = orderRepository.findAll();
