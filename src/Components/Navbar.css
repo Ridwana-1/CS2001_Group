@@ -1,3 +1,4 @@
+/* Navbar Container */
 .navbar {
   display: flex;
   justify-content: space-between;
@@ -8,29 +9,38 @@
   height: 64px;
   position: relative;
   z-index: 1;
-  border-radius: 20px; 
+  border-radius: 20px;
 }
 
+/* Left Side (Logo & Brand Name) */
 .nav-left {
   display: flex;
   align-items: center;
 }
 
+/* Wrap Logo + Brand in a Clickable Link */
+.nav-home-link {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+}
+
 .logo {
-  height: 32px; 
+  height: 32px;
   width: auto;
   margin-right: 0.75rem;
 }
 
 .brand-name {
-  font-size: 1.5rem; 
-  font-weight: bold; 
-  color: #d46136; 
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #d46136;
   margin: 0;
-  white-space: nowrap; 
-  font-family: sans-serif; 
+  white-space: nowrap;
+  font-family: sans-serif;
 }
 
+/* Center Search Bar */
 .nav-center {
   flex: 1;
   max-width: 600px;
@@ -45,17 +55,17 @@
 
 .search-input {
   width: 100%;
-  padding: 0.5rem 2.5rem 0.5rem 1rem; 
-  border: 1px solid #e1e1e1; 
-  border-radius: 25px; 
+  padding: 0.5rem 2.5rem 0.5rem 1rem;
+  border: 1px solid #e1e1e1;
+  border-radius: 25px;
   font-size: 0.9rem;
   outline: none;
   transition: border-color 0.3s ease;
-  height: 36px; 
+  height: 36px;
 }
 
 .search-input:focus {
-  border-color: #FF4500; 
+  border-color: #FF4500;
 }
 
 .search-icon {
@@ -63,10 +73,11 @@
   right: 0.75rem;
   top: 50%;
   transform: translateY(-50%);
-  color: #666; 
+  color: #666;
   cursor: pointer;
 }
 
+/* Right Side (Navigation Links & Profile) */
 .nav-right {
   display: flex;
   align-items: center;
@@ -75,17 +86,19 @@
   justify-content: flex-end;
 }
 
+/* Navigation Links */
 .nav-link {
-  color: #333; 
+  color: #333;
   text-decoration: none;
-  font-size: 1rem; 
-  font-weight: 500; 
-  transition: color 0.3s ease, transform 0.3s ease, border 0.3s ease; 
-  font-family: sans-serif; 
-  padding: 0.5rem 0; 
-  position: relative; 
+  font-size: 1rem;
+  font-weight: 500;
+  transition: color 0.3s ease, transform 0.3s ease, border 0.3s ease;
+  font-family: sans-serif;
+  padding: 0.5rem 0;
+  position: relative;
 }
 
+/* Underline Effect */
 .nav-link::after {
   content: '';
   position: absolute;
@@ -93,58 +106,60 @@
   left: 0;
   width: 100%;
   height: 2px;
-  background-color: #FF4500; 
+  background-color: #FF4500;
   transform: scaleX(0);
   transform-origin: bottom right;
   transition: transform 0.3s ease;
 }
 
 .nav-link:hover {
-  color: #FF4500; 
-  transform: translateY(-2px); 
+  color: #FF4500;
+  transform: translateY(-2px);
 }
 
 .nav-link:hover::after {
-  transform: scaleX(1); 
+  transform: scaleX(1);
 }
 
+/* Call-to-Action Button */
 .nav-btn {
-  background-color: #FF4500; 
-  color: white; 
+  background-color: #FF4500;
+  color: white;
   font-size: 0.9rem;
   font-weight: 600;
   padding: 0.75rem 1.5rem;
   border: none;
-  border-radius: 25px; 
+  border-radius: 25px;
   cursor: pointer;
   transition: background-color 0.3s ease, transform 0.3s ease;
   text-align: center;
-  font-family: sans-serif; 
+  font-family: sans-serif;
 }
 
 .nav-btn:hover {
-  background-color: #d44117; 
-  transform: translateY(-3px); 
+  background-color: #d44117;
+  transform: translateY(-3px);
 }
 
 .nav-btn:focus {
-  outline: 2px solid #FF4500; 
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); 
+  outline: 2px solid #FF4500;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
+/* Profile Icon */
 .profile-icon {
   width: 32px;
   height: 32px;
   border-radius: 50%;
   overflow: hidden;
   margin-left: 1rem;
-  border: 2px solid #e1e1e1; 
-  transition: border 0.3s ease; 
+  border: 2px solid #e1e1e1;
+  transition: border 0.3s ease;
   cursor: pointer;
 }
 
 .profile-icon:hover {
-  border-color: #FF4500; 
+  border-color: #FF4500;
 }
 
 .avatar {
@@ -153,11 +168,39 @@
   object-fit: cover;
 }
 
+/* Dropdown Menu */
+.dropdown-menu {
+  position: absolute;
+  top: 65px;
+  right: 0;
+  background-color: #fff;
+  border: 1px solid #e1e1e1;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  width: 150px;
+  padding: 0.5rem 0;
+  z-index: 10;
+}
+
+.dropdown-item {
+  padding: 0.5rem 1rem;
+  color: #333;
+  text-decoration: none;
+  display: block;
+  transition: background-color 0.3s ease;
+  font-family: sans-serif;
+}
+
+.dropdown-item:hover {
+  background-color: #f0f0f0;
+}
+
+/* Responsive Styles */
 @media (max-width: 1024px) {
   .nav-center {
     margin: 0 1.5rem;
   }
-  
+
   .nav-right {
     gap: 1.5rem;
   }
@@ -171,45 +214,16 @@
   .nav-center {
     display: none;
   }
-  
+
   .nav-right {
     gap: 1rem;
   }
-  
+
   .nav-link {
     display: none;
   }
-  
+
   .profile-icon {
     margin-left: 0;
   }
-}
-
-
-.dropdown-menu {
-  position: absolute;
-  top: 65px; 
-  right: 0;
-  background-color: #fff;
-  border: 1px solid #e1e1e1;
-  border-radius: 8px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  width: 150px;
-  padding: 0.5rem 0;
-  z-index: 10;
-}
-
-
-
-.dropdown-item {
-  padding: 0.5rem 1rem;
-  color: #333;
-  text-decoration: none;
-  display: block;
-  transition: background-color 0.3s ease;
-  font-family: sans-serif;
-}
-
-.dropdown-item:hover {
-  background-color: #f0f0f0;
 }

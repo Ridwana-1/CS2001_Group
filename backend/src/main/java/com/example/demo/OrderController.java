@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/swapsaviour/Checkout/orders")
 public class OrderController {
-    
+
     private final OrderRepository orderRepository;
 
     @Autowired
@@ -42,7 +42,7 @@ public class OrderController {
             throw new IllegalArgumentException("Invalid order status: " + status);
         }
     }
-    
+
     @PostMapping
     public ResponseEntity<Orders> createOrder(@RequestBody Orders order) {
         Orders savedOrder = orderRepository.save(order);
@@ -55,16 +55,15 @@ public class OrderController {
             @RequestBody OrderStatus status) {
         Orders order = orderRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Order not found with id: " + id));
-        
+
         order.setOrderStatus(status);
         Orders updatedOrder = orderRepository.save(order);
         return ResponseEntity.ok(updatedOrder);
     }
 }
 
-
-	class ResourceNotFoundException extends RuntimeException {
-	    public ResourceNotFoundException(String message) {
-	        super(message);
-	    }
-	}
+class ResourceNotFoundException extends RuntimeException {
+    public ResourceNotFoundException(String message) {
+        super(message);
+    }
+}

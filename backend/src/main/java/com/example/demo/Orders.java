@@ -32,13 +32,27 @@ public class Orders {
     @Column(name = "price")
     private Double price;
 
-    @Column(name = "item")  // Added item column
-    private String item;     // Added item field
+    @Column(name = "item")
+    private String item;
 
-    @Column(name = "quantity") // Added quantity column
-    private Integer quantity; // Added quantity field
+    @Column(name = "quantity")
+    private Integer quantity;
 
-    // Getters and Setters
+    @Column(name = "user_email", nullable = false)
+    private String userEmail;
+
+    public Orders() {}
+
+    public Orders(String shop, LocalDateTime orderDate, OrderStatus orderStatus, Double price, String item, Integer quantity, String userEmail) {
+        this.shop = shop;
+        this.orderDate = orderDate;
+        this.orderStatus = orderStatus;
+        this.price = price;
+        this.item = item;
+        this.quantity = quantity;
+        this.userEmail = userEmail;
+    }
+
     public Long getId() {
         return id;
     }
@@ -95,6 +109,14 @@ public class Orders {
         this.quantity = quantity;
     }
 
+    public String getUserEmail() {
+        return userEmail;
+    }
+
+    public void setUserEmail(String userEmail) {
+        this.userEmail = userEmail;
+    }
+
     @Override
     public String toString() {
         return "Orders{" +
@@ -105,6 +127,7 @@ public class Orders {
                 ", price=" + price +
                 ", item='" + item + '\'' +
                 ", quantity=" + quantity +
+                ", userEmail='" + userEmail + '\'' +
                 '}';
     }
 }

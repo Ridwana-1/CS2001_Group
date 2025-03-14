@@ -9,11 +9,27 @@ import org.springframework.stereotype.Service;
 @Service
 public class DisputeService {
 
-    private final DisputeRepository disputeRepository;
-
     @Autowired
-    public DisputeService(DisputeRepository disputeRepository) {
-        this.disputeRepository = disputeRepository;
+    private DisputeRepository disputeRepository;
+
+    public Dispute createDispute(String reason, String description, String email, Long orderId) {
+        Dispute dispute = new Dispute();
+        dispute.setReason(reason);
+        dispute.setDescription(description);
+        dispute.setUserEmail(email);
+        dispute.setStatus("PENDING");
+        dispute.setOrderId(orderId);
+        
+        return disputeRepository.save(dispute);
+    }
+    
+    public Dispute createDispute(DisputeRequest request) {
+        return createDispute(
+            request.getReason(),
+            request.getDescription(),
+            request.getEmail(),
+            request.getOrderId()
+        );
     }
 
     public List<Dispute> getAllDisputes() {
@@ -22,32 +38,5 @@ public class DisputeService {
 
     public Optional<Dispute> getDisputeById(Long id) {
         return disputeRepository.findById(id);
-    }
-
-    public Dispute createDispute(String reason, String description) {  
-        System.out.println("Creating Dispute...");
-        System.out.println("Reason: " + reason);
-        System.out.println("Description: " + description);
-
-        Dispute dispute = new Dispute();
-        dispute.setReason(reason);
-        dispute.setDescription(description);
-        dispute.setStatus(DisputeStatus.PENDING);
-
-        Dispute savedDispute = disputeRepository.save(dispute);
-        System.out.println("Dispute saved with ID: " + savedDispute.getId());
-
-        return savedDispute;
-    }
-
-    public Dispute updateDisputeStatus(Long id, DisputeStatus status) {
-        System.out.println("Updating dispute status for ID: " + id);
-        Dispute dispute = disputeRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Dispute not found with id: " + id));
-
-        dispute.setStatus(status);
-        Dispute updatedDispute = disputeRepository.save(dispute);
-        System.out.println("Dispute status updated to: " + status);
-        return updatedDispute;
     }
 }

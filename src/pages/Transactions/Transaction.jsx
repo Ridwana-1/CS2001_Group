@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import DisputeForm from './DisputeForm';
-import ActiveDisputes from './ActiveDisputes';
+import background from '../../assets/Home.jpg'; 
 
 const Transactions = () => {
   const [activePage, setActivePage] = useState('View Receipts');
@@ -58,19 +58,6 @@ const Transactions = () => {
                 <span className="nav-text">Dispute Order</span>
               </a>
             </li>
-            <li className="nav-item">
-              <a 
-                href="#" 
-                className={`nav-link ${activePage === 'Active Disputes' ? 'active' : ''}`} 
-                onClick={(e) => {
-                  e.preventDefault();
-                  setActivePage('Active Disputes');
-                }}
-              >
-                <i className="fas fa-balance-scale"></i>
-                <span className="nav-text">Active Disputes</span>
-              </a>
-            </li>
           </ul>
         </nav>
       </aside>
@@ -116,10 +103,6 @@ const Transactions = () => {
 
         {!loading && !error && activePage === 'Dispute Order' && (
           <DisputeForm orders={orders} />
-        )}
-
-        {!loading && !error && activePage === 'Active Disputes' && (
-          <ActiveDisputes />
         )}
       </main>
     </div>

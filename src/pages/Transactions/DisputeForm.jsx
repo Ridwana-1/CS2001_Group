@@ -1,165 +1,155 @@
-import React, { useState, useEffect, useCallback } from 'react';
-import './Transactions.css';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import './Transactions.css';
 
 const DisputeForm = () => {
   const [orders, setOrders] = useState([]);
-  const [selectedOrder, setSelectedOrder] = useState(null);
-  const [disputeReason, setDisputeReason] = useState('');
-  const [additionalDetails, setAdditionalDetails] = useState('');
-  const [disputeSubmitted, setDisputeSubmitted] = useState(false);
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [isLoading, setIsLoading] = useState(true);
-  const [errorMessage, setErrorMessage] = useState('');
-  const [disputeReference, setDisputeReference] = useState('');
+  const [selectedOrder, setSelectedOrder] = useState('');
+  const [email, setEmail] = useState('');
+  const [reason, setReason] = useState('');
+  const [details, setDetails] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+  const [success, setSuccess] = useState(false);
 
-  const BASE_URL = 'http://localhost:8080/transactions';
-
-  const fetchOrders = useCallback(async () => {
-    setIsLoading(true);
-    try {
-      const response = await axios.get(`${BASE_URL}/orders`);
-      setOrders(response.data);
-    } catch (error) {
-      console.error('Error fetching orders:', error);
-      setErrorMessage('Failed to load orders. Please refresh the page.');
-    } finally {
-      setIsLoading(false);
-    }
-  }, [BASE_URL]);
+  const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || 'http://localhost:5000';
 
   useEffect(() => {
     fetchOrders();
-  }, [fetchOrders]);
+  }, []);
 
-  const handleSubmit = async (e) => {
+  const fetchOrders = () => {
+    setLoading(true);
+    axios.get('http://localhost:8080/swapsaviour/Checkout/orders')
+      .then((response) => {
+        setOrders(response.data);
+        setLoading(false);
+      })
+      .catch(err => {
+        console.error('Error fetching orders:', err);
+        setError('Failed to load orders. Please refresh the page.');
+        setLoading(false);
+      });
+  };
+
+  const handleSubmit = (e) => {
     e.preventDefault();
 
     if (!selectedOrder) {
-      setErrorMessage('Please select an order to dispute.');
+      setError('Please select an order to dispute');
       return;
     }
-    if (!disputeReason) {
-      setErrorMessage('Please select a dispute reason.');
+    if (!email) {
+      setError('Email is required');
+      return;
+    }
+    if (!reason) {
+      setError('Please select a reason for your dispute');
       return;
     }
 
-    setErrorMessage('');
-    setIsSubmitting(true);
+    setLoading(true);
+    setError(null);
 
-    try {
-      const disputeData = {
-        orderId: selectedOrder.id,
-        reason: disputeReason,
-        description: additionalDetails
-      };
+    const disputeData = {
+      orderId: selectedOrder,
+      email,
+      reason,
+      description: details
+    };
 
-      console.log("Sending dispute request:", disputeData);
-      const response = await axios.post(`${BASE_URL}/disputes`, disputeData);
-
-      if (response.data && response.data.id) {
-        setDisputeReference(`DSP-${response.data.id}`);
-      } else {
-        setDisputeReference(`DSP-${Math.floor(Math.random() * 10000) + 1000}`);
-      }
-
-      setDisputeSubmitted(true);
-      setDisputeReason('');
-      setAdditionalDetails('');
-      setSelectedOrder(null);
-
-      setTimeout(() => {
-        setDisputeSubmitted(false);
-      }, 8000);
-    } catch (error) {
-      let message = 'Failed to submit dispute. Please try again.';
-      if (error.response && error.response.data) {
-        message = error.response.data.message || error.response.data.error || message;
-      }
-      setErrorMessage(message);
-      console.error('Dispute submission error:', error);
-    } finally {
-      setIsSubmitting(false);
-    }
+    axios.post(`${API_BASE_URL}/transactions/disputes`, disputeData)
+      .then(response => {
+        setSuccess(true);
+        setLoading(false);
+        setSelectedOrder('');
+        setEmail('');
+        setReason('');
+        setDetails('');
+      })
+      .catch(err => {
+        console.error('Error submitting dispute:', err);
+        setError('Failed to submit dispute. Please try again.');
+        setLoading(false);
+      });
   };
 
   return (
-    <div className="dispute-container">
+    <div className="dispute-form-container">
       <h2>File a Dispute</h2>
-
-      {errorMessage && <div className="error-message"><p>{errorMessage}</p></div>}
-
-      {isLoading ? (
-        <div className="loading-indicator"><p>Loading orders...</p></div>
-      ) : (
-        <>
-          <div className="order-selector">
-            <label htmlFor="orderSelect">Select Order to Dispute:</label>
-            <select 
-              id="orderSelect"
-              value={selectedOrder?.id || ''}
-              onChange={(e) => {
-                const orderId = e.target.value;
-                const order = orders.find(o => o.id.toString() === orderId);
-                setSelectedOrder(order || null);
-                setErrorMessage('');
-              }}
-            >
-              <option value="">-- Select an order --</option>
-              {orders.length > 0 ? (
-                orders.map(order => (
-                  <option key={order.id} value={order.id}>
-                    #{order.id} - {order.item || 'Unknown Item'} (£{order.totalPrice || '0.00'}) - {order.orderDate ? new Date(order.orderDate).toLocaleDateString() : 'Unknown Date'}
-                  </option>
-                ))
-              ) : (
-                <option disabled>No orders available</option>
-              )}
-            </select>
-          </div>
-
-          <form onSubmit={handleSubmit} className="dispute-form">
-            <div className="form-group">
-              <label htmlFor="disputeReason">Reason for Dispute:</label>
-              <select
-                id="disputeReason"
-                value={disputeReason}
-                onChange={(e) => setDisputeReason(e.target.value)}
-                required
-              >
-                <option value="">-- Select a reason --</option>
-                <option value="FRESH">Item not fresh</option>
-                <option value="DOUBLE_CHARGE">Double charged</option>
-                <option value="MISSING">Missing items</option>
-                <option value="SPOILED">Spoiled food</option>
-                <option value="LATE">Late delivery</option>
-                <option value="OTHER">Other</option>
-              </select>
-            </div>
-
-            <div className="form-group">
-              <label htmlFor="additionalDetails">Additional Details:</label>
-              <textarea
-                id="additionalDetails"
-                rows="4"
-                value={additionalDetails}
-                onChange={(e) => setAdditionalDetails(e.target.value)}
-                placeholder="Provide more details about the dispute..."
-              />
-            </div>
-
-            <button type="submit" className="submit-button" disabled={isSubmitting}>
-              {isSubmitting ? 'Submitting...' : 'Submit Dispute'}
-            </button>
-          </form>
-        </>
-      )}
-
-      {disputeSubmitted && (
+      {error && <div className="error-message">{error}</div>}
+      {success && (
         <div className="success-message">
-          <p>Dispute submitted successfully! Reference: <strong>{disputeReference}</strong></p>
+          Your dispute has been successfully submitted. We will contact you soon.
         </div>
       )}
+      <form onSubmit={handleSubmit}>
+        <div className="form-group">
+          <label htmlFor="order-select">Select Order to Dispute:</label>
+          <select 
+            id="order-select"
+            value={selectedOrder} 
+            onChange={(e) => setSelectedOrder(e.target.value)}
+            required
+          >
+            <option value="">-- Select an order --</option>
+            {orders.map(order => (
+              <option key={order.id} value={order.id}>
+                {order.item} - ${order.total}
+              </option>
+            ))}
+          </select>
+        </div>
+
+        <div className="form-group">
+          <label htmlFor="email">Your Email:</label>
+          <input 
+            type="email" 
+            id="email"
+            value={email} 
+            onChange={(e) => setEmail(e.target.value)}
+            placeholder="Enter your email"
+            required
+          />
+        </div>
+
+        <div className="form-group">
+          <label htmlFor="reason-select">Reason for Dispute:</label>
+          <select 
+            id="reason-select"
+            value={reason} 
+            onChange={(e) => setReason(e.target.value)}
+            required
+          >
+            <option value="">-- Select a reason --</option>
+            <option value="Item not received">Item not received</option>
+            <option value="Item different than described">Item different than described</option>
+            <option value="Damaged item">Damaged item</option>
+            <option value="Wrong item">Wrong item</option>
+            <option value="Unauthorized charge">Unauthorized charge</option>
+            <option value="Other">Other</option>
+          </select>
+        </div>
+
+        <div className="form-group">
+          <label htmlFor="details">Additional Details:</label>
+          <textarea 
+            id="details"
+            value={details} 
+            onChange={(e) => setDetails(e.target.value)}
+            placeholder="Provide more details about the dispute..."
+            rows={5}
+          />
+        </div>
+
+        <button 
+          type="submit" 
+          className="submit-button" 
+          disabled={loading}
+        >
+          {loading ? 'Submitting...' : 'Submit Dispute'}
+        </button>
+      </form>
     </div>
   );
 };

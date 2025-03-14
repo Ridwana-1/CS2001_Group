@@ -28,12 +28,10 @@ public class Trades {
     @Column(name = "trade_price")
     private Double tradePrice;
 
-
     @ManyToOne
     @JoinColumn(name = "order_id", referencedColumnName = "id", nullable = false)
     private Orders order;
 
-   
     public Long getId() {
         return id;
     }
