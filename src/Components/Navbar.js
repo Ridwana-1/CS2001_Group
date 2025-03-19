@@ -6,9 +6,34 @@ import './Navbar.css';
 
 function Navbar() {
   const [isDropdownOpen, setDropdownOpen] = useState(false);
+  const [isNotificationsVisible, setNotificationsVisible] = useState(false);
+
+  const [notifications, setNotifications] = useState([
+    { id: 1, type: 'transaction', message: 'You have a new message regarding your recent transaction.', read: false },
+    { id: 2, type: 'itemAvailability', message: 'An item you were looking for is now available.', read: false },
+    { id: 3, type: 'eventReminder', message: 'Don\'t forget your upcoming event tomorrow.', read: false },
+  ]);
 
   const toggleDropdown = () => {
     setDropdownOpen(!isDropdownOpen);
+  };
+
+  const toggleNotifications = () => {
+    setNotificationsVisible(!isNotificationsVisible);
+  };
+
+  const handleMarkAsRead = (id) => {
+    setNotifications(prevNotifications =>
+      prevNotifications.map(notification =>
+        notification.id === id ? { ...notification, read: true } : notification
+      )
+    );
+  };
+
+  const handleDismissNotification = (id) => {
+    setNotifications(prevNotifications =>
+      prevNotifications.filter(notification => notification.id !== id)
+    );
   };
 
   return (
@@ -35,13 +60,14 @@ function Navbar() {
 
         <div className="profile-icon" onClick={toggleDropdown}>
           <img src={profile} alt="Profile" className="avatar" />
+          <img src={profile} alt="Profile" className="avatar" />
         </div>
 
         {isDropdownOpen && (
           <div className="dropdown-menu">
-            <a href="/profile" className="dropdown-item">Profile</a>
-            <a href="/settings" className="dropdown-item">Settings</a>
-            <a href="/logout" className="dropdown-item">Logout</a>
+            <Link to="/user-profile" className="dropdown-item">Profile</Link>
+            <Link to="/settings" className="dropdown-item">Settings</Link>
+            <Link to="/logout" className="dropdown-item">Logout</Link>
           </div>
         )}
       </div>
