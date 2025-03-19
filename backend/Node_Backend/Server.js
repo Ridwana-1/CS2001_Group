@@ -7,7 +7,7 @@ const app = express();
 app.use(express.json());
 app.use(cors());
 
-let disputes = []; // Initialize the 'disputes' array here to store submitted disputes in DB
+let disputes = []; 
 
 app.get("/", (req, res) => {
   res.send("Server is running!");

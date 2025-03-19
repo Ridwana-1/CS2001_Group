@@ -92,10 +92,9 @@ const DisputeForm = () => {
             onChange={(e) => setSelectedOrder(e.target.value)}
             required
           >
-            <option value="">-- Select an order --</option>
             {orders.map(order => (
               <option key={order.id} value={order.id}>
-                {order.item} - ${order.total}
+                {order.item} - £{order.total}
               </option>
             ))}
           </select>
