@@ -1,10 +1,50 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom'; // Using Link for navigation
-import logo from '../assets/logo.png';
-import profile from '../assets/profile.jpg';
+import { Link } from 'react-router-dom';
+import logo from '../assets/logo.png';  // Update your logo path
 import './Navbar.css';
+import profile from '../assets/profile.jpg'; // Update your profile picture path
 
-function Navbar() {
+// Notifications Component
+const Notifications = ({ notifications, handleMarkAsRead, handleDismissNotification }) => {
+  return (
+    <div className="notifications-container">
+      <div className="notifications-box">
+        <h3 className="notifications-title">Notifications</h3>
+        <div className="notifications-list">
+          {notifications.length === 0 ? (
+            <p>No notifications at the moment.</p>
+          ) : (
+            notifications.map(notification => (
+              <div key={notification.id} className={`notification-item ${notification.read ? 'read' : ''}`}>
+                <div className="notification-message">
+                  <span className="notification-type">
+                    {notification.type === 'transaction' && 'Transaction Alert:'}
+                    {notification.type === 'itemAvailability' && 'Item Availability:'}
+                    {notification.type === 'eventReminder' && 'Event Reminder:'}
+                  </span>
+                  {notification.message}
+                </div>
+
+                <div className="notification-actions">
+                  {!notification.read && (
+                    <button className="mark-read-btn" onClick={() => handleMarkAsRead(notification.id)}>
+                      Mark as Read
+                    </button>
+                  )}
+                  <button className="dismiss-btn" onClick={() => handleDismissNotification(notification.id)}>
+                    Dismiss
+                  </button>
+                </div>
+              </div>
+            ))
+          )}
+        </div>
+      </div>
+    </div>
+  );
+};
+
+const Navbar = () => {
   const [isDropdownOpen, setDropdownOpen] = useState(false);
   const [isNotificationsVisible, setNotificationsVisible] = useState(false);
 
@@ -39,8 +79,7 @@ function Navbar() {
   return (
     <nav className="navbar">
       <div className="nav-left">
-        {/* Wrap in a Link but prevent text highlighting issues */}
-        <Link to="/" className="nav-home-link">
+        <Link to="/" className="logo-container">
           <img src={logo} alt="logo" className="logo" />
           <h1 className="brand-name">SwapSaviour</h1>
         </Link>
@@ -54,15 +93,30 @@ function Navbar() {
       </div>
 
       <div className="nav-right">
-        <a href="/explore" className="nav-link">Explore</a>
-        <a href="/messages" className="nav-link">Messages</a>
-        <a href="/transactions" className="nav-link">Transactions</a>
+        <Link to="/explore" className="nav-link">Explore</Link>
+        <Link to="/messages" className="nav-link">Messages</Link>
+        <Link to="/transactions" className="nav-link">Transactions</Link>
 
+        {/* Notifications Button */}
+        <div className="notification-icon" onClick={toggleNotifications}>
+          <span className="notification-bell">&#128276;</span>
+        </div>
+
+        {/* Show Notifications if visible */}
+        {isNotificationsVisible && (
+          <Notifications
+            notifications={notifications}
+            handleMarkAsRead={handleMarkAsRead}
+            handleDismissNotification={handleDismissNotification}
+          />
+        )}
+
+        {/* Profile Icon */}
         <div className="profile-icon" onClick={toggleDropdown}>
-          <img src={profile} alt="Profile" className="avatar" />
           <img src={profile} alt="Profile" className="avatar" />
         </div>
 
+        {/* Dropdown Menu */}
         {isDropdownOpen && (
           <div className="dropdown-menu">
             <Link to="/user-profile" className="dropdown-item">Profile</Link>
@@ -73,6 +127,6 @@ function Navbar() {
       </div>
     </nav>
   );
-}
+};
 
 export default Navbar;
