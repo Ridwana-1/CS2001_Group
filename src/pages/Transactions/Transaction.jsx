@@ -4,8 +4,9 @@ import DisputeForm from './DisputeForm';
 import background from '../../assets/Home.jpg'; 
 
 const Transactions = () => {
-  const [activePage, setActivePage] = useState('View Receipts');
+  const [activePage, setActivePage] = useState('Transactions');
   const [orders, setOrders] = useState([]);
+  const [receipts, setReceipts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
@@ -32,6 +33,19 @@ const Transactions = () => {
       <aside className="sidebar">
         <nav>
           <ul className="sidebar-nav">
+            <li className="nav-item">
+              <a 
+                href="#" 
+                className={`nav-link ${activePage === 'Transactions' ? 'active' : ''}`} 
+                onClick={(e) => {
+                  e.preventDefault();
+                  setActivePage('Transactions');
+                }}
+              >
+                <i className="fas fa-list-alt"></i>
+                <span className="nav-text">Transactions</span>
+              </a>
+            </li>
             <li className="nav-item">
               <a 
                 href="#" 
@@ -70,12 +84,12 @@ const Transactions = () => {
         {loading && <div className="loading-indicator">Loading transactions...</div>}
         {error && <div className="error-message">{error}</div>}
 
-        {!loading && !error && activePage === 'View Receipts' && (
+        {!loading && !error && activePage === 'Transactions' && (
           <div className="transactions-wrapper">
             <table className="transactions-table">
               <thead>
                 <tr>
-                  <th>Transaction ID</th>
+                  {/* <th>Transaction ID</th>*/}
                   <th>Item</th>
                   <th>Shop</th>
                   <th>Amount</th>
@@ -85,19 +99,64 @@ const Transactions = () => {
                 </tr>
               </thead>
               <tbody>
-                {orders.map((order) => (
-                  <tr key={order.id}>
-                    <td>#{order.id}</td>
-                    <td>{order.item}</td>
-                    <td>{order.shop}</td>
-                    <td>£{order.totalPrice}</td>
-                    <td>{order.quantity}</td>
-                    <td>{new Date(order.orderDate).toLocaleDateString()}</td>
-                    <td>{order.orderStatus}</td>
+                {orders.length > 0 ? (
+                  orders.map((order) => {
+                    const statusLower = order.orderStatus.toLowerCase();
+                    return (
+                      <tr key={order.id} className={statusLower === 'pending' ? 'pending-row' : ''}>
+                        {/*<td>#{order.id}</td>*/}
+                        <td>{order.item}</td>
+                        <td>{order.shop}</td>
+                        <td>£{order.price}</td>
+                        <td>{order.quantity}</td>
+                        <td>{new Date(order.orderDate).toLocaleDateString()}</td>
+                        <td>
+                          <span className={`status ${statusLower}`}>
+                            {order.orderStatus}
+                          </span>
+                          {statusLower === 'pending' && (
+                            <div className="pending-progress-bar">
+                              <div className="progress-fill"></div>
+                            </div>
+                          )}
+                        </td>
+                      </tr>
+                    );
+                  })
+                ) : (
+                  <tr>
+                    <td colSpan="7" className="no-data">No transactions found</td>
                   </tr>
-                ))}
+                )}
               </tbody>
             </table>
+          </div>
+        )}
+
+        {!loading && !error && activePage === 'View Receipts' && (
+          <div className="transactions-wrapper">
+            {receipts.length === 0 ? (
+              <p className="no-data">No receipts available.</p>
+            ) : (
+              <table className="transactions-table">
+                <thead>
+                  <tr>
+                    <th>Receipt ID</th>
+                    <th>Details</th>
+                    <th>Date</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {receipts.map((receipt) => (
+                    <tr key={receipt.id}>
+                      <td>{receipt.id}</td>
+                      <td>{receipt.details}</td>
+                      <td>{new Date(receipt.date).toLocaleDateString()}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            )}
           </div>
         )}
 

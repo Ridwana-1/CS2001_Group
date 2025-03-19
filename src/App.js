@@ -13,7 +13,8 @@ function App() {
       <div>
         <Navbar />
         <Routes>
-          <Route path="/explore" element={<Home />} />
+          <Route index element ={<Home />}></Route>
+          <Route path="/explore" element={ null } />
           <Route path="/transactions" element={<Transactions />} />
           <Route path="/user-profile" element={<UserProfile />} /> {/* Add Route for UserProfile */}
         </Routes>

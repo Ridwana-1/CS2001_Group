@@ -95,7 +95,8 @@ const DisputeForm = () => {
             <option value="">-- Select an order --</option>
             {orders.map(order => (
               <option key={order.id} value={order.id}>
-                {order.item} - ${order.total}
+               Order {order.id} : {order.item} 
+
               </option>
             ))}
           </select>
