@@ -278,3 +278,41 @@ input[type="submit"] {
     padding: 1.5rem;
   }
 }
+
+
+.item-grid-gallery {
+  display: flex;
+  align-items: center;
+}
+
+.item-images {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: repeat(2, 1fr);
+  grid-gap: 4px;
+  width: 100px;
+  margin-right: 12px;
+}
+
+.item-thumbnail {
+  width: 45px;
+  height: 45px;
+  object-fit: cover;
+  border-radius: 4px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+.item-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.item-name {
+  font-weight: 600;
+  margin-bottom: 2px;
+}
+
+.item-quantity {
+  font-size: 0.85em;
+  color: #666;
+}

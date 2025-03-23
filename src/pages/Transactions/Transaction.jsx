@@ -1,7 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import DisputeForm from './DisputeForm';
-import background from '../../assets/Home.jpg'; 
+import product1 from '../../assets/product1.jpg';
+import product2 from '../../assets/product2.jpg';
+import product3 from '../../assets/product3.jpg';
+import product4 from '../../assets/product4.jpg';
 
 const Transactions = () => {
   const [activePage, setActivePage] = useState('Transactions');
@@ -28,46 +31,29 @@ const Transactions = () => {
       });
   };
 
+  const getProductImages = (itemName) => {
+    return [product1, product2, product3, product4];
+  };
+
   return (
     <div className="page-container">
       <aside className="sidebar">
         <nav>
           <ul className="sidebar-nav">
             <li className="nav-item">
-              <a 
-                href="#" 
-                className={`nav-link ${activePage === 'Transactions' ? 'active' : ''}`} 
-                onClick={(e) => {
-                  e.preventDefault();
-                  setActivePage('Transactions');
-                }}
-              >
+              <a href="#" className={`nav-link ${activePage === 'Transactions' ? 'active' : ''}`} onClick={(e) => { e.preventDefault(); setActivePage('Transactions'); }}>
                 <i className="fas fa-list-alt"></i>
                 <span className="nav-text">Transactions</span>
               </a>
             </li>
             <li className="nav-item">
-              <a 
-                href="#" 
-                className={`nav-link ${activePage === 'View Receipts' ? 'active' : ''}`} 
-                onClick={(e) => {
-                  e.preventDefault();
-                  setActivePage('View Receipts');
-                }}
-              >
+              <a href="#" className={`nav-link ${activePage === 'View Receipts' ? 'active' : ''}`} onClick={(e) => { e.preventDefault(); setActivePage('View Receipts'); }}>
                 <i className="fas fa-receipt"></i>
                 <span className="nav-text">View Receipts</span>
               </a>
             </li>
             <li className="nav-item">
-              <a 
-                href="#" 
-                className={`nav-link ${activePage === 'Dispute Order' ? 'active' : ''}`} 
-                onClick={(e) => {
-                  e.preventDefault();
-                  setActivePage('Dispute Order');
-                }}
-              >
+              <a href="#" className={`nav-link ${activePage === 'Dispute Order' ? 'active' : ''}`} onClick={(e) => { e.preventDefault(); setActivePage('Dispute Order'); }}>
                 <i className="fas fa-exclamation-circle"></i>
                 <span className="nav-text">Dispute Order</span>
               </a>
@@ -89,8 +75,7 @@ const Transactions = () => {
             <table className="transactions-table">
               <thead>
                 <tr>
-                  {/* <th>Transaction ID</th>*/}
-                  <th>Item</th>
+                  <th>Items</th>
                   <th>Shop</th>
                   <th>Amount</th>
                   <th>Quantity</th>
@@ -104,16 +89,24 @@ const Transactions = () => {
                     const statusLower = order.orderStatus.toLowerCase();
                     return (
                       <tr key={order.id} className={statusLower === 'pending' ? 'pending-row' : ''}>
-                        {/*<td>#{order.id}</td>*/}
-                        <td>{order.item}</td>
+                        <td>
+                          <div className="item-grid-gallery">
+                            <div className="item-images">
+                              {getProductImages(order.item).map((img, index) => (
+                                <img key={index} src={img} alt={order.item} className="item-thumbnail" />
+                              ))}
+                            </div>
+                            <div className="item-info">
+                              
+                            </div>
+                          </div>
+                        </td>
                         <td>{order.shop}</td>
                         <td>£{order.price}</td>
                         <td>{order.quantity}</td>
                         <td>{new Date(order.orderDate).toLocaleDateString()}</td>
                         <td>
-                          <span className={`status ${statusLower}`}>
-                            {order.orderStatus}
-                          </span>
+                          <span className={`status ${statusLower}`}>{order.orderStatus}</span>
                           {statusLower === 'pending' && (
                             <div className="pending-progress-bar">
                               <div className="progress-fill"></div>
@@ -125,7 +118,7 @@ const Transactions = () => {
                   })
                 ) : (
                   <tr>
-                    <td colSpan="7" className="no-data">No transactions found</td>
+                    <td colSpan="6" className="no-data">No transactions found</td>
                   </tr>
                 )}
               </tbody>
