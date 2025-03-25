@@ -1,4 +1,4 @@
-import React, { useState } from 'react';  // Removed 'useEffect' import as it's not being used
+import React, { useState } from 'react';  
 import './Notifications.css';  // Add custom styles for notifications
 
 const Notifications = () => {

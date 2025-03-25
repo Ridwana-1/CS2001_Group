@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import logo from '../assets/logo.png';  // Update your logo path
+import logo from '../assets/logo.png';  
 import './Navbar.css';
-import profile from '../assets/profile.jpg'; // Update your profile picture path
+import profile from '../assets/profile.jpg'; 
 
 // Notifications Component
 const Notifications = ({ notifications, handleMarkAsRead, handleDismissNotification }) => {

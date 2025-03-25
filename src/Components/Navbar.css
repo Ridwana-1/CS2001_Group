@@ -4,7 +4,8 @@
   justify-content: space-between;
   align-items: center;
   padding: 0.75rem 2rem;
-  background-color: #fff;
+  background-color: rgba(255, 255, 255, 0.8); /* Semi-transparent for blur effect */
+  backdrop-filter: blur(10px); /* Blur effect */
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   height: 64px;
   position: relative;
@@ -18,7 +19,6 @@
   height: 100%;
 }
 
-/* Fix for the logo container */
 .logo-container {
   display: flex;
   align-items: center;
@@ -26,10 +26,9 @@
   border-bottom: none !important;
 }
 
-/* Explicitly target the link that holds the logo */
-a.logo-container, 
-a.logo-container:hover, 
-a.logo-container:active, 
+a.logo-container,
+a.logo-container:hover,
+a.logo-container:active,
 a.logo-container:visited {
   text-decoration: none !important;
   border-bottom: none !important;
@@ -41,11 +40,7 @@ a.logo-container:visited {
   margin-right: 0.75rem;
 }
 
-/* Fix for brand name inside the link */
-.brand-name,
-h1.brand-name,
-a .brand-name,
-.logo-container .brand-name {
+.brand-name {
   font-size: 1.5rem;
   font-weight: bold;
   color: #d46136;
@@ -76,10 +71,11 @@ a .brand-name,
   font-size: 0.9rem;
   outline: none;
   background-color: #f8f8f8;
+  transition: all 0.3s ease;
 }
 
 .search-input:focus {
-  border-color: #e1e1e1;
+  border-color: #d46136;
   background-color: #fff;
 }
 
@@ -92,7 +88,6 @@ a .brand-name,
   height: 100%;
 }
 
-/* Navigation Links */
 .nav-link {
   color: #333;
   text-decoration: none;
@@ -103,6 +98,7 @@ a .brand-name,
   height: 100%;
   display: flex;
   align-items: center;
+  transition: color 0.3s ease;
 }
 
 .nav-link:hover {
@@ -119,7 +115,6 @@ a .brand-name,
   font-size: 1.25rem;
 }
 
-/* Notifications container */
 .notifications-container {
   position: absolute;
   top: 60px;
@@ -147,6 +142,7 @@ a .brand-name,
   padding: 0.75rem;
   border-bottom: 1px solid #eee;
   background-color: #f8f8f8;
+  transition: background-color 0.3s ease;
 }
 
 .notification-item.read {
@@ -231,15 +227,12 @@ a .brand-name,
   .navbar {
     padding: 0.75rem 1rem;
   }
-
   .nav-center {
     display: none;
   }
-
   .nav-right {
     gap: 1rem;
   }
-
   .nav-link {
     display: none;
   }
