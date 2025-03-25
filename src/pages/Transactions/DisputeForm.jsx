@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
+import Sidebar from './Sidebar'; // Import the Sidebar component
 import './Transactions.css';
 
 const DisputeForm = () => {
@@ -13,6 +15,7 @@ const DisputeForm = () => {
   const [success, setSuccess] = useState(false);
 
   const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || 'http://localhost:5000';
+  const navigate = useNavigate();
 
   useEffect(() => {
     fetchOrders();
@@ -75,82 +78,87 @@ const DisputeForm = () => {
   };
 
   return (
-    <div className="dispute-form-container">
-      <h2>File a Dispute</h2>
-      {error && <div className="error-message">{error}</div>}
-      {success && (
-        <div className="success-message">
-          Your dispute has been successfully submitted. We will contact you soon.
-        </div>
-      )}
-      <form onSubmit={handleSubmit}>
-        <div className="form-group">
-          <label htmlFor="order-select">Select Order to Dispute:</label>
-          <select 
-            id="order-select"
-            value={selectedOrder} 
-            onChange={(e) => setSelectedOrder(e.target.value)}
-            required
-          >
-            <option value="">-- Select an order --</option>
-            {orders.map(order => (
-              <option key={order.id} value={order.id}>
-               Order {order.id} : {order.item} 
+    <div className="page-container">
+      <Sidebar /> {/* Add the Sidebar component here */}
 
-              </option>
-            ))}
-          </select>
-        </div>
+      <main className="main-content">
+        <div className="dispute-form-container">
+          <h2>File a Dispute</h2>
+          {error && <div className="error-message">{error}</div>}
+          {success && (
+            <div className="success-message">
+              Your dispute has been successfully submitted. We will contact you soon.
+            </div>
+          )}
+          <form onSubmit={handleSubmit}>
+            <div className="form-group">
+              <label htmlFor="order-select">Select Order to Dispute:</label>
+              <select 
+                id="order-select"
+                value={selectedOrder} 
+                onChange={(e) => setSelectedOrder(e.target.value)}
+                required
+              >
+                <option value="">-- Select an order --</option>
+                {orders.map(order => (
+                  <option key={order.id} value={order.id}>
+                    Order {order.id} : {order.item} 
+                  </option>
+                ))}
+              </select>
+            </div>
 
-        <div className="form-group">
-          <label htmlFor="email">Your Email:</label>
-          <input 
-            type="email" 
-            id="email"
-            value={email} 
-            onChange={(e) => setEmail(e.target.value)}
-            placeholder="Enter your email"
-            required
-          />
-        </div>
+            <div className="form-group">
+              <label htmlFor="email">Your Email:</label>
+              <input 
+                type="email" 
+                id="email"
+                value={email} 
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder="Enter your email"
+                required
+              />
+            </div>
 
-        <div className="form-group">
-          <label htmlFor="reason-select">Reason for Dispute:</label>
-          <select 
-            id="reason-select"
-            value={reason} 
-            onChange={(e) => setReason(e.target.value)}
-            required
-          >
-            <option value="">-- Select a reason --</option>
-            <option value="Item not received">Item not received</option>
-            <option value="Item different than described">Item different than described</option>
-            <option value="Damaged item">Damaged item</option>
-            <option value="Wrong item">Wrong item</option>
-            <option value="Unauthorized charge">Unauthorized charge</option>
-            <option value="Other">Other</option>
-          </select>
-        </div>
+            <div className="form-group">
+              <label htmlFor="reason-select">Reason for Dispute:</label>
+              <select 
+                id="reason-select"
+                value={reason} 
+                onChange={(e) => setReason(e.target.value)}
+                required
+              >
+                <option value="">-- Select a reason --</option>
+                <option value="Item not received">Item not received</option>
+                <option value="Item different than described">Item different than described</option>
+                <option value="Damaged item">Damaged item</option>
+                <option value="Wrong item">Wrong item</option>
+                <option value="Unauthorized charge">Unauthorized charge</option>
+                <option value="Other">Other</option>
+              </select>
+            </div>
 
-        <div className="form-group">
-          <label htmlFor="details">Additional Details:</label>
-          <textarea 
-            id="details"
-            value={details} 
-            onChange={(e) => setDetails(e.target.value)}
-            placeholder="Provide more details about the dispute..."
-            rows={5}
-          />
-        </div>
+            <div className="form-group">
+              <label htmlFor="details">Additional Details:</label>
+              <textarea 
+                id="details"
+                value={details} 
+                onChange={(e) => setDetails(e.target.value)}
+                placeholder="Provide more details about the dispute..."
+                rows={5}
+              />
+            </div>
 
-        <button 
-          type="submit" 
-          className="submit-button" 
-          disabled={loading}
-        >
-          {loading ? 'Submitting...' : 'Submit Dispute'}
-        </button>
-      </form>
+            <button 
+              type="submit" 
+              className="submit-button" 
+              disabled={loading}
+            >
+              {loading ? 'Submitting...' : 'Submit Dispute'}
+            </button>
+          </form>
+        </div>
+      </main>
     </div>
   );
 };

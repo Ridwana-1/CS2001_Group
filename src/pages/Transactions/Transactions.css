@@ -71,6 +71,12 @@
   margin: 0;
 }
 
+
+.nav-item {
+  list-style: none;
+  margin: 0;
+}
+
 .nav-link {
   display: flex;
   align-items: center;
