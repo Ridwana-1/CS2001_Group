@@ -82,3 +82,11 @@ spring.datasource.password=NewPassword
 # add to the backend file to configure backend section of your work
 //  use java springboot
 // help worksheets are in the lab 
+
+# Help to run the backend 
+# cd backend (java side)
+
+# run command in command line (copy and paste into cmd)  .\mvnw.cmd spring-boot:run
+
+
+
