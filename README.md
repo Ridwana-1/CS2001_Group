@@ -68,3 +68,17 @@ This section has moved here: [https://facebook.github.io/create-react-app/docs/d
 ### `npm run build` fails to minify
 
 This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+
+# download package depedencies to run application
+// npm install to install all packages
+
+# To acess database view the application properties
+
+// download sql workbench login with the provided details 
+# Database Configuration
+spring.datasource.url=jdbc:mysql://localhost:3306/Transaction_SYSTEM
+spring.datasource.username=root
+spring.datasource.password=NewPassword
+# add to the backend file to configure backend section of your work
+//  use java springboot
+// help worksheets are in the lab 
