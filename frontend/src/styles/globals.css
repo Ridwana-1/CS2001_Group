@@ -1,0 +1,171 @@
+/* iOS-style animations for theme toggle */
+@keyframes spin-light {
+  0% {
+    transform: rotate(0deg) scale(1);
+  }
+  50% {
+    transform: rotate(180deg) scale(1.2);
+  }
+  100% {
+    transform: rotate(360deg) scale(1);
+  }
+}
+
+@keyframes spin-dark {
+  0% {
+    transform: rotate(0deg) scale(1);
+  }
+  50% {
+    transform: rotate(-180deg) scale(1.2);
+  }
+  100% {
+    transform: rotate(-360deg) scale(1);
+  }
+}
+
+/* Добавляем анимацию для переключателя темы */
+@keyframes themeSwitch {
+  0% { transform: scale(1) rotate(0); }
+  50% { transform: scale(1.2) rotate(180deg); }
+  100% { transform: scale(1) rotate(360deg); }
+}
+
+.theme-toggle-animate svg {
+  animation: themeSwitch 0.7s ease-in-out;
+}
+
+.theme-toggle-container {
+  font-weight: 500;
+}
+
+:root {
+  --theme-toggle-animation: spin-light;
+}
+
+.dark {
+  --theme-toggle-animation: spin-dark;
+}
+
+/* iOS-style Settings */
+.ios-settings-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 7px;
+  background: linear-gradient(135deg, #5856D6, #A3A1F7);
+  color: white;
+  margin-right: 10px;
+  flex-shrink: 0;
+}
+
+.ios-settings-row {
+  display: flex;
+  align-items: center;
+  padding: 12px 16px;
+  border-radius: 10px;
+  margin-bottom: 8px;
+  background-color: var(--bg-secondary);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  transition: all 0.2s ease;
+}
+
+.ios-settings-row:active {
+  opacity: 0.7;
+}
+
+.ios-settings-title {
+  font-size: 17px;
+  font-weight: 500;
+  color: var(--text-primary);
+}
+
+.ios-settings-description {
+  font-size: 14px;
+  color: var(--text-secondary);
+  margin-top: 2px;
+}
+
+.ios-settings-group {
+  margin-bottom: 22px;
+}
+
+.ios-settings-group-title {
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 12px;
+  padding-left: 16px;
+  color: var(--text-primary);
+}
+
+.ios-settings-chevron {
+  margin-left: auto;
+  color: var(--text-tertiary);
+  transition: transform 0.2s ease;
+}
+
+.ios-settings-row:hover .ios-settings-chevron {
+  transform: translateX(3px);
+}
+
+.ios-settings-container {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.ios-input {
+  background-color: var(--input-bg);
+  border: 1px solid var(--input-border);
+  border-radius: 8px;
+  padding: 12px 16px;
+  font-size: 16px;
+  width: 100%;
+  transition: all 0.2s ease;
+  color: var(--text-primary);
+  margin-bottom: 16px;
+}
+
+.ios-input:focus {
+  outline: none;
+  border-color: var(--accent-color);
+  box-shadow: 0 0 0 3px rgba(71, 108, 255, 0.2);
+}
+
+.ios-button {
+  background-color: var(--accent-color);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 12px 20px;
+  font-size: 16px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-align: center;
+  display: block;
+  width: 100%;
+}
+
+.ios-button:hover {
+  background-color: var(--accent-color-hover);
+}
+
+.ios-button:active {
+  transform: scale(0.98);
+}
+
+.ios-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.ios-button-secondary {
+  background-color: var(--button-secondary-bg);
+  color: var(--button-secondary-text);
+}
+
+.ios-button-secondary:hover {
+  background-color: var(--button-secondary-hover);
+} 
