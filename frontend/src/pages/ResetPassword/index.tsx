@@ -32,7 +32,7 @@ const ResetPassword: React.FC = () => {
     setLoading(true);
 
     try {
-      await api.post('/api/auth/request-reset', { email });
+      await api.post('/auth/request-reset', { email });
       setSuccess('OTP has been sent to your email');
       setOtpSent(true);
     } catch (err: any) {
@@ -55,7 +55,7 @@ const ResetPassword: React.FC = () => {
     }
 
     try {
-      await api.post('/api/auth/reset-password', {
+      await api.post('/auth/reset-password', {
         email,
         otp,
         newPassword: password,
