@@ -25,6 +25,8 @@ import '../../styles/ThemeColors.css';
 import { FaUser, FaCog, FaSignOutAlt, FaSun, FaMoon, FaPaperPlane, FaPlus } from 'react-icons/fa';
 import EmojiPicker from 'emoji-picker-react';
 import { useAuth } from "../../contexts/AuthContext";
+import chatStyles from '../../styles/ChatStyles.module.css';
+import MessageNotification from './MessageNotification';
 
 // SVG Components
 const MessagesIcon = () => (
@@ -105,6 +107,7 @@ interface Chat {
     content: string;
     timestamp: string;
   };
+  unreadCount: number;
 }
 
 interface User {
@@ -167,41 +170,41 @@ const ChatListItem: React.FC<ChatListItemProps> = ({
   isActive = false,
   onClick,
 }) => {
-  const containerClass = isActive ? styles.div17 : styles.div21;
-  const nameClass = isActive ? styles.div19 : styles.div23;
-  const messageClass = isActive ? styles.div20 : styles.div24;
-
   const getInitial = (name: string) => {
     return name.charAt(0).toUpperCase();
   };
 
   return (
     <div
-      className={containerClass}
-      role="button"
-      tabIndex={0}
-      aria-selected={isActive}
+      className={`${chatStyles.chatListItem} ${isActive ? chatStyles.chatListItemActive : ''}`}
       onClick={onClick}
     >
-      <div className="w-[40px] h-[40px] rounded-full bg-gray-100 flex items-center justify-center">
+      <div className={chatStyles.avatarContainer}>
         {chat.recipientAvatar ? (
           <img
             src={chat.recipientAvatar}
             alt={`${chat.recipientName}'s profile`}
-            className="w-full h-full rounded-full object-cover"
+            className={chatStyles.avatar}
             onError={(e) => {
               const target = e.target as HTMLImageElement;
               target.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(chat.recipientName)}&background=random`;
             }}
           />
         ) : (
-          <span className="text-base font-medium text-gray-600">{getInitial(chat.recipientName)}</span>
+          <span className={chatStyles.avatarInitial}>{getInitial(chat.recipientName)}</span>
         )}
       </div>
-      <div className={isActive ? styles.div18 : styles.div22}>
-        <h3 className={nameClass}>{chat.recipientName}</h3>
-        <p className={messageClass}>{chat.lastMessage?.content || "No messages yet"}</p>
+      <div className={chatStyles.chatInfo}>
+        <div className={chatStyles.chatName}>{chat.recipientName}</div>
+        <div className={chatStyles.lastMessage}>
+          {chat.lastMessage?.content || "No messages yet"}
+        </div>
       </div>
+      {chat.unreadCount > 0 && !isActive && (
+        <div className={chatStyles.unreadIndicator}>
+          {chat.unreadCount}
+        </div>
+      )}
     </div>
   );
 };
@@ -539,6 +542,12 @@ const ChatInterface: React.FC = () => {
   const menuRef = useRef<HTMLDivElement>(null);
   const activeChatRef = useRef<HTMLDivElement>(null);
   const avatarPath = useAvatar(currentUser?.id);
+  const { user } = useAuth();
+  const [notification, setNotification] = useState<{
+    content: string;
+    senderName: string;
+    senderAvatar?: string;
+  } | null>(null);
 
   // Закрытие бургер-меню при клике вне его области
   useEffect(() => {
@@ -634,6 +643,109 @@ const ChatInterface: React.FC = () => {
     return () => clearInterval(intervalId);
   }, [activeChat, currentUser]);
 
+  // WebSocket connection
+  useEffect(() => {
+    if (!user?.id) return;
+
+    const ws = new WebSocket(`ws://localhost:3000/ws?userId=${user.id}`);
+
+    ws.onmessage = (event) => {
+      const data = JSON.parse(event.data);
+      
+      if (data.type === 'new_message') {
+        const { chatId, message } = data.payload;
+        
+        // Update messages if this is the active chat
+        if (activeChat === chatId) {
+          setMessages(prev => [...prev, message]);
+          // Mark as read since we're in the active chat
+          setChats(prevChats => prevChats.map(chat => 
+            chat.id === chatId ? { ...chat, unreadCount: 0 } : chat
+          ));
+        } else {
+          // Update unread count and last message for other chats
+          setChats(prevChats => prevChats.map(chat => {
+            if (chat.id === chatId) {
+              return {
+                ...chat,
+                unreadCount: chat.unreadCount + 1,
+                lastMessage: {
+                  content: message.content,
+                  timestamp: message.timestamp
+                }
+              };
+            }
+            return chat;
+          }));
+
+          // Play system sound for new message
+          const audio = new Audio('data:audio/wav;base64,UklGRl9vT19XQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YU');
+          audio.play().catch(error => console.log('Audio playback failed:', error));
+
+          // Show in-app notification
+          const chat = chats.find(c => c.id === chatId);
+          if (chat) {
+            setNotification({
+              content: message.content,
+              senderName: chat.recipientName,
+              senderAvatar: chat.recipientAvatar
+            });
+          }
+
+          // Show system notification
+          if (Notification.permission === "granted") {
+            new Notification(chat.recipientName, {
+              body: message.content,
+              icon: chat.recipientAvatar || '/favicon.ico',
+              tag: `message-${chatId}-${message.id}`,
+              renotify: true,
+              silent: false
+            });
+          }
+        }
+      }
+    };
+
+    ws.onerror = (error) => {
+      console.error('WebSocket error:', error);
+    };
+
+    ws.onclose = () => {
+      console.log('WebSocket connection closed');
+    };
+
+    return () => {
+      ws.close();
+    };
+  }, [user?.id, activeChat, chats]);
+
+  // Request notification permission with better explanation
+  useEffect(() => {
+    if (Notification.permission === "default") {
+      const requestPermission = async () => {
+        try {
+          const permission = await Notification.requestPermission();
+          if (permission === "granted") {
+            console.log("Notification permission granted");
+          }
+        } catch (error) {
+          console.error("Error requesting notification permission:", error);
+        }
+      };
+      requestPermission();
+    }
+  }, []);
+
+  const handleChatSelect = async (chatId: string) => {
+    setActiveChat(chatId);
+    await fetchMessages(chatId);
+    
+    // Mark messages as read when selecting a chat
+    setChats(prevChats => prevChats.map(chat => 
+      chat.id === chatId ? { ...chat, unreadCount: 0 } : chat
+    ));
+  };
+
   const handleSendMessage = async (content: string) => {
     if (!activeChat || !content.trim()) return;
 
@@ -641,10 +753,10 @@ const ChatInterface: React.FC = () => {
       const response = await api.post(`/chats/${activeChat}/messages`, { content });
       const newMessage = response.data;
 
-      // Immediately update messages
-      setMessages(prevMessages => [...prevMessages, newMessage]);
+      // Update messages immediately
+      setMessages(prev => [...prev, newMessage]);
 
-      // Update last message in chat list
+      // Update chat list with new message and reset unread count
       setChats(prevChats => prevChats.map(chat =>
         chat.id === activeChat
           ? {
@@ -652,7 +764,8 @@ const ChatInterface: React.FC = () => {
               lastMessage: {
                 content,
                 timestamp: new Date().toISOString(),
-              }
+              },
+              unreadCount: 0
             }
           : chat
       ));
@@ -726,11 +839,6 @@ const ChatInterface: React.FC = () => {
       sessionStorage.clear();
       navigate('/login', { replace: true });
     }
-  };
-
-  // Function to handle chat selection
-  const handleChatSelect = (chatId: string) => {
-    setActiveChat(chatId);
   };
 
   if (isLoading) {
@@ -845,6 +953,13 @@ const ChatInterface: React.FC = () => {
         <UserSearch
           onClose={() => setShowUserSearch(false)}
           onSelect={handleUserSelect}
+        />
+      )}
+
+      {notification && (
+        <MessageNotification
+          message={notification}
+          onClose={() => setNotification(null)}
         />
       )}
     </div>
