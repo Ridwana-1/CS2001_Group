@@ -1,3 +1,15 @@
+/**
+ * Auth API Module
+ * @author Sultan Jurabekov
+ * @functionality Authentication API service that handles:
+ * - User registration
+ * - Login/logout operations
+ * - OTP verification
+ * - Password reset
+ * - Session management
+ * @created February 8, 2024
+ */
+
 import axios, { AxiosError } from 'axios';
 import api from "./axios";
 
@@ -44,7 +56,7 @@ export const requestOtp = async (email: string) => {
 
 export const loginWithOtp = async (email: string, otp: string) => {
   try {
-    const response = await api.post('/auth/login-otp', { email, otp });
+    const response = await api.post('/auth/verify-otp', { email, otp });
     return response.data;
   } catch (error) {
     handleApiError(error);
