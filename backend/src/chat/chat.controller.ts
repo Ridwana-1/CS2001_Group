@@ -25,6 +25,15 @@ export class ChatController {
           },
           take: 1,
         },
+        unreadMessages: {
+          where: {
+            userId: req.user.id,
+            isRead: false
+          },
+          select: {
+            messageId: true
+          }
+        }
       },
     });
 
@@ -45,8 +54,8 @@ export class ChatController {
           lastMessage: lastMessage ? {
             content: lastMessage.content,
             timestamp: lastMessage.createdAt,
-            unread: false, // TODO: Implement unread status
           } : null,
+          unreadCount: chat.unreadMessages.length
         };
       }).filter(Boolean),
     };
@@ -163,11 +172,47 @@ export class ChatController {
       }
     });
 
+    // Create unread message record for the recipient
+    const chat = await this.prisma.channel.findUnique({
+      where: { id: chatId },
+      include: { users: true }
+    });
+
+    if (chat) {
+      const recipient = chat.users.find(user => user.id !== req.user.id);
+      if (recipient) {
+        await this.prisma.unreadMessage.create({
+          data: {
+            userId: recipient.id,
+            messageId: message.id,
+            channelId: chatId,
+            isRead: false
+          }
+        });
+      }
+    }
+
     return {
       id: message.id,
       content: message.content,
       senderId: message.senderId,
       timestamp: message.createdAt,
     };
+  }
+
+  @Post(':chatId/mark-read')
+  async markMessagesAsRead(@Param('chatId') chatId: string, @Req() req: any) {
+    await this.prisma.unreadMessage.updateMany({
+      where: {
+        channelId: chatId,
+        userId: req.user.id,
+        isRead: false
+      },
+      data: {
+        isRead: true
+      }
+    });
+
+    return { success: true };
   }
 } 

@@ -264,7 +264,7 @@ export class AuthService {
     // Get updated user with profile
     const updatedUser = await this.prisma.user.findUnique({
       where: { id: userId },
-      include: { Profile: true }
+      include: { profile: true }
     });
 
     if (!updatedUser) {
@@ -277,8 +277,8 @@ export class AuthService {
         id: updatedUser.id,
         email: updatedUser.email,
         fullname: updatedUser.fullname,
-        avatar: updatedUser.Profile?.avatarUrl,
-        bio: updatedUser.Profile?.bio
+        avatar: updatedUser.profile?.avatarUrl,
+        bio: updatedUser.profile?.bio
       }
     };
   }

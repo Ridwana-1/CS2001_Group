@@ -11,10 +11,8 @@ console.log('GOOGLE_SECRET:', configService.get('GOOGLE_CLIENT_SECRET'));
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
-  // Add global prefix for all routes except auth routes
-  app.setGlobalPrefix('api', {
-    exclude: ['auth/google', 'auth/google/redirect'],
-  });
+  // Add global prefix for all routes
+  app.setGlobalPrefix('api');
 
   // Enable CORS
   app.enableCors({

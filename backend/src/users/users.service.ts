@@ -44,12 +44,12 @@ export class UsersService {
           id: true,
           email: true,
           fullname: true,
-          lastSeen: true,
-          Profile: {
+          profile: {
             select: {
-              avatarUrl: true,
-            },
-          },
+              bio: true,
+              avatarUrl: true
+            }
+          }
         },
         take: 10,
       });
