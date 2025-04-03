@@ -6,8 +6,9 @@ import product1 from '../../assets/product1.jpg';
 import product2 from '../../assets/product2.jpg';
 import product3 from '../../assets/product3.jpg';
 import product4 from '../../assets/product4.jpg';
+import './Transactions.css';
 
-const Transactions = () => {
+const Transactions = (loggedInUser) => {
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -20,7 +21,7 @@ const Transactions = () => {
 
   const fetchOrders = () => {
     setLoading(true);
-    axios.get('http://localhost:8080/swapsaviour/Checkout/orders')
+    axios.get('http://localhost:8080/swapsaviour/Checkout/orders') // Order Springboot endpoint
       .then((response) => {
         setOrders(response.data);
         setLoading(false);

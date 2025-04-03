@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import Sidebar from './Sidebar'; // Import the Sidebar component
+import Sidebar from './Sidebar'; 
 import './Transactions.css';
 
 const DisputeForm = () => {
@@ -14,7 +14,7 @@ const DisputeForm = () => {
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(false);
 
-  const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || 'http://localhost:5000';
+  const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || 'http://localhost:5000'; //Node js Endpoint 
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -23,7 +23,7 @@ const DisputeForm = () => {
 
   const fetchOrders = () => {
     setLoading(true);
-    axios.get('http://localhost:8080/swapsaviour/Checkout/orders')
+    axios.get('http://localhost:8080/swapsaviour/Checkout/orders') // fetches orders from backend for user to select and order
       .then((response) => {
         setOrders(response.data);
         setLoading(false);
@@ -61,7 +61,7 @@ const DisputeForm = () => {
       description: details
     };
 
-    axios.post(`${API_BASE_URL}/transactions/disputes`, disputeData)
+    axios.post(`${API_BASE_URL}/transactions/disputes`, disputeData) // stores dispute in db after 
       .then(response => {
         setSuccess(true);
         setLoading(false);
@@ -79,7 +79,7 @@ const DisputeForm = () => {
 
   return (
     <div className="page-container">
-      <Sidebar /> {/* Add the Sidebar component here */}
+      <Sidebar /> 
 
       <main className="main-content">
         <div className="dispute-form-container">
@@ -114,7 +114,7 @@ const DisputeForm = () => {
                 type="email" 
                 id="email"
                 value={email} 
-                onChange={(e) => setEmail(e.target.value)}
+                onChange={(e) => setEmail(e.target.value)} // storing user email to send confirmation of dispute processing
                 placeholder="Enter your email"
                 required
               />

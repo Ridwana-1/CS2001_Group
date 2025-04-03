@@ -3,13 +3,14 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0.75rem 2rem;
-  background-color: rgba(255, 255, 255, 0.8); /* Semi-transparent for blur effect */
-  backdrop-filter: blur(10px); /* Blur effect */
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  padding: 0 2rem;
+  background-color: rgba(255, 255, 255, 0.95); /* More opaque for better readability */
+  backdrop-filter: blur(10px);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08); /* Subtle shadow for depth */
   height: 64px;
-  position: relative;
-  z-index: 1;
+  position: sticky; /* Make navbar sticky */
+  top: 0;
+  z-index: 1000; /* Ensure navbar is above other elements */
 }
 
 /* Left Side (Logo & Brand Name) */
@@ -22,33 +23,23 @@
 .logo-container {
   display: flex;
   align-items: center;
-  text-decoration: none !important;
-  border-bottom: none !important;
-}
-
-a.logo-container,
-a.logo-container:hover,
-a.logo-container:active,
-a.logo-container:visited {
-  text-decoration: none !important;
-  border-bottom: none !important;
+  text-decoration: none;
+  border-bottom: none;
 }
 
 .logo {
-  height: 28px;
+  height: 32px; /* Slightly larger logo */
   width: auto;
   margin-right: 0.75rem;
 }
 
 .brand-name {
   font-size: 1.5rem;
-  font-weight: bold;
+  font-weight: 700; /* Bolder font */
   color: #d46136;
   margin: 0;
   white-space: nowrap;
-  font-family: sans-serif;
-  text-decoration: none !important;
-  border-bottom: none !important;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Modern font */
 }
 
 /* Center Search Bar */
@@ -77,13 +68,14 @@ a.logo-container:visited {
 .search-input:focus {
   border-color: #d46136;
   background-color: #fff;
+  box-shadow: 0 0 0 3px rgba(212, 97, 54, 0.1); /* Focus ring */
 }
 
 /* Right Side (Navigation Links & Profile) */
 .nav-right {
   display: flex;
   align-items: center;
-  gap: 2rem;
+  gap: 1.5rem; /* More consistent spacing */
   justify-content: flex-end;
   height: 100%;
 }
@@ -93,16 +85,50 @@ a.logo-container:visited {
   text-decoration: none;
   font-size: 1rem;
   font-weight: 500;
-  font-family: sans-serif;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   position: relative;
   height: 100%;
   display: flex;
   align-items: center;
-  transition: color 0.3s ease;
+  transition: color 0.2s ease;
+  padding: 0 0.5rem;
 }
 
 .nav-link:hover {
   color: #d46136;
+}
+
+/* Add underline effect on hover */
+.nav-link:after {
+  content: '';
+  position: absolute;
+  bottom: -5px;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background-color: #d46136;
+  transition: width 0.3s ease;
+}
+
+.nav-link:hover:after {
+  width: 100%;
+}
+
+/* Login button */
+.login-button {
+  background-color: #d46136;
+  color: white;
+  border: none;
+  border-radius: 20px;
+  padding: 0.5rem 1.5rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.login-button:hover {
+  background-color: #bf5630;
 }
 
 /* Notification icon */
@@ -118,12 +144,13 @@ a.logo-container:visited {
 .notifications-container {
   position: absolute;
   top: 60px;
-  right: 80px;
-  width: 300px;
+  right: 0;
+  width: 320px; /* Slightly wider */
   background-color: #fff;
   border-radius: 8px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
   z-index: 10;
+  overflow: hidden; /* Ensure rounded corners */
 }
 
 .notifications-box {
@@ -136,6 +163,7 @@ a.logo-container:visited {
   font-size: 1.1rem;
   border-bottom: 1px solid #eee;
   padding-bottom: 0.5rem;
+  font-weight: 600;
 }
 
 .notification-item {
@@ -157,6 +185,7 @@ a.logo-container:visited {
 .notification-type {
   font-weight: bold;
   margin-right: 0.25rem;
+  color: #d46136;
 }
 
 .notification-actions {
@@ -170,14 +199,23 @@ a.logo-container:visited {
   border: none;
   border-radius: 4px;
   cursor: pointer;
+  transition: background-color 0.2s ease;
 }
 
 .mark-read-btn {
   background-color: #eee;
 }
 
+.mark-read-btn:hover {
+  background-color: #e0e0e0;
+}
+
 .dismiss-btn {
   background-color: #f0f0f0;
+}
+
+.dismiss-btn:hover {
+  background-color: #e0e0e0;
 }
 
 /* Profile Icon */
@@ -187,6 +225,12 @@ a.logo-container:visited {
   border-radius: 50%;
   overflow: hidden;
   cursor: pointer;
+  border: 2px solid #eee; /* Add border */
+  transition: border-color 0.3s ease;
+}
+
+.profile-icon:hover {
+  border-color: #d46136;
 }
 
 .avatar {
@@ -201,39 +245,59 @@ a.logo-container:visited {
   top: 65px;
   right: 0;
   background-color: #fff;
-  border: 1px solid #e1e1e1;
+  border: none; /* Remove border */
   border-radius: 8px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  width: 150px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  width: 180px; /* Wider */
   padding: 0.5rem 0;
   z-index: 10;
+  overflow: hidden; /* Ensure rounded corners */
 }
 
 .dropdown-item {
-  padding: 0.5rem 1rem;
+  padding: 0.75rem 1rem;
   color: #333;
   text-decoration: none;
   display: block;
-  transition: background-color 0.3s ease;
-  font-family: sans-serif;
+  transition: all 0.2s ease;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-size: 0.95rem;
 }
 
 .dropdown-item:hover {
-  background-color: #f0f0f0;
+  background-color: #f5f5f5;
+  color: #d46136;
+  padding-left: 1.25rem; /* Shift right on hover */
 }
 
 /* Responsive Styles */
+@media (max-width: 992px) {
+  .nav-center {
+    max-width: 300px;
+    margin: 0 1rem;
+  }
+}
+
 @media (max-width: 768px) {
   .navbar {
     padding: 0.75rem 1rem;
   }
+  
   .nav-center {
     display: none;
   }
+  
   .nav-right {
     gap: 1rem;
   }
-  .nav-link {
+  
+  /* Hide all nav links except home on mobile */
+  .nav-link:not(:first-child) {
     display: none;
+  }
+  
+  /* Show mobile menu button */
+  .mobile-menu-btn {
+    display: block;
   }
 }

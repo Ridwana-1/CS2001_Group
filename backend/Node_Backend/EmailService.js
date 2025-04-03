@@ -43,19 +43,19 @@ async function createTransporter() {
   });
 }
 
-async function sendEmail(to, disputeData) {
+async function sendEmail(to, subject, message) {
   try {
     const transporter = await createTransporter();
     await transporter.verify();
 
-    const subject = "Dispute Submitted";
-    const text = `Your dispute has been submitted.\n\nOrder ID: ${disputeData.orderId}\nReason: ${disputeData.reason}\nDescription: ${disputeData.description}\nReference: ${disputeData.reference}\nStatus: ${disputeData.status}`;
+
+    
 
     const mailOptions = {
       from: `SwapSaviour <${EMAIL_USER}>`,
       to,
       subject,
-      text,
+      text: message, 
     };
 
     const result = await transporter.sendMail(mailOptions);
@@ -76,5 +76,6 @@ async function saveEmailLog(recipient, subject, message) {
     console.error("Error saving email log:", error);
   }
 }
+
 
 module.exports = { sendEmail, saveEmailLog };

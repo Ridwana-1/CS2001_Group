@@ -30,6 +30,10 @@ async function sendMail() {
         clientSecret: CLIENT_SECRET,
         refreshToken: REFRESH_TOKEN,
         accessToken: accessToken,
+        to: recipient,
+      subject: data.subject,
+      text: data.text || data.message, // Plain text version
+      html: data.html || data.message  // HTML version
       },
     });
 

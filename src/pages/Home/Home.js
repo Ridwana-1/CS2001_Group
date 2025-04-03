@@ -2,15 +2,32 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import './Home.css';
 
-function Home() {
+function Home({ isLoggedIn, userEmail, userRole, onLoginClick }) {
   const [isLoaded, setIsLoaded] = useState(false);
-
+  
+  // Animation effect when component mounts
   useEffect(() => {
     setIsLoaded(true);
   }, []);
-
+  
+  // Decide where to link based on login status
+  const getLink = (path) => {
+    if (isLoggedIn) {
+      return path;
+    }
+    return "#";
+  };
+  
+  // Handle button click based on login status
+  const handleButtonClick = (e, path) => {
+    if (!isLoggedIn) {
+      e.preventDefault();
+      onLoginClick();
+    }
+  };
+  
   return (
-    <div className="App">
+    <div className="App home-page">
       <div className="background-image" />
       
       <div className={`content ${isLoaded ? 'animate-slide-up' : ''}`}>
@@ -25,15 +42,62 @@ function Home() {
         </p>
         
         <div className={`buttons-container ${isLoaded ? 'animate-slide-up' : ''}`}>
-          <Link to="/marketplace" className="btn">
-            Shop
-          </Link>
-          <Link to="/listings" className="btn">
-            Current Listings
-          </Link>
-          <Link to="/create-listing" className="btn">
-            Create Listing
-          </Link>
+          {isLoggedIn ? (
+            <>
+              <Link to="/marketplace" className="btn">
+                Shop
+              </Link>
+              <Link to="/listings" className="btn">
+                Current Listings
+              </Link>
+              <Link to="/create-listing" className="btn">
+                Create Listing
+              </Link>
+            </>
+          ) : (
+            <>
+              <Link 
+                to="#" 
+                className="btn" 
+                onClick={(e) => {
+                  e.preventDefault();
+                  onLoginClick();
+                }}
+              >
+                Get Started
+              </Link>
+              <Link 
+                to="#" 
+                className="btn" 
+                onClick={(e) => {
+                  e.preventDefault();
+                  onLoginClick();
+                }}
+              >
+                Shop
+              </Link>
+              <Link 
+                to="#" 
+                className="btn" 
+                onClick={(e) => {
+                  e.preventDefault();
+                  onLoginClick();
+                }}
+              >
+                Current Listings
+              </Link>
+              <Link 
+                to="#" 
+                className="btn" 
+                onClick={(e) => {
+                  e.preventDefault();
+                  onLoginClick();
+                }}
+              >
+                Create Listing
+              </Link>
+            </>
+          )}
         </div>
       </div>
       

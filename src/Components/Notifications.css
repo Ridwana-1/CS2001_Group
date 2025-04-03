@@ -82,4 +82,208 @@
   .dismiss-btn:hover {
     background-color: #c0392b;
   }
+  /* Add these styles to your Navbar.css file */
+
+/* Authentication buttons in navbar */
+.nav-auth-buttons {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.auth-button {
+  padding: 8px 16px;
+  border-radius: 20px;
+  text-decoration: none;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.auth-button.login {
+  background-color: transparent;
+  border: 1px solid var(--color-primary, #FF6B35);
+  color: var(--color-primary, #FF6B35);
+}
+
+.auth-button.signup {
+  background-color: var(--color-primary, #FF6B35);
+  color: white;
+}
+
+.auth-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Dropdown menu enhancements */
+.dropdown-menu {
+  position: absolute;
+  top: 60px;
+  right: 10px;
+  width: 180px;
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  padding: 10px 0;
+  z-index: 1000;
+  animation: dropdownFade 0.2s ease-out;
+}
+
+@keyframes dropdownFade {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.dropdown-item {
+  display: block;
+  padding: 10px 20px;
+  color: #333;
+  text-decoration: none;
+  transition: background-color 0.2s;
+}
+
+.dropdown-item:hover {
+  background-color: #f8f8f8;
+}
+
+.dropdown-item.logout {
+  color: #e74c3c;
+  border-top: 1px solid #eee;
+  margin-top: 5px;
+  padding-top: 10px;
+  cursor: pointer;
+}
+
+/* Profile and notification icon enhancements */
+.profile-icon {
+  cursor: pointer;
+  transition: transform 0.3s ease;
+}
+
+.profile-icon:hover {
+  transform: scale(1.1);
+}
+
+.notification-icon {
+  cursor: pointer;
+  position: relative;
+  margin-right: 15px;
+  transition: transform 0.3s ease;
+}
+
+.notification-icon:hover {
+  transform: scale(1.1);
+}
+
+.notification-bell {
+  font-size: 1.3rem;
+}
+
+/* Enhanced notification styling */
+.notifications-container {
+  position: absolute;
+  top: 60px;
+  right: 50px;
+  width: 320px;
+  max-height: 400px;
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.15);
+  z-index: 1000;
+  overflow: hidden;
+  animation: notificationFade 0.3s ease-out;
+}
+
+@keyframes notificationFade {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.notifications-box {
+  display: flex;
+  flex-direction: column;
+}
+
+.notifications-title {
+  padding: 15px;
+  background-color: #f8f8f8;
+  border-bottom: 1px solid #eee;
+  margin: 0;
+  font-weight: 600;
+}
+
+.notifications-list {
+  max-height: 350px;
+  overflow-y: auto;
+  padding: 0 10px;
+}
+
+.notification-item {
+  padding: 12px;
+  border-bottom: 1px solid #f0f0f0;
+  transition: background-color 0.2s;
+}
+
+.notification-item:hover {
+  background-color: #f9f9f9;
+}
+
+.notification-item.read {
+  opacity: 0.7;
+}
+
+.notification-message {
+  margin-bottom: 8px;
+  font-size: 0.9rem;
+  line-height: 1.4;
+}
+
+.notification-type {
+  font-weight: 600;
+  color: var(--color-primary, #FF6B35);
+  margin-right: 5px;
+  display: block;
+  margin-bottom: 3px;
+}
+
+.notification-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+.mark-read-btn, .dismiss-btn {
+  padding: 4px 8px;
+  font-size: 0.8rem;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.mark-read-btn {
+  background-color: #e1f5fe;
+  color: #0288d1;
+}
+
+.dismiss-btn {
+  background-color: #f1f1f1;
+  color: #757575;
+}
+
+.mark-read-btn:hover, .dismiss-btn:hover {
+  filter: brightness(0.95);
+}
   
