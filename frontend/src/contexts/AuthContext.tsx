@@ -1,3 +1,15 @@
+/**
+ * AuthContext Component
+ * @author Sultan Jurabekov
+ * @functionality Authentication context provider that handles:
+ * - User authentication state
+ * - Login/logout functionality
+ * - Token management
+ * - Session persistence
+ * - Protected route access
+ * @created February 10, 2024
+ */
+
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import api from '../api/axios';
 
