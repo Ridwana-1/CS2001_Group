@@ -1,3 +1,15 @@
+/**
+ * App Component
+ * @author Sultan Jurabekov
+ * @functionality Main application component that handles:
+ * - Route configuration
+ * - Protected route setup
+ * - Authentication provider
+ * - Theme provider
+ * - Global layout
+ * @created February 5, 2024
+ */
+
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 import ProtectedRoute from "./components/ProtectedRoute";
 import Login from "./pages/Login";
