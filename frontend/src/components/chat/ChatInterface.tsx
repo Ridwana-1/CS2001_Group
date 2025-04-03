@@ -349,7 +349,7 @@ const ChatDetail = ({
 
     const fetchTypingStatus = async () => {
       try {
-        const response = await api.get(`/api/chats/${activeRecipient.id}/typing`);
+        const response = await api.get(`/chats/${activeRecipient.id}/typing`);
         setUserStatus({ isTyping: response.data.isTyping });
       } catch (error) {
         console.error('Error fetching typing status:', error);
@@ -373,7 +373,7 @@ const ChatDetail = ({
       onSendMessage(message.trim());
       setMessage("");
       // Send typing status false
-      api.post(`/api/chats/${activeRecipient?.id}/typing`, { isTyping: false });
+      api.post(`/chats/${activeRecipient?.id}/typing`, { isTyping: false });
     }
   };
 
@@ -387,7 +387,7 @@ const ChatDetail = ({
 
     const handleTyping = async () => {
       try {
-        await api.post(`/api/chats/${activeRecipient.id}/typing`, {
+        await api.post(`/chats/${activeRecipient.id}/typing`, {
           isTyping: message.length > 0
         });
       } catch (error) {
@@ -399,7 +399,7 @@ const ChatDetail = ({
       handleTyping();
       typingTimeoutRef.current = setTimeout(async () => {
         try {
-          await api.post(`/api/chats/${activeRecipient.id}/typing`, {
+          await api.post(`/chats/${activeRecipient.id}/typing`, {
             isTyping: false
           });
         } catch (error) {
@@ -578,7 +578,7 @@ const ChatInterface: React.FC = () => {
   useEffect(() => {
     const fetchCurrentUser = async () => {
       try {
-        const response = await api.get('/api/auth/profile');
+        const response = await api.get('/auth/profile');
         setCurrentUser(response.data);
       } catch (error) {
         console.error('Error fetching user data:', error);
@@ -594,7 +594,7 @@ const ChatInterface: React.FC = () => {
   useEffect(() => {
     const fetchChats = async () => {
       try {
-        const response = await api.get('/api/chats');
+        const response = await api.get('/chats');
         const chatsData = response.data.chats || [];
         setChats(chatsData);
       } catch (error) {
@@ -616,7 +616,7 @@ const ChatInterface: React.FC = () => {
 
     const fetchMessages = async () => {
       try {
-        const response = await api.get(`/api/chats/${activeChat}/messages`);
+        const response = await api.get(`/chats/${activeChat}/messages`);
         if (response.data) {
           setMessages(response.data.messages || []);
         }
@@ -638,7 +638,7 @@ const ChatInterface: React.FC = () => {
     if (!activeChat || !content.trim()) return;
 
     try {
-      const response = await api.post(`/api/chats/${activeChat}/messages`, { content });
+      const response = await api.post(`/chats/${activeChat}/messages`, { content });
       const newMessage = response.data;
 
       // Immediately update messages
@@ -676,7 +676,7 @@ const ChatInterface: React.FC = () => {
       }
 
       // Create new chat
-      const response = await api.post('/api/chats', { recipientId: user.id });
+      const response = await api.post('/chats', { recipientId: user.id });
       const newChat = {
         ...response.data,
         recipientId: user.id,
@@ -710,7 +710,7 @@ const ChatInterface: React.FC = () => {
 
   const handleLogout = async () => {
     try {
-      await api.post('/api/auth/logout');
+      await api.post('/auth/logout');
       // Clear all user data
       localStorage.removeItem('token');
       localStorage.removeItem('user');
