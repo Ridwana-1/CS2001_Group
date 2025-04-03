@@ -55,7 +55,7 @@ const UserSearch: React.FC<UserSearchProps> = ({ onClose, onSelect }) => {
       try {
         // Небольшая задержка для дебаунса
         const timer = setTimeout(async () => {
-          const response = await api.get(`/api/users/search?query=${encodeURIComponent(query)}`);
+          const response = await api.get(`/users/search?query=${encodeURIComponent(query)}`);
           setResults(response.data.users || []);
           setLoading(false);
         }, 500);
