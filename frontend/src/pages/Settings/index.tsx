@@ -52,7 +52,7 @@ const Settings: React.FC = () => {
   useEffect(() => {
     const fetchUserData = async () => {
       try {
-        const response = await api.get('/api/auth/profile');
+        const response = await api.get('/auth/profile');
         setUser(response.data);
       } catch (error) {
         console.error('Error fetching user data:', error);
@@ -67,7 +67,7 @@ const Settings: React.FC = () => {
 
   const handleLogout = async () => {
     try {
-      await api.post('/api/auth/logout');
+      await api.post('/auth/logout');
       localStorage.removeItem('token');
       localStorage.removeItem('user');
       sessionStorage.clear();
