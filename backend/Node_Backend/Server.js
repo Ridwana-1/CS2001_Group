@@ -3,7 +3,7 @@ const cors = require("cors");
 const { sendEmail, saveEmailLog } = require("./EmailService");
 require("dotenv").config();
 const mysql = require("mysql2");
-const bcrypt = require("bcrypt"); // Add this dependency
+const bcrypt = require("bcrypt"); 
 
 const app = express();
 app.use(cors());
@@ -105,9 +105,7 @@ db.connect((err) => {
 
 const promiseDb = db.promise();
 
-// ========================
-// Authentication Endpoints
-// ========================
+
 
 // Register new user endpoint
 app.post("/register", async (req, res) => {
@@ -318,11 +316,7 @@ app.post("/api/messages", async (req, res) => {
   }
 });
 
-// ========================
-// Dispute Endpoints
-// ========================
 
-// POST endpoint to submit a dispute
 app.post("/transactions/disputes", async (req, res) => {
   try {
     const { orderId, email, reason, description } = req.body;
