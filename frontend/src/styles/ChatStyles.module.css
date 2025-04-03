@@ -1,3 +1,16 @@
+/**
+ * ChatStyles Module
+ * @author Sultan Jurabekov
+ * @functionality CSS module for chat interface styling:
+ * - Chat list and item styles
+ * - Message bubble styling
+ * - Unread message indicators
+ * - Avatar and user info styling
+ * - Responsive design elements
+ * - Theme-specific variables
+ * @created February 20, 2024
+ */
+
 .chatList {
   width: 100%;
   max-width: 400px;
