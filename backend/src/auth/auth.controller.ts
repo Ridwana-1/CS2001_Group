@@ -82,9 +82,10 @@ export class AuthController {
       // Handle Google login and get token
       const result = await this.authService.googleLogin(req);
 
-      // Redirect to frontend with token
+      // Redirect to frontend with token and user data
       const frontendUrl = 'http://localhost:5173';
-      const redirectUrl = `${frontendUrl}/dashboard?token=${result.access_token}`;
+      const userData = encodeURIComponent(JSON.stringify(result.user));
+      const redirectUrl = `${frontendUrl}/auth/callback?token=${result.access_token}&user=${userData}`;
       
       // Используем 302 для временного редиректа
       res.status(302).redirect(redirectUrl);

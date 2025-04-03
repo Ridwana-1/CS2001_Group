@@ -13,7 +13,7 @@
 import axios from 'axios';
 
 const api = axios.create({
-  baseURL: 'http://localhost:3000',  // Remove /api from baseURL
+  baseURL: 'http://localhost:3000/api',  // Add /api to baseURL
   headers: {
     'Content-Type': 'application/json',
   },
@@ -39,6 +39,15 @@ api.interceptors.request.use(
         window.location.href = '/login';
         return Promise.reject(new Error('Private browsing detected'));
       }
+
+      // Проверяем, что токен не пустой
+      if (token.trim() === '') {
+        localStorage.removeItem('token');
+        localStorage.removeItem('user');
+        window.location.href = '/login';
+        return Promise.reject(new Error('Invalid token'));
+      }
+
       config.headers.Authorization = `Bearer ${token}`;
     }
     return config;
