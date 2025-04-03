@@ -1,11 +1,12 @@
 /**
  * ProtectedRoute Component
  * @author Sultan Jurabekov
- * @functionality Route protection component that:
- * - Checks user authentication status
- * - Redirects unauthorized users
- * - Handles loading states
- * - Manages route access control
+ * @functionality Route protection component that handles:
+ * - Authentication status verification
+ * - Unauthorized user redirection
+ * - Loading state management
+ * - Route access control
+ * - Session validation
  * @created February 12, 2024
  */
 

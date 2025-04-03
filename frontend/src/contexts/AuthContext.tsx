@@ -1,12 +1,12 @@
 /**
- * AuthContext Component
+ * AuthContext Module
  * @author Sultan Jurabekov
  * @functionality Authentication context provider that handles:
- * - User authentication state
+ * - User authentication state management
  * - Login/logout functionality
- * - Token management
- * - Session persistence
- * - Protected route access
+ * - Token management and persistence
+ * - Protected route access control
+ * - Session management
  * @created February 10, 2024
  */
 

@@ -2,11 +2,11 @@
  * App Component
  * @author Sultan Jurabekov
  * @functionality Main application component that handles:
- * - Route configuration
+ * - Route configuration and management
  * - Protected route setup
- * - Authentication provider
- * - Theme provider
- * - Global layout
+ * - Authentication provider integration
+ * - Theme provider setup
+ * - Global layout and styling
  * @created February 5, 2024
  */
 
