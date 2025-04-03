@@ -10,6 +10,7 @@
  * - Theme switching
  * - User profile management
  * - Responsive design with mobile support
+ * @created February 15, 2024
  */
 
 import React, { useState, useEffect, useRef } from "react";
