@@ -1,3 +1,14 @@
+/**
+ * ProtectedRoute Component
+ * @author Sultan Jurabekov
+ * @functionality Route protection component that:
+ * - Checks user authentication status
+ * - Redirects unauthorized users
+ * - Handles loading states
+ * - Manages route access control
+ * @created February 12, 2024
+ */
+
 import React, { useEffect, useState } from 'react';
 import { Navigate, useNavigate } from 'react-router-dom';
 import api from '../api/axios';
@@ -23,7 +34,7 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children }) => {
 
       try {
         // Verify token by making a request to profile endpoint
-        await api.get('/api/auth/profile');
+        await api.get('/auth/profile');
         setIsAuthenticated(true);
       } catch (error) {
         console.error('Auth check failed:', error);
