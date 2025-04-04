@@ -10,6 +10,7 @@ import ReceiptPage from './pages/Transactions/ReceiptPage.jsx';
 import DisputeForm from './pages/Transactions/DisputeForm.jsx';
 import ChatSystem from './pages/Transactions/ChatSystem.jsx';
 import LoginBox from './LoginBox';
+import FoodSwipeInterface from './pages/Shop.jsx/Shop.jsx'; // Import the FoodSwipeInterface component
 
 function App() {
   // Global state for authentication
@@ -76,12 +77,16 @@ function App() {
             } 
           />
           
+          {/* Food Swipe Interface Route */}
+         
+          
+          
           {/* Protected routes */}
           <Route 
             path="/marketplace" 
             element={
               isLoggedIn ? (
-                <div>Marketplace Page</div>
+                <FoodSwipeInterface />
               ) : (
                 <Navigate to="/" state={{ showLogin: true }} />
               )

@@ -1,0 +1,248 @@
+/* Shop.css - Styling for the Food Swipe Interface */
+
+/* Card animations and transitions */
+.food-card {
+    transition: transform 0.3s ease;
+    transform-origin: center center;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    user-select: none;
+    position: relative;
+    background-color: white;
+    border-radius: 12px;
+    overflow: hidden;
+    will-change: transform;
+    touch-action: pan-y;
+  }
+  
+  .food-card:active {
+    cursor: grabbing;
+  }
+  
+  /* Status indicators for swipe direction */
+  .swipe-indicator {
+    position: absolute;
+    z-index: 10;
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-weight: bold;
+    letter-spacing: 1px;
+    font-size: 14px;
+    opacity: 0;
+    transition: opacity 0.2s ease;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  }
+  
+  .food-card.swiping-right .swipe-indicator.save {
+    opacity: 1;
+    top: 15px;
+    right: 15px;
+    background-color: #10b981;
+    color: white;
+    transform: rotate(12deg);
+  }
+  
+  .food-card.swiping-left .swipe-indicator.pass {
+    opacity: 1;
+    top: 15px;
+    left: 15px;
+    background-color: #ef4444;
+    color: white;
+    transform: rotate(-12deg);
+  }
+  
+  /* Card image styling */
+  .food-image {
+    width: 100%;
+    height: 250px;
+    object-fit: cover;
+    border-bottom: 1px solid #f0f0f0;
+  }
+  
+  /* Food information section */
+  .food-info {
+    padding: 16px;
+  }
+  
+  .food-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+  }
+  
+  .food-name {
+    font-size: 20px;
+    font-weight: 700;
+    color: #1f2937;
+    margin: 0;
+  }
+  
+  .food-price {
+    font-size: 18px;
+    font-weight: 600;
+    color: #10b981;
+  }
+  
+  .food-cuisine {
+    font-size: 14px;
+    color: #6b7280;
+    margin-bottom: 8px;
+  }
+  
+  .food-description {
+    color: #4b5563;
+    font-size: 15px;
+    line-height: 1.4;
+  }
+  
+  /* Action buttons */
+  .action-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 32px;
+    margin-top: 24px;
+  }
+  
+  .action-button {
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    background-color: white;
+    transition: all 0.2s ease;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  .pass-button {
+    border: 2px solid #ef4444;
+    color: #ef4444;
+    font-size: 24px;
+  }
+  
+  .pass-button:hover {
+    background-color: #fee2e2;
+  }
+  
+  .save-button {
+    border: 2px solid #10b981;
+    color: #10b981;
+    font-size: 24px;
+  }
+  
+  .save-button:hover {
+    background-color: #d1fae5;
+  }
+  
+  .action-button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+  
+  /* Empty state */
+  .empty-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 250px;
+    text-align: center;
+    padding: 20px;
+  }
+  
+  .empty-title {
+    font-size: 24px;
+    font-weight: 700;
+    margin-bottom: 16px;
+    color: #1f2937;
+  }
+  
+  .empty-message {
+    color: #6b7280;
+    margin-bottom: 24px;
+  }
+  
+  .restart-button {
+    background-color: #3b82f6;
+    color: white;
+    padding: 8px 16px;
+    border-radius: 6px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+  }
+  
+  .restart-button:hover {
+    background-color: #2563eb;
+  }
+  
+  /* Saved foods section */
+  .saved-section {
+    margin-top: 32px;
+  }
+  
+  .saved-title {
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 8px;
+    color: #1f2937;
+  }
+  
+  .saved-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  
+  .saved-tag {
+    background-color: #d1fae5;
+    border-radius: 4px;
+    padding: 4px 12px;
+    font-size: 14px;
+    color: #059669;
+  }
+  
+  .no-saved {
+    color: #9ca3af;
+    font-size: 14px;
+  }
+  
+  /* Container styling */
+  .swipe-container {
+    max-width: 450px;
+    margin: 0 auto;
+    padding: 16px;
+  }
+  
+  .app-title {
+    text-align: center;
+    font-size: 24px;
+    font-weight: 700;
+    margin-bottom: 24px;
+    color: #1f2937;
+  }
+  
+  /* Card container - maintains consistent height */
+  .card-container {
+    height: 380px;
+    margin-bottom: 24px;
+    position: relative;
+  }
+  
+  /* Media queries for responsiveness */
+  @media (max-width: 640px) {
+    .card-container {
+      height: 350px;
+    }
+    
+    .food-image {
+      height: 200px;
+    }
+    
+    .action-button {
+      width: 56px;
+      height: 56px;
+    }
+  }
