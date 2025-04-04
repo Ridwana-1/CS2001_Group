@@ -16,7 +16,11 @@
     "cra-template": "1.2.0",
     "dotenv": "^16.4.7",
     "googleapis": "^146.0.0",
+<<<<<<< HEAD
     "lucide-react": "^0.485.0",
+=======
+    "lucide-react": "^0.484.0",
+>>>>>>> main
     "mysql2": "^3.13.0",
     "nodemailer": "^6.10.0",
     "react": "^19.0.0",
