@@ -1,80 +1,146 @@
 import React from 'react';
 import './Receipt.css';
 
-const Receipt = ({ order }) => {
+function Receipt({ order, trades, tradesLoading }) {
+  
   const formatDate = (dateString) => {
-    const date = new Date(dateString);
-    return date.toLocaleDateString('en-GB', {
-      day: '2-digit',
-      month: '2-digit',
-      year: 'numeric'
-    });
-  };
-
-  const formatTime = (dateString) => {
-    const date = new Date(dateString);
-    return date.toLocaleTimeString('en-GB', {
+    if (!dateString) return 'Date not available';
+    
+    const options = { 
+      year: 'numeric', 
+      month: 'long', 
+      day: 'numeric',
       hour: '2-digit',
       minute: '2-digit'
-    });
+    };
+    return new Date(dateString).toLocaleDateString(undefined, options);
+  };
+
+  // Format price with currency symbol
+  const formatPrice = (price) => {
+    if (price === null || price === undefined) return '--';
+    
+    return new Intl.NumberFormat('en-US', {
+      style: 'currency',
+      currency: 'USD'
+    }).format(price);
+  };
+
+  // Get status class based on trade status
+  const getStatusClass = (status) => {
+    if (!status) return '';
+    
+    switch(status.toLowerCase()) {
+      case 'completed':
+        return 'completed';
+      case 'pending':
+        return 'pending';
+      case 'canceled':
+        return 'canceled';
+      default:
+        return '';
+    }
+  };
+
+  // Get status indicator class
+  const getStatusIndicatorClass = (status) => {
+    if (!status) return '';
+    
+    switch(status.toLowerCase()) {
+      case 'completed':
+        return 'status-active';
+      case 'pending':
+        return 'status-pending';
+      case 'canceled':
+        return 'status-canceled';
+      default:
+        return '';
+    }
   };
 
   return (
     <div className="receipt-container">
       <div className="receipt-header">
-        <h2>SwapSaviour</h2>
-        <p>Receipt #{order.id}</p>
-      </div>
-      
-      <div className="receipt-details">
-        <div className="receipt-row">
-          <span>Date:</span>
-          <span>{formatDate(order.orderDate)}</span>
-        </div>
-        <div className="receipt-row">
-          <span>Time:</span>
-          <span>{formatTime(order.orderDate)}</span>
-        </div>
-        <div className="receipt-row">
-          <span>Shop:</span>
-          <span>{order.shop}</span>
-        </div>
-        <div className="receipt-row">
-          <span>Status:</span>
-          <span className={`status ${order.orderStatus.toLowerCase()}`}>{order.orderStatus}</span>
-        </div>
-      </div>
-      
-      <div className="receipt-items">
-        <h3>Items</h3>
-        <div className="receipt-item">
-          <div className="receipt-item-details">
-            <span className="item-name">{order.item}</span>
-            <span className="item-quantity">x{order.quantity}</span>
+        <div>
+          <h3>Order #{order.id}</h3>
+          <div className="order-date">
+            {formatDate(order.date)}
           </div>
-          <span className="item-price">£{(order.price / order.quantity).toFixed(2)}</span>
         </div>
       </div>
       
-      <div className="receipt-summary">
-        <div className="receipt-row total">
-          <span>Total:</span>
-          <span>£{order.price}</span>
+      <div className="receipt-body">
+        <div className="order-summary">
+          <p className="summary-label">Total Trades:</p>
+          <p className="summary-value">{trades.length}</p>
+          
+          {order.orderTotal && (
+            <>
+              <p className="summary-label">Order Total:</p>
+              <p className="summary-value">{formatPrice(order.orderTotal)}</p>
+            </>
+          )}
         </div>
-        <div className="receipt-row">
-          <span>Payment Method:</span>
-          <span>{order.paymentMethod || "Credit Card"}</span>
+        
+        <div className="trade-section">
+          <h4>Trades in this Order</h4>
+          
+          {tradesLoading ? (
+            <div className="trades-loading">Loading trades information...</div>
+          ) : trades.length === 0 ? (
+            <div className="empty-trades">No trades found for this order.</div>
+          ) : (
+            <div className="trades-list">
+              {trades.map((trade, index) => (
+                <div 
+                  key={index} 
+                  className={`trade-item ${getStatusClass(trade.tradeStatus)}`}
+                >
+                  {trade.shop && (
+                    <span className="shop-badge">
+                      {trade.shop}
+                    </span>
+                  )}
+                  
+                  <div className="trade-info-grid">
+                    <div className="trade-type">
+                      {trade.tradeType || 'Standard Trade'}
+                    </div>
+                    
+                    <div className="trade-status">
+                      <span className={`status-indicator ${getStatusIndicatorClass(trade.tradeStatus)}`}></span>
+                      {trade.tradeStatus || 'Unknown Status'}
+                    </div>
+                    
+                    <div className="trade-price">
+                      <div className="price-total">
+                        {formatPrice(trade.priceTotal)}
+                      </div>
+                      {trade.priceIndividual !== null && trade.priceIndividual !== undefined && (
+                        <div className="price-individual">
+                          {formatPrice(trade.priceIndividual)} each
+                        </div>
+                      )}
+                    </div>
+                    
+                    {trade.itemExchanged ? (
+                      <div className="trade-item-exchanged">
+                        <span className="exchanged-label">Exchanged:</span> {trade.itemExchanged}
+                      </div>
+                    ) : (
+                      <div className="trade-item-exchanged no-item-exchanged">
+                        No items exchanged
+                      </div>
+                    )}
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
         </div>
-      </div>
-      
-      <div className="receipt-footer">
-        <p>Thank you for shopping with SwapSaviour!</p>
-        <button className="print-button" onClick={() => window.print()}>
-          <i className="fas fa-print"></i> Print Receipt
-        </button>
       </div>
     </div>
   );
-};
+}
 
 export default Receipt;

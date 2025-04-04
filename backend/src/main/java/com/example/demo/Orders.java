@@ -38,19 +38,20 @@ public class Orders {
     @Column(name = "quantity")
     private Integer quantity;
 
-    @Column(name = "user_email", nullable = false)
-    private String userEmail;
+    @Column(name = "user_id", nullable = false)
+    private Long userId;
 
     public Orders() {}
 
-    public Orders(String shop, LocalDateTime orderDate, OrderStatus orderStatus, Double price, String item, Integer quantity, String userEmail) {
+    
+    public Orders(String shop, LocalDateTime orderDate, OrderStatus orderStatus, Double price, String item, Integer quantity, Long userId) {
         this.shop = shop;
         this.orderDate = orderDate;
         this.orderStatus = orderStatus;
         this.price = price;
         this.item = item;
         this.quantity = quantity;
-        this.userEmail = userEmail;
+        this.userId = userId; 
     }
 
     public Long getId() {
@@ -109,12 +110,13 @@ public class Orders {
         this.quantity = quantity;
     }
 
-    public String getUserEmail() {
-        return userEmail;
+    
+    public Long getUserId() {
+        return userId;
     }
 
-    public void setUserEmail(String userEmail) {
-        this.userEmail = userEmail;
+    public void setUserId(Long userId) {
+        this.userId = userId; 
     }
 
     @Override
@@ -127,7 +129,7 @@ public class Orders {
                 ", price=" + price +
                 ", item='" + item + '\'' +
                 ", quantity=" + quantity +
-                ", userEmail='" + userEmail + '\'' +
+                ", userId=" + userId +
                 '}';
     }
 }

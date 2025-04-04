@@ -98,7 +98,7 @@ const AdminDashboard = ({ email, room, setRoom, messages, sendMessage, joinRoom,
     return String(dispute.status).toLowerCase() === disputeFilter.toLowerCase();
   });
 
-  // Render the disputes in an enhanced modal view
+  // Render the disputes in modal view
   const renderDisputesModal = () => (
     <div className="modal">
       <div className="disputes-modal-content">
@@ -152,7 +152,7 @@ const AdminDashboard = ({ email, room, setRoom, messages, sendMessage, joinRoom,
         ) : (
           <div className="disputes-list">
             {filteredDisputes.map((dispute, index) => {
-              // Handle status normalization and case insensitivity
+             
               const statusLower = String(dispute.status || 'Pending').toLowerCase();
               const displayStatus = dispute.status || 'Pending';
               
@@ -216,7 +216,7 @@ const AdminDashboard = ({ email, room, setRoom, messages, sendMessage, joinRoom,
     </div>
   );
 
-  // Handle message submission with Enter key
+
   const handleKeyPress = (e) => {
     if (e.key === 'Enter') {
       sendMessage();

@@ -371,7 +371,7 @@ app.get("/transactions/disputes", async (req, res) => {
     
     // Query all reports from the database
     const [rows] = await promiseDb.query(
-      "SELECT * FROM report_emails ORDER BY created_at DESC"
+      "SELECT * FROM report_emails ORDER BY sent_at DESC"
     );
     
     // Normalize disputes data

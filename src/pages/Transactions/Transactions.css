@@ -245,7 +245,7 @@
   color: var(--failed-color);
   border: 1px solid rgba(244, 67, 54, 0.2);
 }
-/* Dispute Form Enhancement - Professional styling that matches transaction design */
+
 .dispute-container {
   width: 100%;
   max-width: 800px;
@@ -396,7 +396,7 @@ textarea.form-control {
   flex: 1;
 }
 
-/* Helper text styling */
+
 .form-helper {
   margin-top: 0.5rem;
   font-size: 0.85rem;
@@ -414,7 +414,7 @@ textarea.form-control {
   margin-top: 0.5rem;
 }
 
-/* Optional form elements */
+
 .form-label-optional {
   font-weight: normal;
   color: #6b7280;
@@ -422,7 +422,7 @@ textarea.form-control {
   margin-left: 0.5rem;
 }
 
-/* Modern checkbox and radio styling */
+
 .form-check {
   display: flex;
   align-items: flex-start;

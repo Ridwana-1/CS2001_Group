@@ -8,7 +8,7 @@ import product3 from '../../assets/product3.jpg';
 import product4 from '../../assets/product4.jpg';
 import './Transactions.css';
 
-const Transactions = (loggedInUser) => {
+const Transactions = () => {
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -16,22 +16,44 @@ const Transactions = (loggedInUser) => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    fetchOrders();
-  }, []);
+    // Try to get and parse the user from localStorage
+    try {
+      const user = localStorage.getItem("user");
+      if (user) {
+        const userData = JSON.parse(user);
+        fetchOrdersByUserId(userData.id);
+        
+      } else {
+        setError('User not logged in || User data incomplete - missing ID');
+        setLoading(false);
+      }
+    } catch (err) {
+      console.error('Error parsing user data:', err);
+      setError('Error retrieving user information');
+      setLoading(false);
+    }
+  }, []); // Run only on component mount
 
-  const fetchOrders = () => {
+  const fetchOrdersByUserId = (userId) => {
     setLoading(true);
-    axios.get('http://localhost:8080/swapsaviour/Checkout/orders') // Order Springboot endpoint
+    console.log(`Fetching orders for user ID: ${userId}`);
+    
+    axios.get(`http://localhost:8080/swapsaviour/Checkout/orders/user/${userId}`)
       .then((response) => {
+        console.log('Orders received:', response.data);
         setOrders(response.data);
         setLoading(false);
       })
       .catch((error) => {
         console.error('Error fetching orders:', error);
-        setError('Failed to fetch orders');
+        setError(`Failed to fetch orders: ${error.message}`);
         setLoading(false);
       });
   };
+
+  // For debugging
+  const userString = localStorage.getItem("user");
+  const userData = userString ? JSON.parse(userString) : null;
 
   const getProductImages = (itemName) => {
     return [product1, product2, product3, product4];
@@ -43,7 +65,10 @@ const Transactions = (loggedInUser) => {
 
       <main className="main-content">
         <div className="content-header">
-          <h1>Transactions</h1>
+          <h1>Your Transactions</h1>
+          {userData && (
+            <p>Showing orders for: {userData.id}</p>
+          )}
         </div>
 
         {loading && <div className="loading-indicator">Loading transactions...</div>}
@@ -65,7 +90,7 @@ const Transactions = (loggedInUser) => {
               <tbody>
                 {orders.length > 0 ? (
                   orders.map((order) => {
-                    const statusLower = order.orderStatus.toLowerCase();
+                    const statusLower = order.orderStatus ? order.orderStatus.toLowerCase() : 'unknown';
                     return (
                       <tr 
                         key={order.id} 

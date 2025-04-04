@@ -15,7 +15,7 @@ const ChatSystem = () => {
 
   // On mount, load user info from localStorage (or from another global state)
   useEffect(() => {
-    const userInfo = localStorage.getItem('userInfo');
+    const userInfo = localStorage.getItem('user');
     if (userInfo) {
       const parsedInfo = JSON.parse(userInfo);
       setEmail(parsedInfo.email);
