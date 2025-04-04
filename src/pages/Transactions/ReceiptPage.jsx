@@ -5,10 +5,10 @@ import sampleImg1 from '../../assets/product1.jpg';
 import sampleImg2 from '../../assets/product2.jpg';
 import sampleImg3 from '../../assets/product3.jpg';
 import sampleImg4 from '../../assets/product4.jpg';
-import Receipt from './Receipt.jsx';
+import Receipt from './Receipt.jsx';// Reciept file for data format 
 
 import { useParams, useNavigate } from 'react-router-dom';
-import './Receipt.css'; 
+import './Receipt.css';   // reciept stylesheet
 
 function ReceiptPage() {
   const { orderId } = useParams(); // order ID from URL params

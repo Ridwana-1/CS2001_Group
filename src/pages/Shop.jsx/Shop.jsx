@@ -3,8 +3,7 @@ import product1 from '../../assets/product1.jpg';
 import product2 from '../../assets/product2.jpg';
 import product3 from '../../assets/product3.jpg';
 import product4 from '../../assets/product4.jpg';
-import './shop.css'; // Make sure this path is correct
-
+import './shop.css';
 const Shop = () => {
   // Sample food data with your actual product images
   const [foodItems, setFoodItems] = useState([
@@ -168,23 +167,16 @@ const Shop = () => {
     if (!swipeInProgress) handleSwipeLeft();
   };
   
-  // Reset all food items
-  const handleReset = () => {
-    setCurrentIndex(0);
-    setSavedFoods([]);
-    setPassedFoods([]);
-  };
-  
   // Render current food card
   const renderFoodCard = () => {
     if (currentIndex >= foodItems.length) {
       return (
-        <div className="empty-state">
-          <h2 className="empty-title">No more food items!</h2>
-          <p className="empty-message">You've gone through all available options.</p>
+        <div className="flex flex-col items-center justify-center h-64 text-center">
+          <h2 className="text-2xl font-bold mb-4">No more food items!</h2>
+          <p className="text-gray-600">You've gone through all available options.</p>
           <button 
-            className="restart-button"
-            onClick={handleReset}
+            className="mt-6 bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+            onClick={() => setCurrentIndex(0)}
           >
             Start Over
           </button>
@@ -197,7 +189,7 @@ const Shop = () => {
     return (
       <div
         ref={cardRef}
-        className={`food-card ${swipeDirection === 'right' ? 'swiping-right' : ''} ${swipeDirection === 'left' ? 'swiping-left' : ''}`}
+        className="relative bg-white rounded-lg shadow-lg overflow-hidden"
         onMouseDown={handleTouchStart}
         onMouseMove={handleTouchMove}
         onMouseUp={handleTouchEnd}
@@ -206,39 +198,47 @@ const Shop = () => {
         onTouchMove={handleTouchMove}
         onTouchEnd={handleTouchEnd}
       >
-        <div className="swipe-indicator save">SAVE</div>
-        <div className="swipe-indicator pass">PASS</div>
+        {swipeDirection === 'right' && (
+          <div className="absolute top-4 right-4 bg-green-500 text-white px-3 py-1 rounded-full transform rotate-12 z-10">
+            SAVE
+          </div>
+        )}
+        {swipeDirection === 'left' && (
+          <div className="absolute top-4 left-4 bg-red-500 text-white px-3 py-1 rounded-full transform -rotate-12 z-10">
+            PASS
+          </div>
+        )}
         
         <img 
           src={food.image} 
           alt={food.name} 
-          className="food-image"
+          className="w-full h-64 object-cover"
         />
         
-        <div className="food-info">
-          <div className="food-header">
-            <h2 className="food-name">{food.name}</h2>
-            <span className="food-price">{food.price}</span>
+        <div className="p-4">
+          <div className="flex justify-between items-center mb-2">
+            <h2 className="text-xl font-bold">{food.name}</h2>
+            <span className="text-lg font-semibold text-green-600">{food.price}</span>
           </div>
-          <p className="food-cuisine">Cuisine: {food.cuisine}</p>
-          <p className="food-description">{food.description}</p>
+          <p className="text-sm text-gray-600 mb-2">Cuisine: {food.cuisine}</p>
+          <p className="text-gray-700">{food.description}</p>
         </div>
       </div>
     );
   };
   
   return (
-    <div className="swipe-container">
-      <h1 className="app-title">Food Finder</h1>
+    <div className="max-w-md mx-auto p-4">
+      <h1 className="text-2xl font-bold text-center mb-6">Food Finder</h1>
       
-      <div className="card-container">
+      <div className="mb-6 h-96">
         {renderFoodCard()}
       </div>
       
-      <div className="action-buttons">
+      <div className="flex justify-center space-x-8">
         <button 
           onClick={handlePassClick}
-          className="action-button pass-button"
+          className="bg-white border-2 border-red-500 text-red-500 w-16 h-16 rounded-full flex items-center justify-center shadow-lg hover:bg-red-100"
           disabled={currentIndex >= foodItems.length}
         >
           ✕
@@ -246,25 +246,25 @@ const Shop = () => {
         
         <button 
           onClick={handleLikeClick}
-          className="action-button save-button"
+          className="bg-white border-2 border-green-500 text-green-500 w-16 h-16 rounded-full flex items-center justify-center shadow-lg hover:bg-green-100"
           disabled={currentIndex >= foodItems.length}
         >
           ♥
         </button>
       </div>
       
-      <div className="saved-section">
-        <h2 className="saved-title">Saved Foods</h2>
+      <div className="mt-8">
+        <h2 className="text-xl font-semibold mb-2">Saved Foods ({savedFoods.length})</h2>
         {savedFoods.length > 0 ? (
-          <div className="saved-tags">
+          <div className="flex flex-wrap gap-2">
             {savedFoods.map(food => (
-              <div key={food.id} className="saved-tag">
+              <div key={food.id} className="bg-green-100 rounded px-3 py-1 text-sm">
                 {food.name}
               </div>
             ))}
           </div>
         ) : (
-          <p className="no-saved">No saved foods yet.</p>
+          <p className="text-gray-500">No saved foods yet.</p>
         )}
       </div>
     </div>
