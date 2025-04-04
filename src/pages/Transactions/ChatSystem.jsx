@@ -4,16 +4,20 @@ import Sidebar from './Sidebar';
 import AdminDashboard from './AdminDashboard';
 import UserDashboard from './UserDashboard';
 
-const ChatSystem = () => {
+const ChatSystem = () => { 
   const [email, setEmail] = useState('');
   const [room, setRoom] = useState('');
   const [message, setMessage] = useState('');
   const [messages, setMessages] = useState([]);
   const [isAdmin, setIsAdmin] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [newMessageCount, setNewMessageCount] = useState(0);
   const pollingIntervalRef = useRef(null);
+  const messageEndRef = useRef(null);
+  const lastFetchTimeRef = useRef(new Date(0).toISOString());
+  const messageIdsRef = useRef(new Set());
 
-  // On mount, load user info from localStorage (or from another global state)
+  // On mount, load user info from localStorage
   useEffect(() => {
     const userInfo = localStorage.getItem('user');
     if (userInfo) {
@@ -43,7 +47,23 @@ const ChatSystem = () => {
       setLoading(true);
       const response = await axios.get(`http://localhost:5000/api/messages?room=${roomId}`);
       if (response.data.messages) {
-        setMessages(response.data.messages);
+        // Reset message IDs set
+        messageIdsRef.current = new Set();
+        
+        // Process and deduplicate messages
+        const processedMessages = response.data.messages.filter(msg => {
+          const msgId = msg.id || `${msg.email}-${msg.timestamp}`;
+          if (messageIdsRef.current.has(msgId)) return false;
+          messageIdsRef.current.add(msgId);
+          return true;
+        });
+        
+        setMessages(processedMessages);
+        
+        // Update last fetch time to the most recent message
+        if (processedMessages.length > 0) {
+          lastFetchTimeRef.current = processedMessages[processedMessages.length - 1].timestamp;
+        }
       }
       setLoading(false);
     } catch (error) {
@@ -52,13 +72,17 @@ const ChatSystem = () => {
     }
   };
 
-  // Start polling for new messages when a room is selected
+  // Start polling for new messages with an adaptive interval
   useEffect(() => {
     if (room) {
       fetchMessages(room);
+      
+      // Adaptive polling: start with a 5-second interval
+      let pollingInterval = 5000;
+      
       pollingIntervalRef.current = setInterval(() => {
         fetchNewMessages(room);
-      }, 3000); // Poll every 3 seconds
+      }, pollingInterval);
 
       return () => {
         if (pollingIntervalRef.current) {
@@ -69,16 +93,39 @@ const ChatSystem = () => {
     }
   }, [room]);
 
+  // Scroll to bottom when new messages arrive
+  useEffect(() => {
+    if (messageEndRef.current && messages.length > 0) {
+      messageEndRef.current.scrollIntoView({ behavior: 'smooth' });
+    }
+    
+    // Reset new message count when messages change
+    setNewMessageCount(0);
+  }, [messages]);
+
   // Fetch only new messages since the last message in state
   const fetchNewMessages = async (roomId) => {
     try {
-      const lastMessageTime =
-        messages.length > 0 ? messages[messages.length - 1].timestamp : new Date(0).toISOString();
       const response = await axios.get(
-        `http://localhost:5000/api/messages?room=${roomId}&since=${lastMessageTime}`
+        `http://localhost:5000/api/messages?room=${roomId}&since=${lastFetchTimeRef.current}`
       );
+      
       if (response.data.messages && response.data.messages.length > 0) {
-        setMessages(prev => [...prev, ...response.data.messages]);
+        // Process and deduplicate new messages
+        const newMessages = response.data.messages.filter(msg => {
+          const msgId = msg.id || `${msg.email}-${msg.timestamp}`;
+          if (messageIdsRef.current.has(msgId)) return false;
+          messageIdsRef.current.add(msgId);
+          return true;
+        });
+        
+        if (newMessages.length > 0) {
+          setMessages(prev => [...prev, ...newMessages]);
+          setNewMessageCount(prev => prev + newMessages.length);
+          
+          // Update last fetch time
+          lastFetchTimeRef.current = newMessages[newMessages.length - 1].timestamp;
+        }
       }
     } catch (error) {
       console.error('Error fetching new messages:', error);
@@ -94,6 +141,8 @@ const ChatSystem = () => {
       }
       setRoom(roomId);
       setMessages([]);
+      lastFetchTimeRef.current = new Date(0).toISOString();
+      messageIdsRef.current = new Set();
       fetchMessages(roomId);
     }
   };
@@ -106,15 +155,29 @@ const ChatSystem = () => {
         message,
         room,
         timestamp: new Date().toISOString(),
+        // Generate a temporary ID for deduplication
+        tempId: `${email}-${Date.now()}`
       };
+      
       try {
-        // Send message to the server
-        await axios.post('http://localhost:5000/api/messages', messageData);
         // Optimistically add message to the UI
         setMessages(prev => [...prev, messageData]);
+        messageIdsRef.current.add(messageData.tempId);
         setMessage('');
-        // Fetch new messages to ensure we have the latest
-        fetchNewMessages(room);
+        
+        // Send message to the server
+        const response = await axios.post('http://localhost:5000/api/messages', messageData);
+        
+        // If server returns an ID, update our records
+        if (response.data && response.data.id) {
+          messageIdsRef.current.add(response.data.id);
+          // Update the message in our state with the server-assigned ID
+          setMessages(prev => 
+            prev.map(msg => 
+              msg === messageData ? {...msg, id: response.data.id} : msg
+            )
+          );
+        }
       } catch (error) {
         console.error('Error sending message:', error);
       }
@@ -135,6 +198,8 @@ const ChatSystem = () => {
             message={message}
             setMessage={setMessage}
             loading={loading}
+            newMessageCount={newMessageCount}
+            messageEndRef={messageEndRef}
           />
         ) : (
           <UserDashboard
@@ -146,6 +211,8 @@ const ChatSystem = () => {
             message={message}
             setMessage={setMessage}
             loading={loading}
+            newMessageCount={newMessageCount}
+            messageEndRef={messageEndRef}
           />
         )}
       </div>

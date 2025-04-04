@@ -15,26 +15,44 @@ const DisputeForm = () => {
   const [success, setSuccess] = useState(false);
 
   const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || 'http://localhost:5000'; //Node js Endpoint 
+ 
   const navigate = useNavigate();
 
   useEffect(() => {
-    fetchOrders();
-  }, []);
+    // Try to get and parse the user from localStorage
+    try {
+      const user = localStorage.getItem("user");
+      if (user) {
+        const userData = JSON.parse(user);
+        fetchOrdersByUserId(userData.id);
+        
+      } else {
+        setError('User not logged in || User data incomplete - missing ID');
+        setLoading(false);
+      }
+    } catch (err) {
+      console.error('Error parsing user data:', err);
+      setError('Error retrieving user information');
+      setLoading(false);
+    }
+  }, []); // Run only on component mount
 
-  const fetchOrders = () => {
+  const fetchOrdersByUserId = (userId) => {
     setLoading(true);
-    axios.get('http://localhost:8080/swapsaviour/Checkout/orders') // fetches orders from backend for user to select and order
+    console.log(`Fetching orders for user ID: ${userId}`);
+    
+    axios.get(`http://localhost:8080/swapsaviour/Checkout/orders/user/${userId}`)
       .then((response) => {
+        console.log('Orders received:', response.data);
         setOrders(response.data);
         setLoading(false);
       })
-      .catch(err => {
-        console.error('Error fetching orders:', err);
-        setError('Failed to load orders. Please refresh the page.');
+      .catch((error) => {
+        console.error('Error fetching orders:', error);
+        setError(`Failed to fetch orders: ${error.message}`);
         setLoading(false);
       });
   };
-
   const handleSubmit = (e) => {
     e.preventDefault();
 
