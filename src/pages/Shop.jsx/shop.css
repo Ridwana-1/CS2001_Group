@@ -1,535 +1,248 @@
-/* Shop.css - Enhanced Styling for the Food Swipe Interface */
+/* Shop.css - Styling for the Food Swipe Interface */
 
-/* Variables for consistent colors and easy theme management */
-:root {
-    --primary: #10b981;
-    --primary-light: #d1fae5;
-    --primary-dark: #059669;
-    --danger: #ef4444;
-    --danger-light: #fee2e2;
-    --danger-dark: #dc2626;
-    --text-primary: #1f2937;
-    --text-secondary: #4b5563;
-    --text-tertiary: #6b7280;
-    --background: #ffffff;
-    --background-alt: #f9fafb;
-    --border: #f0f0f0;
-    --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
-    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-    --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-    --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
-    --radius-sm: 4px;
-    --radius-md: 8px;
-    --radius-lg: 12px;
-    --radius-xl: 16px;
-    --radius-full: 9999px;
-  }
-  
-  /* Base styles */
-  body {
-    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-    color: var(--text-primary);
-    background-color: var(--background-alt);
-    line-height: 1.5;
-  }
-  
-  /* Card animations and transitions with improved physics */
-  .food-card {
-    transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), 
-                box-shadow 0.3s ease;
+/* Card animations and transitions */
+.food-card {
+    transition: transform 0.3s ease;
     transform-origin: center center;
-    box-shadow: var(--shadow-md);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
     user-select: none;
     position: relative;
-    background-color: var(--background);
-    border-radius: var(--radius-lg);
+    background-color: white;
+    border-radius: 12px;
     overflow: hidden;
     will-change: transform;
     touch-action: pan-y;
-    border: 1px solid var(--border);
-  }
-  
-  .food-card:hover {
-    box-shadow: var(--shadow-lg);
   }
   
   .food-card:active {
     cursor: grabbing;
-    transform: scale(1.02);
   }
   
-  /* Enhanced status indicators for swipe direction */
+  /* Status indicators for swipe direction */
   .swipe-indicator {
     position: absolute;
     z-index: 10;
-    padding: 8px 14px;
-    border-radius: var(--radius-full);
-    font-weight: 600;
-    letter-spacing: 0.5px;
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-weight: bold;
+    letter-spacing: 1px;
     font-size: 14px;
     opacity: 0;
-    transition: opacity 0.2s ease, transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    box-shadow: var(--shadow-md);
-    backdrop-filter: blur(4px);
+    transition: opacity 0.2s ease;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
   }
   
   .food-card.swiping-right .swipe-indicator.save {
     opacity: 1;
-    top: 20px;
-    right: 20px;
-    background-color: var(--primary);
+    top: 15px;
+    right: 15px;
+    background-color: #10b981;
     color: white;
-    transform: rotate(12deg) scale(1.1);
+    transform: rotate(12deg);
   }
   
   .food-card.swiping-left .swipe-indicator.pass {
     opacity: 1;
-    top: 20px;
-    left: 20px;
-    background-color: var(--danger);
+    top: 15px;
+    left: 15px;
+    background-color: #ef4444;
     color: white;
-    transform: rotate(-12deg) scale(1.1);
+    transform: rotate(-12deg);
   }
   
-  /* Enhanced card image styling */
-  .food-image-container {
-    position: relative;
-    overflow: hidden;
-  }
-  
+  /* Card image styling */
   .food-image {
     width: 100%;
     height: 250px;
     object-fit: cover;
-    border-bottom: 1px solid var(--border);
-    transition: transform 0.5s ease;
-  }
-  
-  .food-card:hover .food-image {
-    transform: scale(1.03);
-  }
-  
-  /* Image overlay with gradient for better text contrast */
-  .food-image-overlay {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 80px;
-    background: linear-gradient(to top, transparent, rgba(0, 0, 0, 0.3));
-    z-index: 2;
+    border-bottom: 1px solid #f0f0f0;
   }
   
   /* Food information section */
   .food-info {
-    padding: 20px;
+    padding: 16px;
   }
   
   .food-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 10px;
+    margin-bottom: 8px;
   }
   
   .food-name {
-    font-size: 22px;
+    font-size: 20px;
     font-weight: 700;
-    color: var(--text-primary);
+    color: #1f2937;
     margin: 0;
-    letter-spacing: -0.2px;
   }
   
   .food-price {
-    font-size: 20px;
-    font-weight: 700;
-    color: var(--primary);
-    background-color: var(--primary-light);
-    padding: 6px 10px;
-    border-radius: var(--radius-md);
+    font-size: 18px;
+    font-weight: 600;
+    color: #10b981;
   }
   
   .food-cuisine {
     font-size: 14px;
-    font-weight: 500;
-    color: var(--text-tertiary);
-    margin-bottom: 10px;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-  }
-  
-  .food-description {
-    color: var(--text-secondary);
-    font-size: 16px;
-    line-height: 1.6;
+    color: #6b7280;
     margin-bottom: 8px;
   }
   
-  /* Tags for food attributes */
-  .food-tags {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 6px;
-    margin-top: 12px;
+  .food-description {
+    color: #4b5563;
+    font-size: 15px;
+    line-height: 1.4;
   }
   
-  .food-tag {
-    background-color: var(--background-alt);
-    border-radius: var(--radius-full);
-    padding: 4px 10px;
-    font-size: 12px;
-    font-weight: 500;
-    color: var(--text-tertiary);
-  }
-  
-  /* Enhanced action buttons */
+  /* Action buttons */
   .action-buttons {
     display: flex;
     justify-content: center;
-    gap: 40px;
+    gap: 32px;
     margin-top: 24px;
   }
   
   .action-button {
-    width: 70px;
-    height: 70px;
-    border-radius: var(--radius-full);
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    background-color: var(--background);
-    transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    box-shadow: var(--shadow-md);
-    border: none;
-    position: relative;
-    overflow: hidden;
-  }
-  
-  .action-button::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: radial-gradient(circle, rgba(255,255,255,0.8) 0%, rgba(255,255,255,0) 70%);
-    opacity: 0;
-    transition: opacity 0.3s ease;
-  }
-  
-  .action-button:hover::before {
-    opacity: 1;
-  }
-  
-  .action-button:active {
-    transform: scale(0.95);
+    background-color: white;
+    transition: all 0.2s ease;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   }
   
   .pass-button {
-    background-color: white;
-    color: var(--danger);
-    font-size: 28px;
-    box-shadow: inset 0 0 0 2px var(--danger);
+    border: 2px solid #ef4444;
+    color: #ef4444;
+    font-size: 24px;
   }
   
   .pass-button:hover {
-    background-color: var(--danger-light);
+    background-color: #fee2e2;
   }
   
   .save-button {
-    background-color: white;
-    color: var(--primary);
-    font-size: 28px;
-    box-shadow: inset 0 0 0 2px var(--primary);
+    border: 2px solid #10b981;
+    color: #10b981;
+    font-size: 24px;
   }
   
   .save-button:hover {
-    background-color: var(--primary-light);
+    background-color: #d1fae5;
   }
   
   .action-button:disabled {
     opacity: 0.5;
     cursor: not-allowed;
-    transform: none;
   }
   
-  .action-button svg {
-    width: 30px;
-    height: 30px;
-    transition: transform 0.2s ease;
-  }
-  
-  .action-button:hover svg {
-    transform: scale(1.1);
-  }
-  
-  /* Enhanced empty state */
+  /* Empty state */
   .empty-state {
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    height: 350px;
+    height: 250px;
     text-align: center;
-    padding: 30px;
-    background-color: var(--background);
-    border-radius: var(--radius-lg);
-    box-shadow: var(--shadow-md);
-  }
-  
-  .empty-icon {
-    font-size: 48px;
-    color: var(--text-tertiary);
-    margin-bottom: 24px;
-    opacity: 0.7;
+    padding: 20px;
   }
   
   .empty-title {
-    font-size: 26px;
+    font-size: 24px;
     font-weight: 700;
     margin-bottom: 16px;
-    color: var(--text-primary);
-    letter-spacing: -0.5px;
+    color: #1f2937;
   }
   
   .empty-message {
-    color: var(--text-tertiary);
-    margin-bottom: 30px;
-    max-width: 300px;
-    line-height: 1.6;
+    color: #6b7280;
+    margin-bottom: 24px;
   }
   
   .restart-button {
-    background-color: var(--primary);
+    background-color: #3b82f6;
     color: white;
-    padding: 12px 24px;
-    border-radius: var(--radius-md);
-    font-weight: 600;
+    padding: 8px 16px;
+    border-radius: 6px;
+    font-weight: 500;
     cursor: pointer;
-    transition: all 0.2s ease;
-    border: none;
-    box-shadow: var(--shadow-sm);
+    transition: background-color 0.2s ease;
   }
   
   .restart-button:hover {
-    background-color: var(--primary-dark);
-    transform: translateY(-2px);
-    box-shadow: var(--shadow-md);
+    background-color: #2563eb;
   }
   
-  .restart-button:active {
-    transform: translateY(0);
-  }
-  
-  /* Enhanced saved foods section */
+  /* Saved foods section */
   .saved-section {
-    margin-top: 40px;
-    background-color: var(--background);
-    padding: 24px;
-    border-radius: var(--radius-lg);
-    box-shadow: var(--shadow-md);
-  }
-  
-  .saved-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 16px;
+    margin-top: 32px;
   }
   
   .saved-title {
-    font-size: 20px;
-    font-weight: 700;
-    color: var(--text-primary);
-    letter-spacing: -0.3px;
-  }
-  
-  .saved-count {
-    background-color: var(--primary-light);
-    color: var(--primary-dark);
-    padding: 4px 10px;
-    border-radius: var(--radius-full);
-    font-size: 14px;
+    font-size: 18px;
     font-weight: 600;
+    margin-bottom: 8px;
+    color: #1f2937;
   }
   
   .saved-tags {
     display: flex;
     flex-wrap: wrap;
-    gap: 10px;
+    gap: 8px;
   }
   
   .saved-tag {
-    background-color: var(--primary-light);
-    border-radius: var(--radius-md);
-    padding: 8px 14px;
+    background-color: #d1fae5;
+    border-radius: 4px;
+    padding: 4px 12px;
     font-size: 14px;
-    font-weight: 500;
-    color: var(--primary-dark);
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    transition: all 0.2s ease;
-  }
-  
-  .saved-tag:hover {
-    background-color: var(--primary);
-    color: white;
-    transform: translateY(-2px);
-    box-shadow: var(--shadow-sm);
-  }
-  
-  .saved-tag-remove {
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 18px;
-    height: 18px;
-    border-radius: 50%;
-    background-color: rgba(255, 255, 255, 0.3);
+    color: #059669;
   }
   
   .no-saved {
-    color: var(--text-tertiary);
-    font-size: 15px;
-    text-align: center;
-    padding: 30px 0;
+    color: #9ca3af;
+    font-size: 14px;
   }
   
-  /* Enhanced container styling */
+  /* Container styling */
   .swipe-container {
-    max-width: 500px;
+    max-width: 450px;
     margin: 0 auto;
-    padding: 24px 16px;
-  }
-  
-  .app-header {
-    text-align: center;
-    margin-bottom: 30px;
+    padding: 16px;
   }
   
   .app-title {
-    font-size: 28px;
-    font-weight: 800;
-    color: var(--text-primary);
-    margin-bottom: 8px;
-    letter-spacing: -0.5px;
+    text-align: center;
+    font-size: 24px;
+    font-weight: 700;
+    margin-bottom: 24px;
+    color: #1f2937;
   }
   
-  .app-subtitle {
-    color: var(--text-tertiary);
-    font-size: 16px;
-  }
-  
-  /* Card container with consistent height */
+  /* Card container - maintains consistent height */
   .card-container {
-    height: 420px;
-    margin-bottom: 32px;
+    height: 380px;
+    margin-bottom: 24px;
     position: relative;
   }
   
-  /* Loading states */
-  .skeleton {
-    animation: pulse 1.5s ease-in-out infinite;
-    background: linear-gradient(90deg, #f0f0f0 25%, #f8f8f8 50%, #f0f0f0 75%);
-    background-size: 200% 100%;
-    border-radius: var(--radius-md);
-  }
-  
-  @keyframes pulse {
-    0% {
-      background-position: 0% 0;
-    }
-    100% {
-      background-position: -200% 0;
-    }
-  }
-  
-  .skeleton-card {
-    height: 400px;
-    border-radius: var(--radius-lg);
-    overflow: hidden;
-  }
-  
-  .skeleton-image {
-    height: 250px;
-    width: 100%;
-  }
-  
-  .skeleton-content {
-    padding: 20px;
-  }
-  
-  .skeleton-title {
-    height: 28px;
-    width: 70%;
-    margin-bottom: 12px;
-  }
-  
-  .skeleton-text {
-    height: 16px;
-    width: 100%;
-    margin-bottom: 8px;
-  }
-  
-  .skeleton-text-short {
-    height: 16px;
-    width: 60%;
-  }
-  
-  /* Responsive improvements */
+  /* Media queries for responsiveness */
   @media (max-width: 640px) {
     .card-container {
-      height: 380px;
+      height: 350px;
     }
     
     .food-image {
-      height: 220px;
+      height: 200px;
     }
     
     .action-button {
-      width: 60px;
-      height: 60px;
-    }
-    
-    .food-name {
-      font-size: 20px;
-    }
-    
-    .food-price {
-      font-size: 18px;
-    }
-    
-    .app-title {
-      font-size: 24px;
-    }
-  }
-  
-  /* Dark mode support */
-  @media (prefers-color-scheme: dark) {
-    :root {
-      --text-primary: #f9fafb;
-      --text-secondary: #e5e7eb;
-      --text-tertiary: #d1d5db;
-      --background: #1f2937;
-      --background-alt: #111827;
-      --border: #374151;
-      --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.3);
-      --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.4);
-      --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.4);
-    }
-    
-    .skeleton {
-      background: linear-gradient(90deg, #2a2a2a 25%, #333333 50%, #2a2a2a 75%);
-    }
-    
-    .food-card {
-      background-color: var(--background);
-    }
-    
-    .saved-section, .empty-state {
-      background-color: var(--background);
+      width: 56px;
+      height: 56px;
     }
   }
