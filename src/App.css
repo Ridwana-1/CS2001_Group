@@ -64,12 +64,12 @@
 
 
 .buttons-container {
-  /* position: absolute;
+   position: absolute;
   top: 70%;  
   left: 50%;
   transform: translate(-50%, -50%);
   display: flex;
-  gap: 20px;  */
+  gap: 20px;  
 
   top: 70%; 
   align-self: center;
