@@ -26,7 +26,6 @@ const Login = () => {
       const response = await loginUser(email, password);
       console.log('Login response:', response);
       if (response) {
-        // Сохраняем токен и данные пользователя
         localStorage.setItem('token', response.access_token);
         localStorage.setItem('user', JSON.stringify(response.user));
         
@@ -35,7 +34,17 @@ const Login = () => {
       }
     } catch (err: any) {
       console.error('Login error:', err);
-      setError(err.message || "An error occurred during login. Please try again.");
+      let errorMessage = "An error occurred during login. Please try again.";
+      
+      if (err.message.includes("User not found")) {
+        errorMessage = "No account found with this email. Please check your email or register.";
+      } else if (err.message.includes("Incorrect password")) {
+        errorMessage = "The password you entered is incorrect. Please try again.";
+      } else if (err.message.includes("Google Sign-In")) {
+        errorMessage = "This account was created using Google. Please use Google Sign-In instead.";
+      }
+      
+      setError(errorMessage);
     } finally {
       setIsLoading(false);
     }
@@ -52,7 +61,12 @@ const Login = () => {
         </div>
         <p className="registration-subtitle">Sign in to continue</p>
 
-        {error && <div className="error-message">{error}</div>}
+        {error && (
+          <div className="error-message" role="alert">
+            <div className="error-icon">⚠️</div>
+            <div className="error-text">{error}</div>
+          </div>
+        )}
 
         <form className="form-container" onSubmit={handleSubmit}>
           {/* Email Input */}

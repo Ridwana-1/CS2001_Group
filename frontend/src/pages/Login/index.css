@@ -112,13 +112,31 @@
 
   /* Error Message */
   .error-message {
-    background-color: #fee2e2;
-    border: 1px solid #ef4444;
-    color: #dc2626;
-    padding: 0.75rem;
-    border-radius: 0.375rem;
-    margin-bottom: 1rem;
-    text-align: center;
+    display: flex;
+    align-items: center;
+    padding: 12px 16px;
+    margin: 16px 0;
+    border-radius: 8px;
+    background-color: var(--error-bg, #FEE2E2);
+    border: 1px solid var(--error-border, #FCA5A5);
+    color: var(--error-text, #DC2626);
+    font-size: 14px;
+    line-height: 1.5;
+  }
+
+  .error-icon {
+    margin-right: 12px;
+    font-size: 18px;
+  }
+
+  .error-text {
+    flex: 1;
+  }
+
+  .dark-mode .error-message {
+    background-color: var(--error-bg-dark, #7F1D1D);
+    border-color: var(--error-border-dark, #991B1B);
+    color: var(--error-text-dark, #FCA5A5);
   }
 
   /* Submit Button */

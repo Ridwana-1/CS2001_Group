@@ -157,13 +157,17 @@ export class AuthService {
       where: { email },
     });
 
-    if (!user || !user.password) {
-      throw new UnauthorizedException('Invalid credentials');
+    if (!user) {
+      throw new UnauthorizedException('User not found. Please check your email or register.');
+    }
+
+    if (!user.password) {
+      throw new UnauthorizedException('This account was created using Google. Please use Google Sign-In.');
     }
 
     const isPasswordValid = await bcrypt.compare(password, user.password);
     if (!isPasswordValid) {
-      return null;
+      throw new UnauthorizedException('Incorrect password. Please try again.');
     }
 
     return user;
