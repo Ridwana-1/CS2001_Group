@@ -1,3 +1,17 @@
+/**
+ * Login Component
+ * @author Sultan Jurabekov
+ * @functionality Login page component that handles:
+ * - User authentication
+ * - Password visibility toggle
+ * - Form validation
+ * - Error handling
+ * - Dark mode support
+ * - Responsive design
+ * - Password reset link
+ * @created February 8, 2024
+ */
+
 import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { FaEye, FaEyeSlash } from "react-icons/fa";

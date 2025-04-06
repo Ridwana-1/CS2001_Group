@@ -1,5 +1,5 @@
 /**
- * Authentication Service
+ * AuthService
  * @author Sultan Jurabekov
  * @functionality Authentication service that handles:
  * - User registration and login
@@ -8,6 +8,7 @@
  * - OTP (One-Time Password) management
  * - Google OAuth integration
  * - Session management
+ * @created February 8, 2024
  */
 
 import { Injectable, UnauthorizedException } from '@nestjs/common';

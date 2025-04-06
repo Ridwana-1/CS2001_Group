@@ -1,3 +1,15 @@
+/**
+ * LoginInfo Component
+ * @author Sultan Jurabekov
+ * @functionality Login information form component that handles:
+ * - Username input
+ * - Password input and confirmation
+ * - Form validation
+ * - Error messaging
+ * - Password matching validation
+ * @created February 8, 2024
+ */
+
 import { useFormContext } from 'react-hook-form';
 
 const LoginInfo = () => {

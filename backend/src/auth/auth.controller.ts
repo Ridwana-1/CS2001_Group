@@ -1,3 +1,16 @@
+/**
+ * AuthController
+ * @author Sultan Jurabekov
+ * @functionality Authentication controller that handles:
+ * - User registration endpoints
+ * - Login and logout routes
+ * - OTP verification endpoints
+ * - Password reset routes
+ * - Google OAuth callbacks
+ * - Session management endpoints
+ * @created February 8, 2024
+ */
+
 import {
   Controller,
   Post,

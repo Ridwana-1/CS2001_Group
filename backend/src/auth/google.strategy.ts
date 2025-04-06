@@ -1,3 +1,15 @@
+/**
+ * GoogleStrategy
+ * @author Sultan Jurabekov
+ * @functionality Google OAuth strategy that handles:
+ * - Google authentication flow
+ * - User profile extraction
+ * - Token management
+ * - Session creation
+ * - OAuth callback processing
+ * @created February 8, 2024
+ */
+
 import { PassportStrategy } from '@nestjs/passport';
 import { Strategy, VerifyCallback } from 'passport-google-oauth20';
 import { Injectable } from '@nestjs/common';

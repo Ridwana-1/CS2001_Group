@@ -1,3 +1,15 @@
+/**
+ * AuthCallback Component
+ * @author Sultan Jurabekov
+ * @functionality Authentication callback component that handles:
+ * - OAuth token processing
+ * - User data storage
+ * - Session management
+ * - Redirect handling
+ * - Loading states
+ * @created February 8, 2024
+ */
+
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useEffect } from 'react';
 

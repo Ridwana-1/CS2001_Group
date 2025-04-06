@@ -118,6 +118,9 @@ interface User {
   avatar?: string;
 }
 
+// Add type for timeout
+type TimeoutId = ReturnType<typeof setTimeout>;
+
 // Sidebar Component
 const Sidebar = ({ currentUser }: { currentUser: User | null }) => {
   const location = window.location.pathname;
@@ -341,11 +344,9 @@ const ChatDetail = ({
   onSendMessage: (content: string) => void
 }) => {
   const [message, setMessage] = useState("");
-  const [userStatus, setUserStatus] = useState<{ isTyping: boolean }>({
-    isTyping: false
-  });
+  const [isTyping, setIsTyping] = useState(false);
+  const typingTimeoutRef = useRef<TimeoutId | null>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
-  const typingTimeoutRef = useRef<NodeJS.Timeout>();
 
   // Fetch typing state
   useEffect(() => {
@@ -354,10 +355,10 @@ const ChatDetail = ({
     const fetchTypingStatus = async () => {
       try {
         const response = await api.get(`/chats/${activeRecipient.id}/typing`);
-        setUserStatus({ isTyping: response.data.isTyping });
+        setIsTyping(response.data.isTyping);
       } catch (error) {
         console.error('Error fetching typing status:', error);
-        setUserStatus({ isTyping: false });
+        setIsTyping(false);
       }
     };
 
@@ -487,7 +488,7 @@ const ChatDetail = ({
           </div>
         ))}
 
-        {userStatus.isTyping && (
+        {isTyping && (
           <div className={styles.typingIndicator}>
             {activeRecipient.recipientName} is typing
             <div className={styles.typingDots}>
@@ -531,10 +532,11 @@ const ChatDetail = ({
 
 // Main Component
 const ChatInterface: React.FC = () => {
-  const [activeChat, setActiveChat] = useState<string | null>(null);
   const [chats, setChats] = useState<Chat[]>([]);
+  const [activeChat, setActiveChat] = useState<string | null>(null);
   const [messages, setMessages] = useState<Message[]>([]);
   const [currentUser, setCurrentUser] = useState<User | null>(null);
+  const [notification, setNotification] = useState<{ content: string } | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [showUserSearch, setShowUserSearch] = useState(false);
   const [showBurgerMenu, setShowBurgerMenu] = useState(false);
@@ -544,11 +546,6 @@ const ChatInterface: React.FC = () => {
   const activeChatRef = useRef<HTMLDivElement>(null);
   const avatarPath = useAvatar(currentUser?.id);
   const { user } = useAuth();
-  const [notification, setNotification] = useState<{
-    content: string;
-    senderName: string;
-    senderAvatar?: string;
-  } | null>(null);
 
   // Закрытие бургер-меню при клике вне его области
   useEffect(() => {
@@ -652,15 +649,15 @@ const ChatInterface: React.FC = () => {
 
     ws.onmessage = (event) => {
       const data = JSON.parse(event.data);
-      
+
       if (data.type === 'new_message') {
         const { chatId, message } = data.payload;
-        
+
         // Update messages if this is the active chat
         if (activeChat === chatId) {
           setMessages(prev => [...prev, message]);
           // Mark as read since we're in the active chat
-          setChats(prevChats => prevChats.map(chat => 
+          setChats(prevChats => prevChats.map(chat =>
             chat.id === chatId ? { ...chat, unreadCount: 0 } : chat
           ));
         } else {
@@ -687,32 +684,23 @@ const ChatInterface: React.FC = () => {
           const chat = chats.find(c => c.id === chatId);
           if (chat) {
             setNotification({
-              content: message.content,
-              senderName: chat.recipientName,
-              senderAvatar: chat.recipientAvatar
+              content: message.content
             });
           }
 
           // Show system notification
           if (Notification.permission === "granted") {
-            new Notification(chat.recipientName, {
-              body: message.content,
-              icon: chat.recipientAvatar || '/favicon.ico',
-              tag: `message-${chatId}-${message.id}`,
-              renotify: true,
-              silent: false
-            });
+            const selectedChat = chats.find(c => c.id === chatId);
+            if (selectedChat) {
+              new Notification(selectedChat.recipientName, {
+                body: message.content,
+                icon: selectedChat.recipientAvatar || '/favicon.ico',
+                tag: `message-${chatId}-${message.id}`
+              });
+            }
           }
         }
       }
-    };
-
-    ws.onerror = (error) => {
-      console.error('WebSocket error:', error);
-    };
-
-    ws.onclose = () => {
-      console.log('WebSocket connection closed');
     };
 
     return () => {
@@ -738,13 +726,15 @@ const ChatInterface: React.FC = () => {
   }, []);
 
   const handleChatSelect = async (chatId: string) => {
+    const selectedChat = chats.find(c => c.id === chatId);
+    if (!selectedChat) return;
     setActiveChat(chatId);
-    await fetchMessages(chatId);
-    
-    // Mark messages as read when selecting a chat
-    setChats(prevChats => prevChats.map(chat => 
-      chat.id === chatId ? { ...chat, unreadCount: 0 } : chat
-    ));
+    try {
+      const response = await api.get(`/chats/${chatId}/messages`);
+      setMessages(response.data.messages || []);
+    } catch (error) {
+      console.error('Error fetching messages:', error);
+    }
   };
 
   const handleSendMessage = async (content: string) => {
@@ -842,15 +832,17 @@ const ChatInterface: React.FC = () => {
     }
   };
 
+  const showNotification = (message: string) => {
+    const selectedChat = chats.find(c => c.id === activeChat);
+    if (!selectedChat) return;
+    new Notification(selectedChat.recipientName, {
+      body: message,
+      icon: selectedChat.recipientAvatar || '/favicon.ico'
+    });
+  };
+
   if (isLoading) {
-    return (
-      <div className="fixed inset-0 bg-white flex items-center justify-center">
-        <div className="flex flex-col items-center">
-          <div className="w-12 h-12 border-4 border-blue-500 border-t-transparent rounded-full animate-spin mb-4"></div>
-          <p className="text-gray-600 text-lg">Loading...</p>
-        </div>
-      </div>
-    );
+    return <div>Loading...</div>;
   }
 
   return (
@@ -867,7 +859,7 @@ const ChatInterface: React.FC = () => {
             target.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(currentUser?.fullname || '')}&background=random`;
           }}
         />
-        
+
         {showBurgerMenu && (
           <div className={styles.menuDropdown}>
             <div className={styles.menuItem} onClick={handleSettings}>
@@ -959,8 +951,10 @@ const ChatInterface: React.FC = () => {
 
       {notification && (
         <MessageNotification
-          message={notification}
-          onClose={() => setNotification(null)}
+          message={notification.content}
+          sender={currentUser?.fullname || 'Unknown'}
+          timestamp={new Date().toISOString()}
+          onClick={() => setNotification(null)}
         />
       )}
     </div>

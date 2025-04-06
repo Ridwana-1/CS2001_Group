@@ -1,12 +1,13 @@
 /**
- * Prisma Service
+ * PrismaService
  * @author Sultan Jurabekov
  * @functionality Database service that handles:
  * - Database connection management
  * - Prisma client initialization
- * - Database schema management
- * - Data migration handling
- * - Connection pooling
+ * - Database queries and operations
+ * - Connection lifecycle management
+ * - Error handling
+ * @created February 8, 2024
  */
 
 import { Injectable, OnModuleInit, OnModuleDestroy } from '@nestjs/common';

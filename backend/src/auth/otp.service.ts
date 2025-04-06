@@ -1,3 +1,15 @@
+/**
+ * OtpService
+ * @author Sultan Jurabekov
+ * @functionality OTP service that handles:
+ * - OTP generation
+ * - OTP storage and validation
+ * - OTP expiration management
+ * - Email delivery of OTP
+ * - OTP verification logic
+ * @created February 8, 2024
+ */
+
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../../prisma/prisma.service';
 import { MailService } from '../mail/mail.service';

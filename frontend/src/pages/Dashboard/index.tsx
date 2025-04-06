@@ -1,3 +1,16 @@
+/**
+ * Dashboard Component
+ * @author Sultan Jurabekov
+ * @functionality Main dashboard component that handles:
+ * - Authentication state management
+ * - Token validation
+ * - Protected route access
+ * - Loading states
+ * - Theme integration
+ * - Chat interface integration
+ * @created February 8, 2024
+ */
+
 import React, { useEffect, useState } from 'react';
 import { Routes, Route, useNavigate, useLocation } from 'react-router-dom';
 import ChatInterface from '../../components/chat/ChatInterface';

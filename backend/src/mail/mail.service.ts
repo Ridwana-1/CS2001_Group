@@ -1,3 +1,15 @@
+/**
+ * MailService
+ * @author Sultan Jurabekov
+ * @functionality Email service that handles:
+ * - Email template management
+ * - SMTP configuration
+ * - Email sending operations
+ * - OTP email delivery
+ * - Error handling and logging
+ * @created February 8, 2024
+ */
+
 import { Injectable, Logger } from '@nestjs/common';
 import { MailerService } from '@nestjs-modules/mailer';
 import { join } from 'path';

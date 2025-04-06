@@ -1,3 +1,17 @@
+/**
+ * Register Component
+ * @author Sultan Jurabekov
+ * @functionality Registration page component that handles:
+ * - Multi-step registration form
+ * - Email and password validation
+ * - OTP verification
+ * - Google Sign-in integration
+ * - Dark mode support
+ * - Form validation and error handling
+ * - Responsive design
+ * @created February 8, 2024
+ */
+
 import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
