@@ -21,21 +21,18 @@ public class OrderController {
         this.tradeService = tradeService;
     }
 
-    // Get all orders
     @GetMapping
     public ResponseEntity<List<Orders>> getAllOrders() {
         List<Orders> orders = orderRepository.findAll();
         return ResponseEntity.ok(orders);
     }
 
-    // Get orders by user ID 
     @GetMapping("/user/{userId}")
     public ResponseEntity<List<Orders>> getOrdersByUser(@PathVariable Long userId) {
         List<Orders> orders = orderRepository.findByUserId(userId);
         return ResponseEntity.ok(orders);
     }
 
-    // Get orders by status with optional user filter
     @GetMapping("/status")
     public ResponseEntity<List<Orders>> getOrdersByStatus(
             @RequestParam String status,
@@ -51,10 +48,8 @@ public class OrderController {
         }
     }
 
-    // Create new order with automatic trade creation
     @PostMapping
     public ResponseEntity<OrderTradeResponse> createOrder(@RequestBody OrderRequest orderRequest) {
-        // Create and save order func
         Orders newOrder = new Orders(
             orderRequest.getShop(),
             LocalDateTime.now(),
@@ -66,12 +61,12 @@ public class OrderController {
         );
         Orders savedOrder = orderRepository.save(newOrder);
 
-        // Create  trade record
         TradeRequest tradeRequest = new TradeRequest();
-        tradeRequest.setQuantity(savedOrder.getQuantity());
-        tradeRequest.setPrice(savedOrder.getPrice());
+        tradeRequest.setQuantityReceived(savedOrder.getQuantity());
+        tradeRequest.setQuantityGiven(0); // Default value
+        tradeRequest.setTradePrice(savedOrder.getPrice());
         tradeRequest.setTradeType(Trades.TradeType.BUY);
-        tradeRequest.setPriceType(Trades.PriceType.TOTAL);
+        tradeRequest.setPriceType(Trades.PriceType.EXCHANGE);
         tradeRequest.setItemExchanged(savedOrder.getItem());
 
         Trades createdTrade = tradeService.createTrade(
@@ -84,7 +79,6 @@ public class OrderController {
             .body(new OrderTradeResponse(savedOrder, createdTrade));
     }
 
-    // Update order status
     @PutMapping("/{id}/status")
     public ResponseEntity<Orders> updateOrderStatus(
             @PathVariable Long id,
@@ -97,23 +91,20 @@ public class OrderController {
         return ResponseEntity.ok(updatedOrder);
     }
 
-    // Get trades for specific order
     @GetMapping("/{orderId}/trades")
     public ResponseEntity<List<Trades>> getOrderTrades(@PathVariable Long orderId) {
         List<Trades> trades = tradeService.getTradesForOrder(orderId);
         return ResponseEntity.ok(trades);
     }
 
-   
-    static class OrderRequest {
+    // DTO Classes
+    public static class OrderRequest {
         private String shop;
         private Double price;
         private String item;
         private Integer quantity;
         private Long userId;
 
-     
-        
         public String getShop() { return shop; }
         public void setShop(String shop) { this.shop = shop; }
         public Double getPrice() { return price; }
@@ -126,7 +117,29 @@ public class OrderController {
         public void setUserId(Long userId) { this.userId = userId; }
     }
 
-    static class OrderTradeResponse {
+    public static class TradeRequest {
+        private Integer quantityReceived;
+        private Integer quantityGiven;
+        private Double tradePrice;
+        private Trades.TradeType tradeType;
+        private Trades.PriceType priceType;
+        private String itemExchanged;
+
+        public Integer getQuantityReceived() { return quantityReceived; }
+        public void setQuantityReceived(Integer quantityReceived) { this.quantityReceived = quantityReceived; }
+        public Integer getQuantityGiven() { return quantityGiven; }
+        public void setQuantityGiven(Integer quantityGiven) { this.quantityGiven = quantityGiven; }
+        public Double getTradePrice() { return tradePrice; }
+        public void setTradePrice(Double tradePrice) { this.tradePrice = tradePrice; }
+        public Trades.TradeType getTradeType() { return tradeType; }
+        public void setTradeType(Trades.TradeType tradeType) { this.tradeType = tradeType; }
+        public Trades.PriceType getPriceType() { return priceType; }
+        public void setPriceType(Trades.PriceType priceType) { this.priceType = priceType; }
+        public String getItemExchanged() { return itemExchanged; }
+        public void setItemExchanged(String itemExchanged) { this.itemExchanged = itemExchanged; }
+    }
+
+    public static class OrderTradeResponse {
         private final Orders order;
         private final Trades trade;
 
@@ -139,7 +152,6 @@ public class OrderController {
         public Trades getTrade() { return trade; }
     }
 
-    // Exception Handling 
     @ExceptionHandler({ResourceNotFoundException.class, IllegalArgumentException.class})
     public ResponseEntity<String> handleExceptions(RuntimeException ex) {
         HttpStatus status = ex instanceof ResourceNotFoundException 
@@ -147,10 +159,10 @@ public class OrderController {
             : HttpStatus.BAD_REQUEST;
         return ResponseEntity.status(status).body(ex.getMessage());
     }
-}
-
-class ResourceNotFoundException extends RuntimeException {
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+public static class ResourceNotFoundException extends RuntimeException {
     public ResourceNotFoundException(String message) {
         super(message);
     }
+}
 }

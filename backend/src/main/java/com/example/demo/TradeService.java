@@ -20,17 +20,15 @@ public class TradeService {
     }
 
     @Transactional
-    public Trades createTrade(Long orderId, TradeRequest request, String userId) {
-        UserDto user = userService.getUserById(userId);
+    public Trades createTrade(Long orderId, OrderController.TradeRequest request, String userId) {
         Orders order = ordersRepository.findById(orderId)
-            .orElseThrow(() -> new OrderNotFoundException(orderId));
+            .orElseThrow(() -> new OrderNotFoundException("Order not found with id: " + orderId));
 
         Trades trade = new Trades();
         trade.setTradeDate(LocalDateTime.now());
-        trade.setTradeQuantity(request.getQuantity());
-        trade.setTradePrice(request.getPrice());
-        trade.setUserType("admin".equalsIgnoreCase(user.getRole()) ? 
-                         Trades.UserType.ADMIN : Trades.UserType.USER);
+        trade.setQuantityReceived(request.getQuantityReceived());
+        trade.setQuantityGiven(request.getQuantityGiven());
+        trade.setTradePrice(request.getTradePrice());
         trade.setTradeType(request.getTradeType());
         trade.setTradeStatus(Trades.TradeStatus.PENDING);
         trade.setPriceType(request.getPriceType());
