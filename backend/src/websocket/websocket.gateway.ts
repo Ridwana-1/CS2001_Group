@@ -11,7 +11,8 @@ import { PrismaService } from '../../prisma/prisma.service';
 
 @WebSocketGateway({
   cors: {
-    origin: '*',
+    origin: ['http://localhost:5173', 'http://localhost:5500'],
+    credentials: true
   },
 })
 export class WebsocketGateway implements OnGatewayConnection, OnGatewayDisconnect {

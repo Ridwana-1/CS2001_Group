@@ -3,7 +3,7 @@ const cors = require("cors");
 const { sendEmail, saveEmailLog } = require("./EmailService");
 require("dotenv").config();
 const mysql = require("mysql2");
-const bcrypt = require("bcrypt"); 
+const bcrypt = require("bcrypt");
 
 const app = express();
 app.use(cors());
@@ -36,27 +36,27 @@ db.connect((err) => {
   db.query(createUsersTable, (err) => {
     if (err) console.error("Error creating users table:", err);
     else console.log("Users table checked/created");
-    
+
     // Create admin user if it doesn't exist
     bcrypt.hash(process.env.ADMIN_PASSWORD || "adminSecurePassword", 10, (err, hash) => {
       if (err) {
         console.error("Error hashing admin password:", err);
         return;
       }
-      
+
       const checkAdmin = "SELECT * FROM users WHERE email = ?";
       db.query(checkAdmin, [process.env.ADMIN_EMAIL || "admin@example.com"], (err, result) => {
         if (err) {
           console.error("Error checking admin:", err);
           return;
         }
-        
+
         if (result.length === 0) {
           // Create admin if doesn't exist
           const createAdmin = "INSERT INTO users (email, password, role, first_name, last_name) VALUES (?, ?, ?, ?, ?)";
           db.query(createAdmin, [
-            process.env.ADMIN_EMAIL || "admin@example.com", 
-            hash, 
+            process.env.ADMIN_EMAIL || "admin@example.com",
+            hash,
             "admin",
             "Admin",
             "User"
@@ -110,49 +110,49 @@ const promiseDb = db.promise();
 // Register new user endpoint
 app.post("/register", async (req, res) => {
   const { email, password, firstName, lastName } = req.body;
-  
+
   // Validate input
   if (!email || !password) {
-    return res.status(400).json({ 
-      success: false, 
-      message: "Email and password are required" 
+    return res.status(400).json({
+      success: false,
+      message: "Email and password are required"
     });
   }
-  
+
   try {
     // Check if user already exists
     const [existingUsers] = await promiseDb.query(
-      "SELECT * FROM users WHERE email = ?", 
+      "SELECT * FROM users WHERE email = ?",
       [email]
     );
-    
+
     if (existingUsers.length > 0) {
-      return res.status(409).json({ 
-        success: false, 
-        message: "User already exists" 
+      return res.status(409).json({
+        success: false,
+        message: "User already exists"
       });
     }
-    
+
     // Hash password
     const hashedPassword = await bcrypt.hash(password, 10);
-    
+
     // Insert new user
     await promiseDb.query(
       "INSERT INTO users (email, password, role, first_name, last_name) VALUES (?, ?, ?, ?, ?)",
       [email, hashedPassword, "user", firstName || null, lastName || null]
     );
-    
-    res.status(201).json({ 
-      success: true, 
+
+    res.status(201).json({
+      success: true,
       message: "User registered successfully",
       email,
       role: "user"
     });
   } catch (error) {
     console.error("Registration error:", error);
-    res.status(500).json({ 
-      success: false, 
-      message: "Error registering user" 
+    res.status(500).json({
+      success: false,
+      message: "Error registering user"
     });
   }
 });
@@ -160,52 +160,52 @@ app.post("/register", async (req, res) => {
 // Login route for admin and users
 app.post("/login", async (req, res) => {
   const { email, password } = req.body;
-  
+
   // Validate input
   if (!email || !password) {
-    return res.status(400).json({ 
-      success: false, 
-      message: "Email and password are required" 
+    return res.status(400).json({
+      success: false,
+      message: "Email and password are required"
     });
   }
-  
+
   try {
     // Find user in database
     const [users] = await promiseDb.query(
-      "SELECT * FROM users WHERE email = ?", 
+      "SELECT * FROM users WHERE email = ?",
       [email]
     );
-    
+
     if (users.length === 0) {
-      return res.status(401).json({ 
-        success: false, 
-        message: "Invalid credentials" 
+      return res.status(401).json({
+        success: false,
+        message: "Invalid credentials"
       });
     }
-    
+
     const user = users[0];
-    
+
     // Compare passwords
     const passwordMatch = await bcrypt.compare(password, user.password);
-    
+
     if (passwordMatch) {
       // Return user info without password
       const { password, ...userWithoutPassword } = user;
-      return res.json({ 
-        success: true, 
+      return res.json({
+        success: true,
         ...userWithoutPassword
       });
     } else {
-      return res.status(401).json({ 
-        success: false, 
-        message: "Invalid credentials" 
+      return res.status(401).json({
+        success: false,
+        message: "Invalid credentials"
       });
     }
   } catch (error) {
     console.error("Login error:", error);
-    res.status(500).json({ 
-      success: false, 
-      message: "Server error" 
+    res.status(500).json({
+      success: false,
+      message: "Server error"
     });
   }
 });
@@ -213,36 +213,36 @@ app.post("/login", async (req, res) => {
 // Get current user profile
 app.get("/user/profile", async (req, res) => {
   const email = req.query.email;
-  
+
   if (!email) {
-    return res.status(400).json({ 
-      success: false, 
-      message: "Email parameter is required" 
+    return res.status(400).json({
+      success: false,
+      message: "Email parameter is required"
     });
   }
-  
+
   try {
     const [users] = await promiseDb.query(
-      "SELECT id, email, role, first_name, last_name, created_at FROM users WHERE email = ?", 
+      "SELECT id, email, role, first_name, last_name, created_at FROM users WHERE email = ?",
       [email]
     );
-    
+
     if (users.length === 0) {
-      return res.status(404).json({ 
-        success: false, 
-        message: "User not found" 
+      return res.status(404).json({
+        success: false,
+        message: "User not found"
       });
     }
-    
-    res.json({ 
-      success: true, 
-      user: users[0] 
+
+    res.json({
+      success: true,
+      user: users[0]
     });
   } catch (error) {
     console.error("Profile fetch error:", error);
-    res.status(500).json({ 
-      success: false, 
-      message: "Server error" 
+    res.status(500).json({
+      success: false,
+      message: "Server error"
     });
   }
 });
@@ -323,7 +323,7 @@ app.post("/transactions/disputes", async (req, res) => {
     if (!orderId || !email || !reason) {
       return res.status(400).json({ message: "Missing required fields." });
     }
-    
+
     const disputeReference = `DSP-${Math.floor(Math.random() * 10000) + 1000}`;
 
     const disputeData = {
@@ -334,7 +334,7 @@ app.post("/transactions/disputes", async (req, res) => {
       reference: disputeReference,
       status: "Pending"
     };
-    
+
     const subject = 'Dispute submitted';
 
     let emailMessage = `
@@ -353,7 +353,7 @@ Status: Pending`;
     // Send email and save email log
     await sendEmail(email, subject, emailMessage);
     await saveEmailLog(email, subject, emailMessage);
-    
+
     res
       .status(201)
       .json({ id: disputeReference, message: "Dispute submitted successfully." });
@@ -368,19 +368,19 @@ Status: Pending`;
 app.get("/transactions/disputes", async (req, res) => {
   try {
     console.log("Fetching disputes from database");
-    
+
     // Query all reports from the database
     const [rows] = await promiseDb.query(
       "SELECT * FROM report_emails ORDER BY sent_at DESC"
     );
-    
+
     // Normalize disputes data
     const disputes = rows.map(row => ({
       ...row,
       status: row.status || 'Pending',
       id: row.id
     }));
-    
+
     console.log("Sending disputes:", disputes);
     res.status(200).json({ disputes });
   } catch (error) {
@@ -394,32 +394,32 @@ app.put("/transactions/disputes/:id/accept", async (req, res) => {
   try {
     const { id } = req.params;
     const { resolution, adminNotes } = req.body || {};
-    
+
     if (!id) {
       return res.status(400).json({ message: "Dispute ID is required" });
     }
-    
+
     console.log(`Accepting dispute with ID: ${id}`);
-    
+
     // First, get the dispute details to retrieve the recipient email
     const [disputeRows] = await promiseDb.query(
       "SELECT * FROM report_emails WHERE id = ?",
       [id]
     );
-    
+
     if (disputeRows.length === 0) {
       return res.status(404).json({ message: "Dispute not found" });
     }
-    
+
     const dispute = disputeRows[0];
     const recipientEmail = dispute.recipient_email;
-    
+
     // Update the dispute status in the database
     await promiseDb.query(
       "UPDATE report_emails SET status = ?, resolution = ?, admin_notes = ? WHERE id = ?",
       ["Accepted", resolution || "", adminNotes || "", id]
     );
-    
+
     const subject = 'Your dispute has been accepted';
     const emailMessage = `
 Reference: ${id}
@@ -432,7 +432,7 @@ Thank you for your patience.`;
     // Send email notification to the user
     await sendEmail(recipientEmail, subject, emailMessage);
     await saveEmailLog(recipientEmail, subject, emailMessage);
-    
+
     console.log(`Dispute ${id} accepted successfully`);
     res.status(200).json({ message: "Dispute accepted successfully" });
   } catch (error) {
@@ -446,32 +446,32 @@ app.put("/transactions/disputes/:id/reject", async (req, res) => {
   try {
     const { id } = req.params;
     const { reason, adminNotes } = req.body || {};
-    
+
     if (!id) {
       return res.status(400).json({ message: "Dispute ID is required" });
     }
-    
+
     console.log(`Rejecting dispute with ID: ${id}`);
-    
+
     // Get the dispute details to retrieve the recipient email
     const [disputeRows] = await promiseDb.query(
       "SELECT * FROM report_emails WHERE id = ?",
       [id]
     );
-    
+
     if (disputeRows.length === 0) {
       return res.status(404).json({ message: "Dispute not found" });
     }
-    
+
     const dispute = disputeRows[0];
     const recipientEmail = dispute.recipient_email;
-    
+
     // Update dispute status in the database
     await promiseDb.query(
       "UPDATE report_emails SET status = ?, rejection_reason = ?, admin_notes = ? WHERE id = ?",
       ["Rejected", reason || "No reason provided", adminNotes || "", id]
     );
-    
+
     const emailMessage = `Your dispute has been rejected.
 Reference: ${id}
 Status: Rejected

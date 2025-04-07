@@ -23,7 +23,7 @@ import useAvatar from '../../hooks/useAvatar';
 import ThemeToggle from '../ThemeToggle';
 import { useTheme } from '../../contexts/ThemeContext';
 import '../../styles/ThemeColors.css';
-import { FaUser, FaCog, FaSignOutAlt, FaSun, FaMoon, FaPaperPlane, FaPlus } from 'react-icons/fa';
+import { FaUser, FaCog, FaSignOutAlt, FaSun, FaMoon, FaPaperPlane, FaPlus, FaHome } from 'react-icons/fa';
 import EmojiPicker from 'emoji-picker-react';
 import { useAuth } from "../../contexts/AuthContext";
 import chatStyles from '../../styles/ChatStyles.module.css';
@@ -862,6 +862,10 @@ const ChatInterface: React.FC = () => {
 
         {showBurgerMenu && (
           <div className={styles.menuDropdown}>
+            <div className={styles.menuItem} onClick={() => window.location.href = 'http://localhost:3000/'}>
+              <FaHome />
+              <span>Home</span>
+            </div>
             <div className={styles.menuItem} onClick={handleSettings}>
               <FaCog />
               <span>Settings</span>

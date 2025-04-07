@@ -18,7 +18,7 @@ function App() {
   const [userEmail, setUserEmail] = useState('');
   const [userRole, setUserRole] = useState('');
   const [showLoginModal, setShowLoginModal] = useState(false);
-  
+
   // Function to handle successful login
   const handleLogin = (email, role) => {
     setIsLoggedIn(true);
@@ -26,7 +26,7 @@ function App() {
     setUserRole(role);
     setShowLoginModal(false);
   };
-  
+
   // Function to handle logout
   const handleLogout = () => {
     setIsLoggedIn(false);
@@ -42,140 +42,140 @@ function App() {
     }
     return true;
   };
-  
+
   return (
     <Router>
       <div className="app-container">
         {/* Navbar with authentication state */}
-        <Navbar 
-          isLoggedIn={isLoggedIn} 
+        <Navbar
+          isLoggedIn={isLoggedIn}
           onLogout={handleLogout}
           userEmail={userEmail}
           userRole={userRole}
           onLoginClick={() => setShowLoginModal(true)}
         />
-        
+
         {/* Improved login modal using createPortal */}
         {showLoginModal && (
-          <LoginBox 
-            onLogin={handleLogin} 
-            onClose={() => setShowLoginModal(false)} 
+          <LoginBox
+            onLogin={handleLogin}
+            onClose={() => setShowLoginModal(false)}
           />
         )}
-        
+
         <Routes>
           {/* Home is accessible to everyone */}
-          <Route 
-            path="/" 
+          <Route
+            path="/"
             element={
-              <HomePage 
-                isLoggedIn={isLoggedIn} 
-                userEmail={userEmail} 
-                userRole={userRole} 
+              <HomePage
+                isLoggedIn={isLoggedIn}
+                userEmail={userEmail}
+                userRole={userRole}
                 onLoginClick={() => setShowLoginModal(true)}
               />
-            } 
+            }
           />
-          
+
           {/* Food Swipe Interface Route */}
-         
-          
-          
+
+
+
           {/* Protected routes */}
-          <Route 
-            path="/marketplace" 
+          <Route
+            path="/marketplace"
             element={
               isLoggedIn ? (
                 <FoodSwipeInterface />
               ) : (
                 <Navigate to="/" state={{ showLogin: true }} />
               )
-            } 
+            }
           />
-          
-          <Route 
-            path="/listings" 
+
+          <Route
+            path="/listings"
             element={
               isLoggedIn ? (
                 <div>Current Listings Page</div>
               ) : (
                 <Navigate to="/" state={{ showLogin: true }} />
               )
-            } 
+            }
           />
-          
-          <Route 
-            path="/create-listing" 
+
+          <Route
+            path="/create-listing"
             element={
               isLoggedIn ? (
                 <div>Create Listing Page</div>
               ) : (
                 <Navigate to="/" state={{ showLogin: true }} />
               )
-            } 
+            }
           />
-          
-          <Route 
-            path="/transactions" 
+
+          <Route
+            path="/transactions"
             element={
               isLoggedIn ? (
                 <Transactions />
               ) : (
                 <Navigate to="/" state={{ showLogin: true }} />
               )
-            } 
+            }
           />
-          
-          <Route 
-            path="/user-profile" 
+
+          <Route
+            path="/user-profile"
             element={
               isLoggedIn ? (
                 <UserProfile userEmail={userEmail} userRole={userRole} />
               ) : (
                 <Navigate to="/" state={{ showLogin: true }} />
               )
-            } 
+            }
           />
-          
-          <Route 
-            path="/receipt/:orderId" 
+
+          <Route
+            path="/receipt/:orderId"
             element={
               isLoggedIn ? (
                 <ReceiptPage />
               ) : (
                 <Navigate to="/" state={{ showLogin: true }} />
               )
-            } 
+            }
           />
-          
-          <Route 
-            path="/dispute-order" 
+
+          <Route
+            path="/dispute-order"
             element={
               isLoggedIn ? (
                 <DisputeForm />
               ) : (
                 <Navigate to="/" state={{ showLogin: true }} />
               )
-            } 
+            }
           />
-          
-          <Route 
-            path="/chatroom" 
+
+          <Route
+            path="/chatroom"
             element={
               isLoggedIn ? (
                 <ChatSystem />
               ) : (
                 <Navigate to="/" state={{ showLogin: true }} />
               )
-            } 
+            }
           />
-          
+
           {/* Login path */}
-          <Route 
-            path="/login" 
+          <Route
+            path="/login"
             element={
               <Navigate to="/" state={{ showLogin: true }} />
-            } 
+            }
           />
         </Routes>
       </div>

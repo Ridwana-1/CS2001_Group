@@ -7,7 +7,7 @@ import { ValidationPipe } from '@nestjs/common';
 // Внутри async function bootstrap()
 const configService = new ConfigService();
 console.log('GOOGLE_CLIENT_ID:', configService.get('GOOGLE_CLIENT_ID'));
-console.log('GOOGLE_SECRET:', configService.get('GOOGLE_CLIENT_SECRET'));
+console.log('GOOGLE_SECRET:', configService.get('GOOGLE_SECRET'));
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
@@ -16,7 +16,7 @@ async function bootstrap() {
 
   // Enable CORS
   app.enableCors({
-    origin: 'http://localhost:5173',
+    origin: ['http://localhost:5173', 'http://localhost:5500'],
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization'],
     credentials: true,
@@ -28,7 +28,7 @@ async function bootstrap() {
   const ioAdapter = new IoAdapter(app);
   app.useWebSocketAdapter(ioAdapter);
 
-  const port = 3000;
+  const port = 5500;
   await app.listen(port);
   console.log(`Application is running on: http://localhost:${port}`);
   console.log(`WebSocket server is running on: ws://localhost:${port}`);
