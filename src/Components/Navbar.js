@@ -8,19 +8,19 @@ import profile from '../assets/profile.jpg';
 function Navbar({ isLoggedIn, onLogout, userEmail, userRole, onLoginClick }) {
   const [showDropdown, setShowDropdown] = useState(false);
   const [showNotifications, setShowNotifications] = useState(false);
-  
+
   // Toggle dropdown menu
   const toggleDropdown = () => {
     setShowDropdown(!showDropdown);
     if (showNotifications) setShowNotifications(false);
   };
-  
+
   // Toggle notifications
   const toggleNotifications = () => {
     setShowNotifications(!showNotifications);
     if (showDropdown) setShowDropdown(false);
   };
-  
+
   return (
     <nav className="navbar">
       <div className="nav-left">
@@ -29,28 +29,28 @@ function Navbar({ isLoggedIn, onLogout, userEmail, userRole, onLoginClick }) {
           <h1 className="brand-name">SwapSaviour</h1>
         </Link>
       </div>
-      
+
       <div className="nav-center">
         <div className="search-container">
-          <input 
-            type="text" 
-            className="search-input" 
+          <input
+            type="text"
+            className="search-input"
             placeholder="Search items, categories, or users..."
           />
         </div>
       </div>
-      
+
       <div className="nav-right">
-        {/* Home link is always visible */}
+        {/* Home and Chat links are always visible */}
         <Link to="/" className="nav-link">Home</Link>
-        
+        <a href="http://localhost:5173/dashboard" className="nav-link">Chat</a>
         {/* Conditional navigation links based on login status */}
         {isLoggedIn ? (
           <>
             <Link to="/marketplace" className="nav-link">Shop</Link>
             <Link to="/listings" className="nav-link">My Listings</Link>
             <Link to="/create-listing" className="nav-link">Create Listing</Link>
-            
+
             {/* Notifications */}
             <div className="notification-icon" onClick={toggleNotifications}>
               <span className="notification-bell">🔔</span>
@@ -72,13 +72,13 @@ function Navbar({ isLoggedIn, onLogout, userEmail, userRole, onLoginClick }) {
                 </div>
               )}
             </div>
-            
+
             {/* Profile dropdown */}
             <div className="profile-icon" onClick={toggleDropdown}>
-              <img 
-                src={`https://ui-avatars.com/api/?name=${userEmail.split('@')[0]}&background=random`} 
-                alt="Profile" 
-                className="avatar" 
+              <img
+                src={`https://ui-avatars.com/api/?name=${userEmail.split('@')[0]}&background=random`}
+                alt="Profile"
+                className="avatar"
               />
               {showDropdown && (
                 <div className="dropdown-menu">
