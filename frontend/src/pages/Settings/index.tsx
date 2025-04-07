@@ -15,7 +15,7 @@ import api from '../../api/axios';
 import styles from '../../styles/InputDesign.module.css';
 import { useTheme } from '../../contexts/ThemeContext';
 import '../../styles/ThemeColors.css';
-import { FaCog, FaSignOutAlt, FaSun, FaMoon } from 'react-icons/fa';
+import { FaCog, FaSignOutAlt, FaSun, FaMoon, FaComments, FaHome } from 'react-icons/fa';
 import useAvatar from '../../hooks/useAvatar';
 
 const Settings: React.FC = () => {
@@ -118,8 +118,12 @@ const Settings: React.FC = () => {
         {/* Burger Menu Dropdown */}
         {showBurgerMenu && (
           <div className={styles.menuDropdown}>
+            <div className={styles.menuItem} onClick={() => window.location.href = 'http://localhost:3000/'}>
+              <FaHome />
+              <span>Home</span>
+            </div>
             <div className={styles.menuItem} onClick={() => navigate('/dashboard')}>
-              <FaCog />
+              <FaComments />
               <span>Chats</span>
             </div>
             <div className={styles.menuItem} onClick={toggleTheme}>
