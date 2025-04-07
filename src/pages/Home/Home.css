@@ -1,0 +1,471 @@
+:root {
+  --color-primary: #FF6B35;
+  --color-secondary: #F47C3C;
+  --color-accent: #FF8F3F;
+  --color-background-dark: #333333;
+  --color-text-light: #FFFFFF;
+  --color-text-dark: #333333;
+  
+  --font-primary: 'Inter', sans-serif;
+  --font-secondary: 'Merriweather', serif;
+  
+  --spacing-small: 10px;
+  --spacing-medium: 20px;
+  --spacing-large: 40px;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: var(--font-primary);
+  line-height: 1.6;
+  color: var(--color-text-dark);
+  background-color: #f4f4f4;
+}
+
+.App {
+  max-width: 1200px;
+  margin: 0 auto;
+  position: relative;
+}
+
+.background-image {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url('../../assets/Home.jpg');
+  background-size: cover;
+  background-position: center;
+  z-index: -1;
+  filter: blur(8px) brightness(0.7);
+  transition: filter 0.5s ease;
+}
+
+.background-image:hover {
+  filter: blur(6px) brightness(0.8);
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  padding: var(--spacing-large) 0;
+  text-align: center;
+  color: var(--color-text-light);
+  position: relative;
+}
+
+.header {
+  font-family: var(--font-secondary);
+  font-size: 4rem;
+  font-weight: bold;
+  margin-bottom: var(--spacing-large);
+  background: linear-gradient(45deg, var(--color-primary), var(--color-secondary));
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  transition: all 0.3s ease;
+  text-align: center;
+}
+
+.header:hover {
+  transform: scale(1.02);
+}
+
+.text {
+  font-size: 1.2rem;
+  max-width: 800px;
+  margin: 0 auto;
+  margin-bottom: var(--spacing-large);
+  text-shadow: 1px 1px 2px rgba(218, 123, 0, 0.839);
+  line-height: 1.8;
+  text-align: center;
+}
+
+.buttons-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: var(--spacing-medium);
+  flex-wrap: wrap;
+  margin-top: var(--spacing-large);
+}
+
+.btn {
+  display: inline-block;
+  padding: 12px 24px;
+  background-color: var(--color-primary);
+  color: var(--color-text-light);
+  text-decoration: none;
+  border-radius: 8px;
+  border: 2px solid transparent;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  min-width: 150px;
+  text-align: center;
+}
+
+.btn:hover {
+  background-color: var(--color-secondary);
+  transform: translateY(-5px);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+.footer {
+  background-color: var(--color-background-dark);
+  color: var(--color-text-light);
+  padding: var(--spacing-large);
+  text-align: center;
+}
+
+.footer-features {
+  display: flex;
+  justify-content: center;
+  gap: var(--spacing-large);
+  margin: var(--spacing-large) 0;
+}
+
+.footer-features div {
+  max-width: 250px;
+  padding: var(--spacing-medium);
+  background-color: rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+}
+
+.footer h3 {
+  font-size: 1.5rem;
+  margin-bottom: var(--spacing-medium);
+  color: var(--color-primary);
+}
+
+.footer h4 {
+  color: var(--color-accent);
+  margin-bottom: var(--spacing-small);
+}
+
+.footer p {
+  font-size: 0.9rem;
+  margin-top: var(--spacing-small);
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideUp {
+  from { 
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to { 
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in {
+  animation: fadeIn 1s ease-out;
+}
+
+.animate-slide-up {
+  animation: slideUp 1s ease-out;
+}
+
+@media screen and (max-width: 768px) {
+  .header {
+    font-size: 2.5rem;
+  }
+  
+  .text {
+    font-size: 1rem;
+    padding: 0 var(--spacing-medium);
+  }
+  
+  .buttons-container {
+    flex-direction: column;
+    align-items: center;
+    gap: var(--spacing-small);
+  }
+  
+  .btn {
+    width: 100%;
+    max-width: 300px;
+  }
+  
+  .footer-features {
+    flex-direction: column;
+    align-items: center;
+  }
+  /* Add these styles to your existing Home.css file */
+
+/* Authentication section */
+.auth-section {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  z-index: 100;
+  display: flex;
+  gap: 10px;
+}
+
+.login-btn, .signup-btn, .sign-out-btn {
+  background-color: rgba(255, 255, 255, 0.8);
+  border: none;
+  padding: 8px 16px;
+  border-radius: 20px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.login-btn:hover, .signup-btn:hover, .sign-out-btn:hover {
+  background-color: rgba(255, 255, 255, 1);
+  transform: translateY(-2px);
+}
+
+.sign-out-btn {
+  background-color: rgba(255, 200, 200, 0.8);
+}
+
+.user-profile {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background-color: rgba(255, 255, 255, 0.8);
+  padding: 8px 16px;
+  border-radius: 20px;
+}
+
+.admin-badge {
+  background-color: #ff7700;
+  color: white;
+  font-size: 0.8rem;
+  padding: 3px 8px;
+  border-radius: 10px;
+}
+
+/* Login overlay */
+.login-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.login-box {
+  background-color: white;
+  padding: 30px;
+  border-radius: 10px;
+  width: 100%;
+  max-width: 400px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.login-box h2 {
+  margin-top: 0;
+  text-align: center;
+  color: #333;
+}
+
+.login-box input {
+  padding: 12px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  font-size: 16px;
+}
+
+.login-actions {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.login-actions button {
+  flex: 1;
+  padding: 10px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: background-color 0.3s;
+}
+
+.login-actions button:first-child {
+  background-color: #4CAF50;
+  color: white;
+}
+
+.login-actions button:last-child {
+  background-color: #f1f1f1;
+  color: #333;
+}
+
+.login-actions button:hover {
+  opacity: 0.9;
+}
+
+/* Admin button style */
+.admin-btn {
+  background-color: #ff7700 !important;
+}
+
+/* Style for buttons when not logged in */
+button.btn {
+  border: none;
+  cursor: pointer;
+  font-size: inherit;
+  font-family: inherit;
+}
+/* Add these styles to your existing Home.css file */
+
+/* Authentication section */
+.auth-section {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  z-index: 100;
+  display: flex;
+  gap: 10px;
+}
+
+.login-btn, .signup-btn, .sign-out-btn {
+  background-color: rgba(255, 255, 255, 0.8);
+  border: none;
+  padding: 8px 16px;
+  border-radius: 20px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.login-btn:hover, .signup-btn:hover, .sign-out-btn:hover {
+  background-color: rgba(255, 255, 255, 1);
+  transform: translateY(-2px);
+}
+
+.sign-out-btn {
+  background-color: rgba(255, 200, 200, 0.8);
+}
+
+.user-profile {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background-color: rgba(255, 255, 255, 0.8);
+  padding: 8px 16px;
+  border-radius: 20px;
+}
+
+.admin-badge {
+  background-color: #ff7700;
+  color: white;
+  font-size: 0.8rem;
+  padding: 3px 8px;
+  border-radius: 10px;
+}
+
+/* Login overlay */
+.login-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.login-box {
+  background-color: white;
+  padding: 30px;
+  border-radius: 10px;
+  width: 100%;
+  max-width: 400px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.login-box h2 {
+  margin-top: 0;
+  text-align: center;
+  color: #333;
+}
+
+.login-box input {
+  padding: 12px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  font-size: 16px;
+}
+
+.login-actions {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.login-actions button {
+  flex: 1;
+  padding: 10px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: background-color 0.3s;
+}
+
+.login-actions button:first-child {
+  background-color: #4CAF50;
+  color: white;
+}
+
+.login-actions button:last-child {
+  background-color: #f1f1f1;
+  color: #333;
+}
+
+.login-actions button:hover {
+  opacity: 0.9;
+}
+
+/* Admin button style */
+.admin-btn {
+  background-color: #ff7700 !important;
+}
+
+/* Style for buttons when not logged in */
+button.btn {
+  border: none;
+  cursor: pointer;
+  font-size: inherit;
+  font-family: inherit;
+}
+}
