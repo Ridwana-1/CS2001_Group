@@ -1,0 +1,99 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id            String          @id @default(cuid())
+  email         String         @unique
+  fullname      String?
+  picture       String?
+  password      String
+  isVerified    Boolean        @default(false)
+  isGoogleUser  Boolean        @default(false)
+  otp           String?
+  otpExpiry     DateTime?
+  resetToken    String?
+  resetTokenExpiry DateTime?
+  lastSeen      DateTime       @default(now())
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+  channels      Channel[]
+  sentMessages  Message[]      @relation("SentMessages")
+  unreadMessages UnreadMessage[]
+  profile       Profile?
+  sessions      UserSession[]
+}
+
+model Profile {
+  id        String  @id @default(cuid())
+  bio       String?
+  avatarUrl String?
+  userId    String  @unique
+  user      User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Channel {
+  id            String          @id @default(cuid())
+  name          String
+  description   String?
+  createdAt     DateTime        @default(now())
+  updatedAt     DateTime        @updatedAt
+  users         User[]
+  messages      Message[]
+  unreadMessages UnreadMessage[]
+}
+
+model Message {
+  id            String          @id @default(cuid())
+  content       String
+  senderId      String
+  channelId     String
+  createdAt     DateTime        @default(now())
+  updatedAt     DateTime        @updatedAt
+  sender        User            @relation("SentMessages", fields: [senderId], references: [id], onDelete: Cascade)
+  channel       Channel         @relation(fields: [channelId], references: [id], onDelete: Cascade)
+  unreadMessages UnreadMessage[]
+}
+
+model UserSession {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  token     String   @unique
+  device    String?
+  ip        String?
+  createdAt DateTime @default(now())
+  expiresAt DateTime
+  lastUsed  DateTime @default(now())
+  isActive  Boolean  @default(true)
+
+  @@index([userId])
+  @@index([token])
+  @@index([expiresAt])
+}
+
+model UnreadMessage {
+  id        String   @id @default(cuid())
+  userId    String
+  messageId String
+  channelId String
+  isRead    Boolean  @default(false)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  message Message @relation(fields: [messageId], references: [id], onDelete: Cascade)
+  channel Channel @relation(fields: [channelId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([messageId])
+  @@index([channelId])
+}

@@ -11,13 +11,15 @@ backend/.mvn/
 .env
 frontend/.env
 backend/.env
+.env.local
+.env.*.local
 
 # Build files
 build/
 dist/
 *.log
 
-# IDE files
+# IDE and editor files
 .idea/
 .vscode/
 *.swp
@@ -27,15 +29,18 @@ dist/
 .DS_Store
 Thumbs.db
 
-# testing
+# Testing
 /coverage
+coverage/
 
-# misc
-.env.local
-.env.development.local
-.env.test.local
-.env.production.local
-
+# Logs
+logs/
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+
+# Temporary files
+*.tmp
+*.temp
+
+.qodo

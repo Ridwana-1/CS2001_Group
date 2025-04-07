@@ -1,0 +1,8 @@
+-- AlterTable
+ALTER TABLE "User" ADD COLUMN     "isGoogleUser" BOOLEAN NOT NULL DEFAULT false,
+ADD COLUMN     "isVerified" BOOLEAN NOT NULL DEFAULT false,
+ADD COLUMN     "lastSeen" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+ADD COLUMN     "otp" TEXT,
+ADD COLUMN     "otpExpiry" TIMESTAMP(3),
+ADD COLUMN     "resetToken" TEXT,
+ADD COLUMN     "resetTokenExpiry" TIMESTAMP(3);
