@@ -14,8 +14,6 @@ backend/.env
 backend/Node_Backend/.env
 src/pages/Transactions/.env
 backend/Node_Backend/Nodemailer.js
-.env.local
-.env.*.local
 
 # Build files
 build/
