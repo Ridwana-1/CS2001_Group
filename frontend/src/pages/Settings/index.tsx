@@ -118,7 +118,7 @@ const Settings: React.FC = () => {
         {/* Burger Menu Dropdown */}
         {showBurgerMenu && (
           <div className={styles.menuDropdown}>
-            <div className={styles.menuItem} onClick={() => window.location.href = 'http://localhost:3000/'}>
+            <div className={styles.menuItem} onClick={() => window.location.href = 'http://localhost:5500/'}>
               <FaHome />
               <span>Home</span>
             </div>

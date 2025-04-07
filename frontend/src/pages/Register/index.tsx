@@ -132,7 +132,7 @@ const Register = () => {
   };
 
   const handleGoogleSignIn = () => {
-    window.location.href = "http://localhost:3000/api/auth/google";
+    window.location.href = "http://localhost:5500/api/auth/google";
   };
 
   const nextStep = () => {

@@ -645,7 +645,7 @@ const ChatInterface: React.FC = () => {
   useEffect(() => {
     if (!user?.id) return;
 
-    const ws = new WebSocket(`ws://localhost:3000/ws?userId=${user.id}`);
+    const ws = new WebSocket(`ws://localhost:5500/ws?userId=${user.id}`);
 
     ws.onmessage = (event) => {
       const data = JSON.parse(event.data);
@@ -862,7 +862,7 @@ const ChatInterface: React.FC = () => {
 
         {showBurgerMenu && (
           <div className={styles.menuDropdown}>
-            <div className={styles.menuItem} onClick={() => window.location.href = 'http://localhost:3000/'}>
+            <div className={styles.menuItem} onClick={() => window.location.href = 'http://localhost:5500/'}>
               <FaHome />
               <span>Home</span>
             </div>

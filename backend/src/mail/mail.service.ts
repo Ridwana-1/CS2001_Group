@@ -68,7 +68,7 @@ export class MailService {
   }
 
   async sendPasswordResetEmail(email: string, token: string) {
-    const resetUrl = `http://localhost:3000/reset-password?token=${token}`;
+    const resetUrl = `http://localhost:5500/reset-password?token=${token}`;
 
     await this.mailerService.sendMail({
       to: email,
@@ -81,7 +81,7 @@ export class MailService {
   }
 
   async sendNewMessageNotification(email: string, sender: string, messageContent: string) {
-    const chatLink = `http://localhost:3000/chat?user=${sender}`; // Замените на ваш URL
+    const chatLink = `http://localhost:5500/chat?user=${sender}`; // Замените на ваш URL
 
     await this.mailerService.sendMail({
       to: email,
