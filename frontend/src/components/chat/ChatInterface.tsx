@@ -862,7 +862,7 @@ const ChatInterface: React.FC = () => {
 
         {showBurgerMenu && (
           <div className={styles.menuDropdown}>
-            <div className={styles.menuItem} onClick={() => window.location.href = 'http://localhost:5500/'}>
+            <div className={styles.menuItem} onClick={() => window.location.href = 'http://localhost:3000/'}>
               <FaHome />
               <span>Home</span>
             </div>
