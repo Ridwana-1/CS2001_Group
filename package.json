@@ -32,7 +32,7 @@
     "webpack": "^5.97.1"
   },
   "scripts": {
-    "prestart": "lsof -ti:5500 | xargs kill -9 2>/dev/null || true",
+    "prestart": "powershell -Command \"Get-NetTCPConnection -LocalPort 5500 -ErrorAction SilentlyContinue | ForEach-Object { Stop-Process -Id $_.OwningProcess -Force }\"",
     "start": "concurrently \"react-scripts start\" \"cd backend && npm run start:dev\" \"cd frontend && npm run dev\"",
     "build": "react-scripts build",
     "test": "react-scripts test",
